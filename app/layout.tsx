@@ -8,10 +8,13 @@ import Footer from '@/app/components/footer';
 import { cn } from "@/lib/utils"
 import "./globals.css"
 
+// random string
+export const random = () => Math.random().toString(36).substring(2);
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.jessedoka.co/'),
   title: {
-    default: 'Jesse Doka',
+    default: `${random()} is a word`,
     template: '%s | Jesse Doka',
   },
   description: 'Developer',
@@ -20,7 +23,7 @@ export const metadata: Metadata = {
     description: 'Developer',
     url: 'https://www.jessedoka.co/',
     siteName: 'Jesse Doka',
-    locale: 'en_US',
+    locale: 'en_GB',
     type: 'website',
   },
   robots: {

@@ -10,7 +10,7 @@ const projects = [
   {
     repo: "jessedoka.co",
     link: "https://github.com/jessedoka/jessedoka.co",
-    description: "Boring personal site built with Next.js and Supabase",
+    description: "Simple personal site built with Next.js and Supabase",
   },
   {
     repo: "Deverb",
@@ -108,7 +108,6 @@ export default function Page() {
               <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
                 Blog
               </h2>
-              {/* show 5 of the latest posts */}
               {allBlogs
                 .sort((a, b) => {
                   if (
