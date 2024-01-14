@@ -8,4 +8,4 @@ const Page = (props: any) => (
     </div>
 );
 
-export default Page;
+export default Page;    

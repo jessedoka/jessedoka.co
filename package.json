@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker:run": "docker run -p 3000:3000 portfolio"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.6",
