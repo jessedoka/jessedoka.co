@@ -8,9 +8,9 @@ const projects = [
     description: "Reaction Tester built with React",
   },
   {
-    repo: "jessedoka.co",
-    link: "https://github.com/jessedoka/jessedoka.co",
-    description: "Simple personal site built with Next.js and Supabase",
+    repo: "InkByter",
+    link: "https://github.com/jessedoka/InkByter",
+    description: "Simple Text Editor made in C",
   },
   {
     repo: "Deverb",
