@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 import "./globals.css"
 
 // random string
-export const random = () => Math.random().toString(36).substring(2);
+const random = () => Math.random().toString(36).substring(2);
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.jessedoka.co/'),
