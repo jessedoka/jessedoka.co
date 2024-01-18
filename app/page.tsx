@@ -14,7 +14,7 @@ const projects = [
   },
   {
     repo: "Deverb",
-    link: "https://github.com/deverbdev/service",
+    link: "https://deverb.co",
     description: "A platform for producers to share their projects and get feedback",
   },
   {
