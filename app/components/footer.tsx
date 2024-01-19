@@ -14,7 +14,7 @@ export default function Footer() {
                         <SiGithub className="w-4 h-4 fill-gray-400" />
                     </Link>
 
-                    <Link href='https://www.linkedin.com/in/jesse-doka-697519212/'>
+                    <Link href='https://www.linkedin.com/in/jesse-doka/'>
                         <SiLinkedin className="w-4 h-4 fill-gray-400" />
                     </Link>
 
