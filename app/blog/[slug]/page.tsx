@@ -1,8 +1,10 @@
-import type { Metadata } from 'next';
-import { Suspense, cache } from 'react';
+
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '@/app/components/mdx';
 import { getBlogPosts } from '@/app/db/blog';
+import { insertBlogSlug, incrementBlogViewCount } from '@/app/db/queries';
+// import { useEffect } from 'react';
 
 export async function generateMetadata({
   params,
@@ -81,11 +83,18 @@ function formatDate(date: string) {
 }
 
 export default function Blog({ params }: { params: { slug: string } }) {
+
   let post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) {
     notFound();
   }
+
+  insertBlogSlug(post.slug);
+  
+  // TODO: cookie that stores all the blog slugs that have been visited by a user 
+  incrementBlogViewCount(post.slug);
+
 
   return (
     <section>
