@@ -1,5 +1,7 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { getBlogPosts } from '@/app/db/blog';
+import { getBlogViews } from '@/app/db/queries';
 
 export const metadata = {
   title: 'Blog',
@@ -33,9 +35,15 @@ export default function BlogPage() {
               <p className="text-neutral-900 dark:text-neutral-100 tracking-tight">
                 {post.metadata.title}
               </p>
+              <Suspense fallback={<p className="h-6"/>}>
+                <p className="text-neutral-600 dark:text-neutral-400">
+                  {getBlogViews(post.slug)} views
+                </p>
+              </Suspense>
             </div>
           </Link>
         ))}
     </section>
   );
 }
+

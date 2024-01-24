@@ -21,7 +21,7 @@ export async function insertBlogSlug(slug: string) {
 }
 
 // get blog view count
-export async function getBlogViewCount(slug: string) {
+export async function getBlogViews(slug: string) {
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     const { data, error } = await supabase
@@ -30,6 +30,10 @@ export async function getBlogViewCount(slug: string) {
         .eq('slug', slug)
     if (error) {
         console.log(error)
+    }
+
+    if (data) {
+        return data[0].view_count
     }
     return data
 }
