@@ -8,8 +8,14 @@ import Footer from '@/app/components/footer';
 import { cn } from "@/lib/utils"
 import "./globals.css"
 
-// random string
-const random = () => Math.random().toString(36).substring(2);
+const random = (length: number = 7) => {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return result;
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.jessedoka.co/'),
