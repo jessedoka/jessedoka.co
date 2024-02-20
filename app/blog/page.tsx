@@ -37,7 +37,7 @@ export default function BlogPage() {
               </p>
               <Suspense fallback={<p className="h-6"/>}>
                 <p className="text-neutral-600 dark:text-neutral-400">
-                  {getBlogViews(post.slug)} views
+                  {getBlogViews(post.slug)} clicks
                 </p>
               </Suspense>
             </div>
