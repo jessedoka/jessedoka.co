@@ -70,7 +70,7 @@ export default function Page() {
                 <span className="text-[#de8315] "> 
                   3rd &nbsp;
                 </span>
-                year of my Computer Science degree. I have a great interset in full-stack development and machine learning and I&apos;m always looking for new opportunities to learn and grow. 
+                year of my Computer Science degree. I have a great intrest in full-stack development and machine learning and I&apos;m always looking for new opportunities to learn and grow. 
               </p>
             </div>
             {/* projects */}
