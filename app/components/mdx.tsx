@@ -2,8 +2,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { TweetComponent } from './tweet';
-import { highlight } from 'sugar-high';
 import React, { ReactNode } from 'react';
+import Prism from "prismjs";
+import "prism-themes/themes/prism-one-dark.css";
+
+// import all languages
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-json";
 
 function Table({ data }:{
   data: {
@@ -123,11 +129,26 @@ function ConsCard({ title, cons }: {
   );
 }
 
-function Code({ children, ...props }: {
-  children: string;
-}) {
-  let codeHTML = highlight(children);
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+
+function Code({...props }) {
+  // props.className = "language-js";
+
+  let code = props.children.trim();
+  let langauge = props.className.replace("language-", "");
+
+  // using prism to highlight code
+  let html = Prism.highlight(code, Prism.languages[langauge], langauge);
+  let className = `language-${langauge}`;
+
+  return (
+    <pre className={className}>
+      <code
+        className={className}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </pre>
+  );
+  
 }
 
 function slugify(str: string) {
