@@ -130,15 +130,21 @@ function ConsCard({ title, cons }: {
 }
 
 
-function Code({...props }) {
-  // props.className = "language-js";
-
+function Code({ ...props }) {
   let code = props.children.trim();
-  let langauge = props.className.replace("language-", "");
+
+  // If no language is specified, return the code block without highlighting
+  if (!props.className) {
+    return (
+      <code className='font-medium'>{code}</code>
+    );
+  }
+
+  let language = props.className.replace("language-", "");
 
   // using prism to highlight code
-  let html = Prism.highlight(code, Prism.languages[langauge], langauge);
-  let className = `language-${langauge}`;
+  let html = Prism.highlight(code, Prism.languages[language], language);
+  let className = `language-${language}`;
 
   return (
     <pre className={className}>
@@ -148,7 +154,6 @@ function Code({...props }) {
       />
     </pre>
   );
-  
 }
 
 function slugify(str: string) {
