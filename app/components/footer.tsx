@@ -7,7 +7,7 @@ export default function Footer() {
             <hr />
 
             <footer className="flex justify-between items-center ">
-                <span className='text-neutral-200'>Jesse Doka</span>
+                <span className='dark:text-neutral-200'>Jesse Doka</span>
 
                 <div className="flex gap-4 ">
                     <Link href='https://github.com/jessedoka'>
