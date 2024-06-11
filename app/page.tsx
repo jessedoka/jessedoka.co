@@ -1,7 +1,6 @@
-"use client"
 import Link from 'next/link';
 import { getBlogPosts } from '@/app/db/blog';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense } from 'react';
 
 const projects = [
   {
@@ -55,16 +54,6 @@ function ArrowIcon() {
 
 export default function Page() {
   let allBlogs = getBlogPosts();
-
-  const [views, setViews] = useState(0)
-
-  useEffect(() => {
-    fetch('/api/views')
-      .then((res) => res.json())
-      .then((data) => {
-        setViews(data.views)
-      })
-  }, [])
 
   return (
     <section>
@@ -153,11 +142,6 @@ export default function Page() {
                         </p>
                         
                       </div>
-                      <Suspense fallback={<p className="h-6"/>}>
-                        <p className="text-neutral-600 dark:text-neutral-400">
-                          {views} {views === 1 ? 'view' : 'views'}
-                        </p>
-                      </Suspense>
                     </div>
                   </Link>
                 ))}

@@ -3,9 +3,6 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '@/app/components/mdx';
 import { getBlogPosts } from '@/app/db/blog';
-import { insertBlogSlug, incrementBlogViewCount, getBlogViews } from '@/app/db/queries';
-import { Suspense } from 'react';
-// import { useEffect } from 'react';
 
 export async function generateMetadata({
   params,
@@ -91,10 +88,9 @@ export default function Blog({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  insertBlogSlug(post.slug);
+  // insertBlogSlug(post.slug);
   
   // TODO: cookie that stores all the blog slugs that have been visited by a user 
-  incrementBlogViewCount(post.slug);
 
 
   return (
@@ -128,11 +124,6 @@ export default function Blog({ params }: { params: { slug: string } }) {
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
           {formatDate(post.metadata.publishedAt)}
         </p>
-        <Suspense fallback={<p className="h-6"/>}>
-          <p className="text-neutral-600 dark:text-neutral-400">
-            {getBlogViews(post.slug)} clicks
-          </p>
-        </Suspense>
       </div>
       <article className="prose prose-quoteless prose-neutral dark:prose-invert">
         <CustomMDX source={post.content} />
