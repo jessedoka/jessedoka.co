@@ -9,7 +9,7 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      article: {
+      analytics: {
         Row: {
           created_at: string
           id: number
@@ -37,7 +37,7 @@ export interface Database {
     Functions: {
       increment: {
         Args: {
-          slug: string
+          page_slug: string
         }
         Returns: undefined
       }
