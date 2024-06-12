@@ -26,8 +26,17 @@ function parseFrontmatter(fileContent: string) {
   return { metadata: metadata as Metadata, content };
 }
 
-function getMDXFiles(dir: string) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx');
+function getMDXFiles(dir: string, subDir: string = ''): { filePath: string; subDir: string }[] {
+  let files: { filePath: string; subDir: string }[] = [];
+  const items = fs.readdirSync(path.join(dir, subDir), { withFileTypes: true });
+  for (const item of items) {
+    if (item.isDirectory()) {
+      files = files.concat(getMDXFiles(dir, path.join(subDir, item.name)));
+    } else if (item.name.endsWith('.mdx')) {
+      files.push({ filePath: path.join(dir, subDir, item.name), subDir });
+    }
+  }
+  return files;
 }
 
 function readMDXFile(filePath: string) {
@@ -42,19 +51,29 @@ function extractTweetIds(content: string) {
 
 function getMDXData(dir: string) {
   let mdxFiles = getMDXFiles(dir);
-  return mdxFiles.map((file) => {
-    let { metadata, content } = readMDXFile(path.join(dir, file));
-    let slug = path.basename(file, path.extname(file));
+  return mdxFiles.map(({ filePath, subDir }) => {
+    let { metadata, content } = readMDXFile(filePath);
+    let slug = path.basename(filePath, path.extname(filePath));
     let tweetIds = extractTweetIds(content);
+    let tags = subDir.split(path.sep).filter(Boolean); // Split subDir by path separator and filter out empty strings
     return {
       metadata,
       slug,
       tweetIds,
       content,
+      tags, // Add tags to the return object
     };
   });
 }
 
-export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), 'content'));
+export function getBlogPosts(tagsFilter?: string | string[]) {
+  const allPosts = getMDXData(path.join(process.cwd(), 'content'));
+  if (!tagsFilter) {
+    return allPosts; // Return all posts if no filter is provided
+  }
+
+  const tagsToMatch = Array.isArray(tagsFilter) ? tagsFilter : [tagsFilter]; // Ensure tagsFilter is an array
+  return allPosts.filter(post => 
+    tagsToMatch.every(tag => post.tags.includes(tag))
+  );
 }

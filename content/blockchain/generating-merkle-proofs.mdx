@@ -1,0 +1,133 @@
+---
+title: "Generating Merkle Proofs"
+publishedAt: 2023-01-10
+summary: "Learn how to generate Merkle proofs to verify the inclusion of a specific data item in a Merkle tree."
+---
+
+In the previous article ["Building a Merkle Tree"](./merkle-trees), we demonstrated how to construct a Merkle tree from scratch in Python. This article will focus on generating Merkle proofs, which are essential for verifying the inclusion of a specific data item in the tree.
+
+## What is a Merkle Proof?
+
+A Merkle proof provides evidence that a particular data item is included in the Merkle tree. It consists of a series of hashes that trace a path from the data item to the root of the tree. By recomputing the hashes along this path, one can verify the integrity and inclusion of the data item.
+
+## Building the Merkle Tree
+
+First, let's recall our `MerkleTree` class from the previous article, which includes the necessary methods to build the tree.
+
+```python
+import hashlib
+import json
+
+class MerkleTree:
+    def __init__(self, data):
+        self.leaves = data
+        self.root = None
+        self.tree = []
+
+    def build(self):
+        if len(self.leaves) == 1:
+            self.root = self.leaves[0]
+            self.tree.append([self.root])
+            return
+
+        if len(self.leaves) % 2 != 0:
+            self.leaves.append(self.leaves[-1])
+
+        self.leaves = [
+            hashlib.sha256(json.dumps(leaf, sort_keys=True).encode()).hexdigest() 
+            for leaf in self.leaves
+        ]
+
+        self.tree.append(self.leaves)
+
+        while len(self.leaves) > 1:
+            if len(self.leaves) % 2 != 0:
+                self.leaves.append(self.leaves[-1])
+
+            self.leaves = [
+                hashlib.sha256((self.leaves[i] + self.leaves[i + 1]).encode()).hexdigest()
+                for i in range(0, len(self.leaves), 2)
+            ]
+
+            self.tree.append(self.leaves)
+
+        self.root = self.leaves[0]
+
+    def get_root(self):
+        if self.root is None:
+            self.build()
+        return self.root
+```
+
+## Generating a Merkle Proof
+
+To generate a Merkle proof, we need to find the path from the target data item to the root of the tree, collecting the necessary hashes along the way.
+
+```python
+class MerkleTree:
+    ...
+    
+    def generate_proof(self, target):
+        if self.root is None:
+            self.build()
+        
+        target_hash = hashlib.sha256(json.dumps(target, sort_keys=True).encode()).hexdigest()
+        proof = []
+        idx = self.tree[0].index(target_hash)
+
+        for level in range(len(self.tree) - 1):
+            sibling_idx = idx + 1 if idx % 2 == 0 else idx - 1
+            sibling_hash = self.tree[level][sibling_idx]
+            proof.append(sibling_hash)
+            idx //= 2
+
+        return proof
+```
+
+## Verifying a Merkle Proof
+
+To verify the Merkle proof, we need to recompute the hashes from the data item to the root using the provided proof.
+
+```python
+def verify_proof(proof, target, root):
+    target_hash = hashlib.sha256(json.dumps(target, sort_keys=True).encode()).hexdigest()
+    computed_hash = target_hash
+
+    for sibling_hash in proof:
+        if computed_hash < sibling_hash:
+            computed_hash = hashlib.sha256((computed_hash + sibling_hash).encode()).hexdigest()
+        else:
+            computed_hash = hashlib.sha256((sibling_hash + computed_hash).encode()).hexdigest()
+
+    return computed_hash == root
+```
+
+## Testing the Code
+
+Let's test our implementation with a sample data set.
+
+```python
+data = ['Alice', 'Bob', 'Charlie', 'Dave', 'Eve']
+tree = MerkleTree(data)
+root = tree.get_root()
+print("Merkle Root:", root)
+
+target = 'Bob'
+proof = tree.generate_proof(target)
+print("Merkle Proof for Bob:", proof)
+
+is_valid = verify_proof(proof, target, root)
+print("Is the proof valid?", is_valid)
+
+# Output: True
+```
+
+## Conclusion
+
+In this article, we demonstrated how to generate and verify Merkle proofs, which are crucial for ensuring data integrity in a Merkle tree. In the next article, we will explore practical applications of Merkle proofs in blockchain technology and distributed systems.
+
+## Resources
+
+- [Merkle Tree Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)
+- [Merkle proofs Explained.](https://medium.com/crypto-0-nite/merkle-proofs-explained-6dd429623dc5)
+- [Verifiable Data Structures: Merkle Trees and Logs](https://transparency.dev/verifiable-data-structures/#verifiable-log)

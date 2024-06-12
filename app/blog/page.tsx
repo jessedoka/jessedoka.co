@@ -9,7 +9,7 @@ export const metadata = {
 
 // calculate reading time
 
-const wordsPerMinute = 200;
+const wordsPerMinute = 400;
 
 function calculateReadingTime(content: string) {
   let words = content.split(' ').length;
@@ -42,10 +42,15 @@ export default function BlogPage() {
             href={`/blog/${post.slug}`}
           >
             <div className="w-full flex flex-col">
-              <p className="text-neutral-900 dark:text-neutral-100 tracking-tight te">
-                {post.metadata.title}
-              </p>
-
+              <div className='flex flex-row space-x-2 justify-between'>
+                <p className="text-neutral-900 dark:text-neutral-100 tracking-tight te">
+                  {post.metadata.title}
+                </p>
+                <p className='text-neutral-700 dark:text-neutral-300 text-sm'>
+                  {post.tags.join(', ')}
+                </p>
+              </div>
+            
               <div className='flex flex-row space-x-2 justify-between'>
                 <p className="text-neutral-600 dark:text-neutral-400 text-sm">
                   {new Date(post.metadata.publishedAt).toLocaleDateString('en-GB', {
