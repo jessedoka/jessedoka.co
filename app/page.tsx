@@ -1,10 +1,9 @@
 import Link from 'next/link';
-import { getBlogPosts } from '@/app/db/blog';
-import { Suspense } from 'react';
+import { getBlogPosts } from '@/db/blog';
 
 const projects = [
 	{
-		repo: "reacton",
+		repo: "Reacton",
 		link: "https://github.com/jessedoka/reacton",
 		description: "Reaction Tester built with React",
 	},

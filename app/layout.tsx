@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
-import { Navbar } from './components/nav'
+import { Navbar } from '../components/nav'
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import Footer from '@/app/components/footer';
+import Footer from '@/components/footer';
 import { cn } from "@/lib/utils"
 import "./globals.css"
 

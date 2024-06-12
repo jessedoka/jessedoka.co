@@ -1,8 +1,8 @@
 
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation';
-import { CustomMDX } from '@/app/components/mdx';
-import { getBlogPosts } from '@/app/db/blog';
+import { CustomMDX } from '@/components/mdx';
+import { getBlogPosts } from '@/db/blog';
 
 export async function generateMetadata({
 	params,
@@ -86,12 +86,8 @@ export default function Blog({ params }: { params: { slug: string } }) {
 
 	if (!post) {
 		notFound();
+		return null;
 	}
-
-	// insertBlogSlug(post.slug);
-
-	// TODO: cookie that stores all the blog slugs that have been visited by a user
-
 
 	return (
 		<section>
