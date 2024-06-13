@@ -1,0 +1,60 @@
+---
+title: "Practical Applications of Merkle Proofs in Blockchain"
+publishedAt: 2023-01-25
+summary: "Explore how Merkle proofs are utilized in blockchain technology to ensure data integrity and enhance security."
+---
+
+In the previous articles, we learned how to build a Merkle tree and generate Merkle proofs. This article will delve into the practical applications of Merkle proofs in blockchain technology, highlighting their role in ensuring data integrity and enhancing security.
+
+## Introduction to Blockchain and Merkle Trees
+
+A blockchain is a distributed ledger that records transactions across a network of computers. Each block in a blockchain contains a list of transactions, a timestamp, and a reference to the previous block. This chain of blocks forms an immutable record of transactions.
+
+Merkle trees play a crucial role in blockchains by providing a compact and efficient way to verify the integrity of transactions within a block. The root hash of a Merkle tree, called the Merkle root, is included in the block header. This allows anyone with the Merkle proof to verify the inclusion of a transaction without needing to download the entire block.
+
+## Merkle Proofs in Bitcoin
+
+In Bitcoin, Merkle proofs are used to verify the inclusion of transactions in a block. Each Bitcoin block contains a Merkle root, which represents the root hash of a Merkle tree constructed from the transactions in that block.
+
+### Verifying Transactions
+
+When a Bitcoin node receives a transaction, it can verify its inclusion in a block by checking the Merkle proof. This process involves:
+
+1. **Obtaining the Merkle proof**: The node obtains the list of hashes required to verify the transaction.
+2. **Recomputing the hashes**: Starting from the transaction hash, the node recomputes the hashes up the tree using the Merkle proof.
+3. **Comparing with the Merkle root**: The node compares the recomputed root hash with the Merkle root in the block header.
+
+If the hashes match, the transaction is verified.
+
+### SPV (Simplified Payment Verification)
+
+Bitcoin's SPV mode allows lightweight clients to verify transactions without downloading the entire blockchain. SPV clients request Merkle proofs from full nodes, enabling them to verify transactions efficiently.
+
+## Merkle Proofs in Ethereum
+
+Ethereum, like Bitcoin, uses Merkle trees to ensure data integrity, but it employs a more complex structure called the Merkle Patricia Trie (MPT). MPTs are used to store the state of the Ethereum network, including account balances, smart contract code, and storage.
+
+### Verifying State
+
+In Ethereum, each block contains a state root, which is the root hash of the MPT representing the global state. Merkle proofs are used to verify the state of an account or the result of a smart contract execution without needing the entire state tree.
+
+Ethereum light clients use Merkle proofs to verify transactions and state changes. They request proofs from full nodes and recompute the hashes to ensure the data's integrity.
+
+## Merkle Proofs in Distributed Storage Systems
+
+Merkle proofs are also used in distributed storage systems, such as IPFS (InterPlanetary File System) and other decentralized storage networks, to ensure data integrity and efficient retrieval.
+
+### Verifying Data Chunks
+
+In distributed storage, files are split into chunks, each with its own hash. A Merkle tree is built from these chunks, and the root hash is used to verify the integrity of the entire file. When retrieving a file, a client can use Merkle proofs to verify each chunk's integrity without downloading the entire file.
+
+## Conclusion
+
+Merkle proofs are fundamental to the security and efficiency of blockchain technology and distributed storage systems. By enabling the verification of data integrity with minimal overhead, they enhance the scalability and robustness of these systems.
+
+## Resources
+
+- [Merkle Tree Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)
+- [Bitcoin Whitepaper](https://www.ussc.gov/sites/default/files/pdf/training/annual-national-training-seminar/2018/Emerging_Tech_Bitcoin_Crypto.pdf)
+- [Ethereum Whitepaper](https://ethereum.org/en/whitepaper/)
+- [InterPlanetary File System (IPFS)](https://ipfs.io/)
