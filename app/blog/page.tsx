@@ -36,6 +36,8 @@ export default function BlogPage() {
       </h1>
       
       {allBlogs
+      // filter out any tags that are drafts and photography
+        .filter((post) => !post.tags.includes('draft') && !post.tags.includes('photography'))
         .sort((a, b) => {
           if (
             new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
