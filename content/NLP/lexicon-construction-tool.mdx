@@ -1,0 +1,269 @@
+---
+title: "Constructing Effective Lexicons: A Comprehensive Guide"
+publishedAt: 2024-05-19
+summary: "A tool for constructing lexicons from text data"
+---
+
+In the realm of natural language processing (NLP), the construction of a lexicon is a foundational task that influences the performance and accuracy of various linguistic models and applications. A well-constructed lexicon can significantly enhance the capabilities of systems in tasks such as sentiment analysis, machine translation, and information retrieval. In this blog we will go into the background and methods that went into constructing a lexicon that I made, based on previous research and methods.
+
+### Background on Lexicon Construction
+
+A lexicon, in the context of NLP, is a curated list of words and phrases along with their associated meanings, parts of speech, and other relevant linguistic information. The purpose of a lexicon is to provide a structured vocabulary that can be used by computational systems to understand and process human language. Historically, lexicon construction has been a labor-intensive task, often involving extensive manual effort by linguists and language experts. However, with advancements in technology and computational linguistics, various automated and semi-automated methods have emerged to streamline this process.
+
+**"The importance of lexicon construction cannot be overstated."**
+
+A comprehensive and accurately constructed lexicon serves as the backbone for numerous NLP applications, enabling them to interpret and generate human language more effectively. As language evolves, so must the lexicons, encouraging ongoing updates and refinements to capture new words, slang, and changes in usage.
+
+### Methods Used in Lexicon Construction
+
+There are several key methods used in the construction of lexicons, each with its own unique advantages and challenges. Here, we explore these methods in detail:
+
+1. **Manual Compilation**
+   - **Description**: This traditional approach involves linguists and language experts manually compiling lists of words and their attributes. It ensures high accuracy and reliability but is time-consuming and resource-intensive.
+   - **Applications**: Often used for creating specialised lexicons for specific domains, such as medical or legal lexicons, where precision is paramount.
+
+2. **Automated Extraction**
+   - **Description**: Leveraging algorithms and machine learning techniques, automated extraction methods identify and compile lexicons from large corpora of text. These methods can process vast amounts of data quickly, making them suitable for capturing the dynamic nature of language.
+   - **Techniques**:
+     - **Frequency Analysis**: Identifies commonly occurring words and phrases in a corpus.
+     - **Collocation Extraction**: Detects words that frequently appear together, indicating potential phrases or idiomatic expressions.
+     - **Contextual Analysis**: Uses machine learning models to understand the context in which words are used, helping to determine their meanings and parts of speech.
+
+3. **Semi-Automated Methods**
+   - **Description**: Combining manual and automated techniques, semi-automated methods involve initial automated extraction followed by manual refinement. This approach balances efficiency with accuracy, allowing experts to correct and enhance the automatically generated lexicons.
+   - **Applications**: Widely used in the creation of general-purpose lexicons that require regular updates and refinements to stay current with language trends.
+
+Other notable methods and tools used in lexicon construction include:
+
+- **Crowdsourcing**
+   - **Description**: Utilising the collective knowledge of a large group of people, crowdsourcing methods involve soliciting contributions from a diverse pool of contributors. This method can rapidly expand lexicons and incorporate a wide range of linguistic variations and nuances.
+
+- **Ontology-Based Methods**
+   - **Description**: Ontology-based methods use structured frameworks that define the relationships between words and concepts. These methods ensure consistency and coherence in the lexicon, particularly for complex domains.
+
+Crowdsourcing especially has gained popularity in recent years due to its scalability and ability to capture diverse linguistic patterns and expressions. By harnessing the collective intelligence of contributors, crowdsourcing can rapidly expand lexicons and adapt to the evolving nature of language.
+
+### Lexicon Construction Tools
+
+To facilitate the construction of lexicons, I used a number of methods and tools, including:
+
+- **Text Processing Libraries**: Libraries such as NLTK (Natural Language Toolkit) and spaCy to provide a range of functionalities for tokenisation, part-of-speech tagging, and other text processing tasks.
+
+- **Machine Learning Models**: Advanced machine learning models, such as word embeddings (e.g., Word2Vec, GloVe) which were used to extract semantic information and contextual understanding from text data.
+
+- **Lexicon Building Tools**: Specialised tools and frameworks designed for lexicon construction, such as NetworkX, which can be used to create and analyse lexical networks and relationships between words.
+
+## Proposed Lexicon Construction Method
+
+The method I used was based on this [paper](https://doi.org/10.2196/17650) which used a combination of manual and automated techniques to construct a lexicon for a depression-related domain.
+
+The process involved the following steps:
+
+### Data Collection
+
+To train machine learning models and create a detailed lexicon mapping words to categories, I collected diverse data from several sources:
+
+1. **Goodreads Book Graph Dataset**: This dataset includes 15 million book reviews with user opinions and interactions, providing valuable insights into emotional and psychological dimensions.
+2. **Essay Dataset**: Comprising 2,467 essays (1.9 million words) by psychology students, this dataset links language use to the Big Five personality traits.
+3. **LIWC Dataset**: A text analysis tool categorising words into psychological, linguistic, and emotional categories.
+4. **OCEAN Words Dataset**: Contains words associated with the five major personality traits (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism).
+
+I chose these sources for their comprehensive and varied language usage, ensuring a robust framework for analysing how language reflects personality, emotions, and social interactions. All data was anonymised to protect user privacy and comply with ethical standards like *GDPR*.
+
+### Preprocessing
+
+Preprocessing is crucial to clean and prepare the data for analysis. I implemented several steps:
+
+- **Extract Sentiment Terms**: Identifying sentiment terms are usually adjectives or adverbs that convey positive or negative emotions. This helps in capturing the emotional tone of the text.
+
+```python
+def extract_sentiment_terms(sentence):
+   words = word_tokenise(sentence)
+   stop_words = set(stopwords.words('english'))
+   punctuation = set(string.punctuation)
+   tagged_words = pos_tag(words)
+   sentiment_terms = set()
+
+   # Convert opinion lexicon to sets for faster lookup
+   negative_lexicon = set(opinion_lexicon.negative())
+   positive_lexicon = set(opinion_lexicon.positive())
+
+   for word, tag in tagged_words:
+      lower_word = word.lower()
+      if lower_word not in stop_words and word not in punctuation:
+         # Check if word is an adjective or adverb
+         if tag.startswith('JJ') or tag.startswith('RB'):
+               if lower_word in negative_lexicon or lower_word in positive_lexicon:
+                  sentiment_terms.add(word)
+         
+   return sentiment_terms
+```
+#### Preprocessing Steps
+
+- **Lemmatisation**: Reducing words to their base forms (e.g., "running" to "run") using the NLTK wordnet lemmatiser. This helps in standardising words according to their dictionary forms.
+
+-  **Tokenisation**: Breaking down text into smaller parts (tokens) using the NLTK library. This step helps in transforming unstructured text into a consistent format for processing.
+
+- **Sentiment Term Extraction**: Identifying words/phrases that convey sentiment using sentiment dictionaries and linguistic heuristics. This helps in understanding the emotional context of the text.
+
+```python
+def preprocess_text(text: str):
+   # Check if text is a string and not empty
+   if not isinstance(text, str) or len(text) == 0:
+      return None
+
+   # Convert to lower case
+   sentence = text.lower()
+
+   # Remove stop words and numbers
+   stop_words = set(stopwords.words('english'))
+   sentence = ' '.join([word for word in word_tokenize(sentence) if word not in stop_words and not word.isdigit()])
+
+   # Lemmatise words
+   lemmatizer = WordNetLemmatizer()
+   sentence = ' '.join([lemmatizer.lemmatize(word) for word in word_tokenize(sentence)])
+
+   # Extract sentiment terms
+   sentiment_terms = extract_sentiment_terms(sentence)
+
+   # Tokenize words
+   processed_text = word_tokenize(sentence)
+
+   return processed_text, sentiment_terms
+```
+
+## The Method
+
+To construct the lexicon, we used a combination of seed words, word embeddings, and graph theory:
+
+1. **Seed Words**: Starting with a set of initial words from the LIWC and OCEAN datasets, which provided a core set of semantic and syntactic characteristics. 
+
+```python
+seed_words = ["happy", "sad", "angry", "fear", "anxiety", ...]
+```
+
+2. **Word Embeddings with Word2Vec**: Using the Gensim library's Word2Vec model, we generated vector representations of words, capturing their semantic meanings based on context. We used a pre-trained Google News model and also trained custom models in order to capture domain-specific semantics.
+
+```python
+def learn_word_embeddings(gzip_file_path):
+   processed_corpus, sentiment_terms = CorpusStreamer(gzip_file_path)
+   model = Word2Vec(sentences=processed_corpus,
+                  vector_size=100, window=5, min_count=1, workers=4)
+   return model.wv, sentiment_terms
+```
+3. **Seed Expansion using K-nearest Neighbors**: Expanding the lexicon by identifying words similar to the seed words using the K-nearest neighbors algorithm, ensuring precise and contextually relevant terms.
+
+```python
+def expand_seeds(seeds, model, Tc, sentiment_terms):
+   similarities = defaultdict(dict)
+   seeds = set(seeds.keys())
+
+   # Pre-calculate intersections
+   vocab = set(model.index_to_key)
+   seeds_in_vocab = vocab.intersection(seeds)
+   sentiment_terms_in_vocab = vocab.intersection(sentiment_terms)
+
+   index_to_term = list(seeds_in_vocab) + list(sentiment_terms_in_vocab)
+
+   vectors = np.array([model[term] for term in index_to_term])
+
+   neighbors = NearestNeighbors(n_neighbors=len(vectors), metric='cosine')
+   neighbors.fit(vectors)
+   
+   # Find neighbors for each vector
+   for i, vector in tqdm(enumerate(vectors)):
+      distances, indices = neighbors.kneighbors([vector]) #type: ignore
+
+      # Iterate over neighbors
+      for distance, index in zip(distances[0], indices[0]):
+         # Only consider neighbors with cosine similarity > Tc
+         if 1 - distance > Tc:
+               term1 = index_to_term[i]
+               term2 = index_to_term[index]
+               
+               similarities[term1][term2] = 1 - distance
+   C = []
+   for seed, terms in tqdm(similarities.items()):
+      for term, similarity in terms.items():
+         C.append((seed, term))
+
+
+   return C
+```
+
+4. **Semantic Graph Construction with NetworkX**: Creating a semantic graph where words are nodes and their similarities are edges. We pruned weak connections to focus on strong semantic relations.
+
+```python
+import networkx as nx
+
+def build_semantic_graph(C, model):
+   G = nx.Graph()
+   print("building semantic graph")
+   for word_pair in tqdm(C):
+      Si, Wj = word_pair
+      if Si != Wj:
+         G.add_edge(Si, Wj, weight=model.similarity(Si, Wj))
+   return G
+```
+
+5. **Multi-label Propagation**: Categorising words into LIWC categories and OCEAN traits using a semi-supervised algorithm. Seed words with known labels helped propagate these labels to similar, unlabeled words through the graph.
+
+```python
+
+def multi_label_propagation(G, seeds, max_iterations=100):
+    # Initialise labels for all nodes
+    labels = {node: [] for node in G.nodes()}
+    
+    # Assign seeds with their labels
+    for node, label in seeds.items():
+        labels[node] = label
+
+    # Propagate labels
+    print("propagating labels")
+    for _ in tqdm(range(max_iterations)):
+        new_labels = labels.copy()
+        for node in G.nodes():
+            if node not in seeds:  
+
+                # Gather labels from neighbors
+                neighbor_labels = [labels[neighbor] for neighbor in G.neighbors(node)]
+                neighbor_labels = [item for sublist in neighbor_labels for item in sublist] 
+                
+                # Assign the most common labels
+                if neighbor_labels:
+                    unique_labels, counts = np.unique(neighbor_labels, return_counts=True)
+                    common_labels = unique_labels[np.where(counts == np.max(counts))]
+                    new_labels[node] = list(common_labels)
+        labels = new_labels
+    return labels
+```
+
+6. **Lexicon Generation**: Combining the labels assigned to words with their semantic similarities, we generated a comprehensive lexicon mapping words to LIWC categories and OCEAN traits.
+
+```python
+def build_lexicon(labels):
+    lexicon = defaultdict(set)
+    print("building lexicon")
+    
+    # Group words by label
+    for word, categories in tqdm(labels.items()):
+        for category in categories:
+            lexicon[category].add(word)
+    return {key: list(value) for key, value in lexicon.items()}
+```
+
+
+### Challenges and Future Directions
+
+While significant progress has been made in lexicon construction, several challenges remain. Ensuring the accuracy and comprehensiveness of lexicons, particularly for lesser-studied languages and dialects, is an ongoing struggle. Additionally, maintaining and updating lexicons to keep pace with the rapid evolution of language presents a continuous challenge.
+
+Future directions in lexicon construction may involve further integration of advanced machine learning models, such as deep learning, to enhance the accuracy and contextual understanding of lexicons. Additionally, greater collaboration between linguists and technologists can lead to more robust and versatile lexicons that cater to the diverse needs of NLP applications.
+
+In conclusion, the construction of lexicons is a critical and evolving field within NLP. By employing a combination of manual, automated, and hybrid methods, researchers and practitioners can develop comprehensive and dynamic lexicons that drive the advancement of language technologies. As we move forward, the continued refinement and expansion of lexicons will play a pivotal role in unlocking the full potential of NLP.
+
+---
+
+By understanding the methods and background of lexicon construction, we gain valuable insights into the intricate processes that underpin modern linguistic technologies. Whether you are a researcher, developer, or language enthusiast, appreciating the complexities of lexicon construction can enhance your engagement with the fascinating world of natural language processing.
+
+You can view the full repository [here](https://github.com/jessedoka/LCT)
+
