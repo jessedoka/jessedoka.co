@@ -16,17 +16,6 @@ export default function WorkPage() {
         'Applied engineering principles, including TDD, to contribute to the design and development of software solutions.',
       ],
     },
-    {
-      title: 'Company Name',
-      role: 'Role',
-      description: 'Description of the role and responsibilities.',
-      skills: ['Skill 1', 'Skill 2', 'Skill 3'],
-      achievements: [
-        'Achievement 1',
-        'Achievement 2',
-        'Achievement 3',
-      ],
-    }
     // Add more work experiences here
     // {
     //   title: 'Company Name',
