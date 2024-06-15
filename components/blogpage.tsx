@@ -38,7 +38,7 @@ export default function BlogPage({ allBlogs }: { allBlogs: any[] }) {
                         border border-zinc-500 px-1 rounded bg-zinc-900 transition-colors duration-200 ease-in-out`}
                     onClick={() => setSelectedTag(null)}
                 >
-                    All
+                    all
                 </button>
                 {tags.map((tag: any) => (
                     <button
