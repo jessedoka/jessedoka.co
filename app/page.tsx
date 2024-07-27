@@ -23,9 +23,9 @@ const projects = [
 		description: "A place where I put all the programming challenges I do",
 	},
 	{
-		repo: "Robucks",
-		link: "https://github.com/jessedoka/robucks",
-		description: "Blockchain made using python",
+		repo: "Sudoka",
+		link: "https://github.com/jessedoka/sudoka",
+		description: "A Sudoku game with REST API",
 	},
 	{
 		repo: "Unkbot",
