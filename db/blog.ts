@@ -67,7 +67,8 @@ function getMDXData(dir: string) {
 }
 
 export function getBlogPosts(tagsFilter?: string | string[]) {
-  const allPosts = getMDXData(path.join(process.cwd(), 'content'));
+  const contentDir = process.env.CONTENT_DIR || path.join(process.cwd(), 'content');
+  const allPosts = getMDXData(contentDir);
   if (!tagsFilter) {
     return allPosts; // Return all posts if no filter is provided
   }
