@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getBlogPosts } from '@/db/blog';
+import { ArrowIcon } from '@/components/ArrowIcon';
 
 const projects = [
 	{
@@ -15,7 +16,7 @@ const projects = [
 	{
 		repo: "LCT",
 		link: "https://github.com/jessedoka/LCT",
-		description: "A tool for building and managing sentiment analysis lexicons.", 
+		description: "A tool for building and managing sentiment analysis lexicons.",
 	},
 	{
 		repo: "Rankhacker",
@@ -31,25 +32,8 @@ const projects = [
 		repo: "Unkbot",
 		link: "https://github.com/jessedoka/unkbot",
 		description: "A Discord bot that just says unk",
-	}, 
+	},
 ];
-
-function ArrowIcon() {
-	return (
-		<svg
-			width="12"
-			height="12"
-			viewBox="0 0 12 12"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
-		>
-			<path
-				d="M2.07102 11.3494L0.963068 10.2415L9.2017 1.98864H2.83807L2.85227 0.454545H11.8438V9.46023H10.2955L10.3097 3.09659L2.07102 11.3494Z"
-				fill="currentColor"
-			/>
-		</svg>
-	);
-}
 
 export default function Page() {
 	let allBlogs = getBlogPosts();
@@ -60,15 +44,12 @@ export default function Page() {
 				<div className="flex flex-col sm:flex-row justify-between">
 					<div className="flex flex-col space-y-4">
 						<div className="flex flex-col space-y-2">
-							<h1 className="text-4xl font-bold text-neutral-900 dark:text-neutral-100">
-								Hey, I&apos;m <span className="text-primary-600 dark:text-primary-500">Jesse</span>.
-							</h1>
 							<p className="text-neutral-700 dark:text-neutral-300">
 								I&apos;m a student studying at <a className="px" href="https://www.ncl.ac.uk/">Newcastle University</a> and I&apos;m currently in my &nbsp;
-								<span className="text-[#de8315] "> 
+								<span className="text-[#de8315] ">
 									3rd &nbsp;
 								</span>
-								year of my Computer Science degree. I have a great intrest in full-stack development and machine learning and I&apos;m always looking for new opportunities to learn and grow. 
+								year of my Computer Science degree. I have a great intrest in full-stack development and machine learning and I&apos;m always looking for new opportunities to learn and grow.
 							</p>
 						</div>
 						{/* projects */}
@@ -124,7 +105,7 @@ export default function Page() {
 									<Link
 										key={post.slug}
 										className="flex flex-col space-y-1 mb-4"
-										href={`/blog/${post.slug}`}
+										href={`/dev/blog/${post.slug}`}
 									>
 										<div className="w-full flex flex-col">
 											<div className='flex flex-row space-x-2 justify-between'>
