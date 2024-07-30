@@ -4,9 +4,9 @@ import dynamic from "next/dynamic";
 // @ts-ignore
 import shader from "@/public/worm.frag";
 
-const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
+// const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
-export default function Background() {
+export default function Background({width, height}: {width: number, height: number}) {
     const canvas = useRef<HTMLCanvasElement | null>(null);
     const [sandbox, setSandbox] = useState<any | null>(null);
     useEffect(() => {
@@ -20,22 +20,21 @@ export default function Background() {
             }
         })();
     }, [canvas]);
-    const onSaveShader = useCallback(
-        (content: string) => {
-            sandbox?.load(content);
-        },
-        [sandbox]
-    );
+    // const onSaveShader = useCallback(
+    //     (content: string) => {
+    //         sandbox?.load(content);
+    //     },
+    //     [sandbox]
+    // );
     return (
-        <div className="flex place-items-start w-full">
+        <div className="w-full max-h-[6rem] overflow-hidden">
             <canvas
-                className="glsl-canvas m-6"
+                className="glsl-canvas w-full"
                 data-fragment-url="worm.frag"
-                width="800"
-                height="600"
+                width={width}
+                height={height}
                 ref={canvas}
             ></canvas>
-            <Editor className="grow h-screen" code={shader} onSave={onSaveShader} />
         </div>
     )
 }

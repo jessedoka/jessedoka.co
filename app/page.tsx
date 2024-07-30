@@ -29,6 +29,7 @@ export default function Page() {
 
     return (
         <div>
+            <Background width={800} height={600} />
             <Image src="/icon.svg" alt="icon" width={120} height={120} />
 
             <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
