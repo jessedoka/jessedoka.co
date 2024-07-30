@@ -4,6 +4,7 @@ import { GeistMono } from 'geist/font/mono';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { cn } from "@/lib/utils"
+import Background from '@/components/background';
 import "./globals.css"
 
 const random = (length: number = 7) => {
