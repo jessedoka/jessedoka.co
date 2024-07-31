@@ -19,7 +19,7 @@ const paths = [
 const store = [
     {
         title: "Wallpapers",
-        link: "/wallpapers",
+        link: "/store",
         description: "Download my wallpapers for Phone and Desktop.",
     },
 ]
