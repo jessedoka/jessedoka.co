@@ -64,11 +64,7 @@ export default function Page() {
 								Hey, I&apos;m <span className="text-primary-600 dark:text-primary-500">Jesse</span>.
 							</h1>
 							<p className="text-neutral-700 dark:text-neutral-300">
-								I&apos;m a student studying at <a className="px" href="https://www.ncl.ac.uk/">Newcastle University</a> and I&apos;m currently in my &nbsp;
-								<span className="text-[#de8315] "> 
-									3rd &nbsp;
-								</span>
-								year of my Computer Science degree. I have a great intrest in full-stack development and machine learning and I&apos;m always looking for new opportunities to learn and grow. 
+                                Having a background in Computer Science, I have honed my skills in various programming languages and web development frameworks. My <a href="https://github.com/jessedoka" className='hover:text-orange-400 hover:underline duration-300 transition'>journey</a> has taken me through <Link href="/work" className='hover:text-orange-400 hover:underline duration-300 transition'>internships</Link> and projects where I have developed web applications, enhanced user interactions, and explored the realms of machine learning and predictive analytics.
 							</p>
 						</div>
 						{/* projects */}
