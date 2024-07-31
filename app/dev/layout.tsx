@@ -55,7 +55,6 @@ export default function DevLayout({
         <Analytics />
         <SpeedInsights />
       </main>
-      <div className="mt-10" />
       <Footer />
     </>
   );

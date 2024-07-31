@@ -27,7 +27,7 @@ export default function Background({width, height}: {width: number, height: numb
     //     [sandbox]
     // );
     return (
-        <div className="w-full max-h-[6rem] overflow-hidden">
+        <div className="w-full max-h-[10rem] overflow-hidden">
             <canvas
                 className="glsl-canvas w-full"
                 data-fragment-url="worm.frag"
