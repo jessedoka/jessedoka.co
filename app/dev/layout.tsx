@@ -3,6 +3,7 @@ import { Navbar } from '../../components/nav'
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Footer from '@/components/footer';
+import Breadcrumb from '@/components/breadcrumb';
 import "@/app/globals.css"
 
 const random = (length: number = 7) => {
@@ -48,14 +49,14 @@ export default function DevLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0 mb-auto">
-        <Navbar />
+    <main className="antialiased max-w-2xl md:flex-row mx-4 mt-8 lg:mx-auto d-flex flex-column min-vh-100 mb-auto">
+      <div className="flex-auto min-w-0 flex flex-col px-2 md:px-0 mb-auto">
+        <Breadcrumb />
         {children}
         <Analytics />
         <SpeedInsights />
-      </main>
+      </div>
       <Footer />
-    </>
+    </main>
   );
 }
