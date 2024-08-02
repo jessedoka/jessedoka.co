@@ -53,8 +53,6 @@ export default function DevLayout({
       <div className="flex-auto min-w-0 flex flex-col px-2 md:px-0 mb-auto">
         <Breadcrumb />
         {children}
-        <Analytics />
-        <SpeedInsights />
       </div>
       <Footer />
     </main>
