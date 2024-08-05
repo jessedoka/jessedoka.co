@@ -1,9 +1,4 @@
 import type { Metadata } from 'next'
-import { Navbar } from '../../components/nav'
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import Footer from '@/components/footer';
-import Breadcrumb from '@/components/breadcrumb';
 import "@/app/globals.css"
 
 const random = (length: number = 7) => {
@@ -50,6 +45,13 @@ export default function DevLayout({
 }) {
     return (
         <main>
+            {/* this is the navbar below */}
+            <div className='sticky top-0 z-50 p-10 border-b-2 border-neutral-900'>
+                <div className='flex justify-between items-center'>
+                    <div>Jesse Doka</div>
+                    <div>Available for freelance</div>
+                </div>
+            </div> 
             {children}
         </main>
     );
