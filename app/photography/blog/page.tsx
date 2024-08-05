@@ -9,5 +9,11 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const allBlogs = await getBlogPosts();
-  return <BlogPage allBlogs={allBlogs} section="dev" />;
+
+  return (
+    <div className='antialiased max-w-2xl md:flex-row mx-4 mt-8 lg:mx-auto d-flex flex-column min-vh-100 mb-auto'>
+      <BlogPage allBlogs={allBlogs} section="photography" />
+    </div>
+    
+  )
 }
