@@ -39,7 +39,7 @@ export default function BlogPage({ allBlogs, section }: { allBlogs: any[], secti
 
             {/* <div className='flex flex-row space-x-4 mb-8'>
                 <button
-                    className={`text-neutral-600 dark:text-zinc-400 
+                    className={`text-neutral-600 dark:text-zinc-400
                         hover:text-neutral-600 dark:hover:text-zinc-200
                         border border-zinc-500 px-1 rounded bg-zinc-900 transition-colors duration-200 ease-in-out`}
                     onClick={() => setSelectedTag(null)}
@@ -49,7 +49,7 @@ export default function BlogPage({ allBlogs, section }: { allBlogs: any[], secti
                 {tags.map((tag: any) => (
                     <button
                         key={tag}
-                        className={`text-neutral-600 dark:text-zinc-400 
+                        className={`text-neutral-600 dark:text-zinc-400
                         hover:text-neutral-600 dark:hover:text-zinc-200
                         border border-zinc-500 p-1 rounded bg-zinc-900 transition-colors duration-200 ease-in-out`}
                         onClick={() => setSelectedTag(tag)}
@@ -76,7 +76,7 @@ export default function BlogPage({ allBlogs, section }: { allBlogs: any[], secti
                 .map((post) => (
                     <Link
                         key={post.slug}
-                        className="flex flex-col space-y-1 mb-4 
+                        className="flex flex-col space-y-1 mb-4
             rounded p-4 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-200 ease-in-out"
                         href={`/blog/${post.slug}`}
                     >

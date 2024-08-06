@@ -74,7 +74,7 @@ export function getBlogPosts(tagsFilter?: string | string[]) {
   }
 
   const tagsToMatch = Array.isArray(tagsFilter) ? tagsFilter : [tagsFilter]; // Ensure tagsFilter is an array
-  return allPosts.filter(post => 
+  return allPosts.filter(post =>
     tagsToMatch.every(tag => post.tags.includes(tag))
   );
 }

@@ -24,10 +24,10 @@ void main() {
     // Get the pixel position
     vec2 u = gl_FragCoord.xy;
 
-    
-    
+
+
     // u *= sin(u / u_time * 20.) * 0.02; // ?(experimental) (comment out the line below)
-   
+
 
     u += u - r; // mirror
 
