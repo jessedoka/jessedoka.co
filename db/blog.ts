@@ -67,13 +67,14 @@ function getMDXData(dir: string) {
 }
 
 export function getBlogPosts(tagsFilter?: string | string[]) {
-  const allPosts = getMDXData(path.join(process.cwd(), 'content'));
+  const contentDir = process.env.CONTENT_DIR || path.join(process.cwd(), 'content');
+  const allPosts = getMDXData(contentDir);
   if (!tagsFilter) {
     return allPosts; // Return all posts if no filter is provided
   }
 
   const tagsToMatch = Array.isArray(tagsFilter) ? tagsFilter : [tagsFilter]; // Ensure tagsFilter is an array
-  return allPosts.filter(post => 
+  return allPosts.filter(post =>
     tagsToMatch.every(tag => post.tags.includes(tag))
   );
 }
