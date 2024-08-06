@@ -3,6 +3,8 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import Link from 'next/link';
+import { SiInstagram, SiGmail } from "react-icons/si";
 import { cn } from "@/lib/utils"
 import "./globals.css"
 
@@ -43,6 +45,21 @@ export const metadata: Metadata = {
     },
 };
 
+const navItems = [
+    {
+        name: 'Home',
+        href: '/photography',
+    },
+    {
+        name: 'Archive',
+        href: '/photography/archive',
+    },
+    {
+        name: 'Blog',
+        href: '/photography/blog',
+    },
+];
+
 export default function RootLayout({
     children,
 }: {
@@ -58,7 +75,26 @@ export default function RootLayout({
             )}
         >
             <body>
-                <main>
+                <main className="antialiased max-w-4xl md:flex-row mx-4 mt-8 lg:mx-auto d-flex flex-column min-vh-100 mb-auto">
+                    {/* this is the navbar below */}
+                    <nav className="sticky top-0 isolate z-10 flex items-center justify-center py-4 px-1 md:justify-between gap-8">
+                        <div className="relative flex rounded-xl border border-neutral-800 bg-neutral-900-/70 p-1 shadow-md backdrop-blur-md" style={{ opacity: 1, transform: 'none' }}>
+                            {navItems.map((item) => (
+                                <Link key={item.href} href={item.href}>
+                                    <p className="text-neutral-100 dark:text-zinc-400 hover:text-neutral-100 dark:hover:text-zinc-200 px-2 py-1 rounded cursor-pointer transition-colors duration-200 ease-in-out">{item.name}</p>
+                                </Link>
+                            ))}
+                        </div>
+                        <div className="flex gap-4 items-center justify-center">
+                            <a href="https://www.instagram.com/jesse.doka/" target="_blank" rel="noopener noreferrer" className="text-4xl text-zinc-800 hover:text-zinc-400 duration-500 transition">
+                                <SiInstagram className="size-5" />
+                            </a>
+                            {/* contact */}
+                            <a href="mailto:jdoka42@gmail.com" className="text-4xl text-zinc-800 hover:text-zinc-400 duration-500 transition">
+                                <SiGmail className="size-5" />
+                            </a>
+                        </div>
+                    </nav>
                     {children}
                     <Analytics />
                     <SpeedInsights />
