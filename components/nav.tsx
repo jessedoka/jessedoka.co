@@ -1,14 +1,14 @@
 import Link from 'next/link';
-
+import Breadcrumb  from '@/components/breadcrumb';
 
 const navItems = {
-  '/dev': {
+  '/': {
     name: 'home',
   },
-  '/dev/work': {
+  '/work': {
     name: 'work',
   },
-  '/dev/blog': {
+  '/blog': {
     name: 'blog',
   },
 };
@@ -34,6 +34,7 @@ export function Navbar() {
               );
             })}
           </div>
+          <Breadcrumb />
         </nav>
       </div>
     </aside>

@@ -78,7 +78,7 @@ export default function BlogPage({ allBlogs, section }: { allBlogs: any[], secti
                         key={post.slug}
                         className="flex flex-col space-y-1 mb-4 
             rounded p-4 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors duration-200 ease-in-out"
-                        href={`/${section}/blog/${post.slug}`}
+                        href={`/blog/${post.slug}`}
                     >
                         <div className="w-full flex flex-col">
                             <div className='flex flex-row space-x-2 justify-between'>
