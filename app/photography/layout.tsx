@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import "@/app/globals.css"
 import Link from 'next/link';
+import { SiInstagram, SiGmail } from "react-icons/si";
 
 const random = (length: number = 7) => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -54,7 +55,7 @@ const navItems = [
     },
     {
         name: 'Store',
-        href: '/photography/store',
+        href: '/store',
     }
 ];
 
@@ -64,18 +65,24 @@ export default function DevLayout({
     children: React.ReactNode;
 }) {
     return (
-        <main className="antialiased max-w-5xl md:flex-row mx-4 mt-8 lg:mx-auto d-flex flex-column min-vh-100 mb-auto">
+        <main className="antialiased max-w-4xl md:flex-row mx-4 mt-8 lg:mx-auto d-flex flex-column min-vh-100 mb-auto">
             {/* this is the navbar below */}
             <nav className="sticky top-0 isolate z-10 flex items-center justify-center py-4 px-1 md:justify-between gap-8">
                 <div className="relative flex rounded-xl border border-neutral-800 bg-neutral-900-/70 p-1 shadow-md backdrop-blur-md" style={{ opacity: 1, transform: 'none' }}>
                     {navItems.map((item) => (
-                        <Link key={item.href} href={item.href} passHref>
+                        <Link key={item.href} href={item.href}>
                             <p className="text-neutral-100 dark:text-zinc-400 hover:text-neutral-100 dark:hover:text-zinc-200 px-2 py-1 rounded cursor-pointer transition-colors duration-200 ease-in-out">{item.name}</p>
                         </Link>
                     ))}
                 </div>
-                <div className="flex items-center">
-                    <p className="text-neutral-100 dark:text-zinc-400">Jesse Doka</p>
+                <div className="flex gap-4 items-center justify-center">
+                    <a href="https://www.instagram.com/jesse.doka/" target="_blank" rel="noopener noreferrer" className="text-4xl text-zinc-800 hover:text-zinc-400 duration-500 transition">
+                        <SiInstagram className="size-5" />
+                    </a>
+                    {/* contact */}
+                    <a href="mailto:jdoka42@gmail.com" className="text-4xl text-zinc-800 hover:text-zinc-400 duration-500 transition">
+                        <SiGmail className="size-5" />
+                    </a>
                 </div>
             </nav>
             {children}
