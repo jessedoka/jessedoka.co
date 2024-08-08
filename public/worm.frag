@@ -1,7 +1,9 @@
 
 // Fragment shader
 
-// #ifdef GL_ES
+
+
+#ifdef GL_ES
 precision mediump float;
 #endif
 
@@ -22,9 +24,13 @@ void main() {
     // Get the pixel position
     vec2 u = gl_FragCoord.xy;
 
-    u *= sin(u / u_time * 20.) * 0.02; // ?(experimental) (comment out the line below)
+    
+    
+    // u *= sin(u / u_time * 20.) * 0.02; // ?(experimental) (comment out the line below)
+   
 
     u += u - r; // mirror
+
 
     // Set the output color
     vec4 O = vec4(0);
@@ -61,4 +67,7 @@ void main() {
     }
 
     // Set the output color
+    gl_FragColor = O;
 }
+
+// render
