@@ -1,6 +1,6 @@
 "use client";
-import { useState } from 'react';
 import { usePageMetadata } from "@/hooks/usepagemetadata"; 
+import { SiRuby, SiRubyonrails, SiTypescript } from "react-icons/si";
 
 export default function WorkPage() {
   const workExperiences = [
@@ -8,7 +8,11 @@ export default function WorkPage() {
       title: 'Singletrack',
       role: 'Software Engineer',
       description: 'Ruby on Rails intern with expertise in developing REST API-integrated applications for Salesforce. Contributed to design, implementation, and maintenance of key features, ensuring robust performance. Collaborated with the team to meet project objectives. Experienced in full-stack development and troubleshooting.',
-      skills: ['Ruby', 'Ruby on Rails', 'Web Engineering', 'Software Industry'],
+      skills: [
+        <SiRuby key="ruby" className="size-6"/>,
+        <SiRubyonrails key="rails" className="size-6"/>,
+        <SiTypescript key="typescript" className="size-6" />,
+      ],
       achievements: [
         'Specialized in integrating REST APIs with Salesforce, enhancing the application\'s functionality and connectivity.',
         'Ensured smooth data exchange between the Rails application and Salesforce, optimizing overall system performance.',
@@ -44,11 +48,11 @@ export default function WorkPage() {
             <h2 className="font-medium text-xl mb-1 tracking-tighter">{experience.title}</h2>
             <p className="text-neutral-600 dark:text-neutral-400 text-sm">{experience.role}</p>
             <p>{experience.description}</p>
-            <ul className='flex flex-row space-x-9 decoration-none'>
+            <div className='w-full flex flex-wrap flex-row justify-center p-4 border border-neutral-800 rounded-md bg-white/10 dark:bg-black/10 mb-12 space-x-6'>
               {experience.skills.map((skill, sIndex) => (
-                <li key={sIndex}>{skill}</li>
+                <div key={sIndex}>{skill}</div>
               ))}
-            </ul>
+            </div>
             <ul>
               {experience.achievements.map((achievement, aIndex) => (
                 <li key={aIndex}>{achievement}</li>
