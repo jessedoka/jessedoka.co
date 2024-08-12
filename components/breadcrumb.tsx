@@ -9,7 +9,8 @@ import { usePathname } from 'next/navigation';
 // turn url into a breadcrumb
 export default function Breadcrumb() {
     return (
-        <div className="flex gap-2 items-center">
+        // hidden on mobile
+        <div className="gap-2 items-center hidden md:flex">
             {
                 // if path is on home page do not display
                 usePathname() === "/" ? null : (
