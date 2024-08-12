@@ -1,6 +1,6 @@
 "use client";
 import { usePageMetadata } from "@/hooks/usepagemetadata"; 
-import { SiRuby, SiRubyonrails, SiTypescript } from "react-icons/si";
+import { SiRuby, SiRubyonrails, SiTypescript, SiPostgresql} from "react-icons/si";
 
 export default function WorkPage() {
   const workExperiences = [
@@ -12,6 +12,7 @@ export default function WorkPage() {
         <SiRuby key="ruby" className="size-6"/>,
         <SiRubyonrails key="rails" className="size-6"/>,
         <SiTypescript key="typescript" className="size-6" />,
+        <SiPostgresql key="postgresql" className="size-6" />
       ],
       achievements: [
         'Specialized in integrating REST APIs with Salesforce, enhancing the application\'s functionality and connectivity.',
