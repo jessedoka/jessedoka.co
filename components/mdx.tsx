@@ -7,7 +7,10 @@ import Prism from "prismjs";
 import "prism-themes/themes/prism-one-dark.css";
 
 // import all languages
+
+import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-tsx";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-json";
 
@@ -129,12 +132,11 @@ function ConsCard({ title, cons }: {
   );
 }
 
-
 function Code({ ...props }) {
   let code = props.children.trim();
 
   // If no language is specified, return the code block without highlighting
-  if (!props.className) {
+  if (!props.className || !Prism.languages[props.className.replace("language-", "")]) {
     return (
       <code className='font-medium'>{code}</code>
     );
@@ -207,6 +209,7 @@ let components = {
 };
 
 export function CustomMDX(props: any) {
+  console.log(props);
   return (
     <MDXRemote
       {...props}
