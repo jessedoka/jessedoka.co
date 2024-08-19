@@ -1,0 +1,199 @@
+---
+title: Building an Interactive Sudoku Game - Part III
+publishedAt: 2024-08-19
+summary: Implementing the User interface for the Sudoku game.
+---
+
+## Implementing the User Interface for a Sudoku Game
+
+In this section, we will walk through the steps to display a fully interactive Sudoku puzzle board. By the end of this guide, you will have a working grid layout, handling user interactions and ensuring type safety.
+
+### Integrating the Sudoku Board
+
+The core of our Sudoku game interface is the board, which will be passed to the component as a prop. This board is generated using the `generateSudokuBoard` function we built in the previous chapter. To ensure type safety, we’ll define the board as a typed prop and initialise it as state within the component.
+
+#### Board Initialisation
+
+Let’s start by initialising our Sudoku board in the `SudokuBoard` component:
+
+```typescript
+const SudokuBoard = ({ generatedBoard }: { generatedBoard: Board }) => {
+    const [board, setBoard] = useState<Board>(generatedBoard);
+}
+```
+
+Here, the `generatedBoard` prop represents the initial state of our board. We initialise this as the component's state so that it can be updated later as the user interacts with the game.
+
+### Rendering the Board
+
+Now that we have our board state set up, let's move on to rendering the Sudoku grid. We'll use CSS Grid to create a 9x9 grid layout, which will visually represent our Sudoku puzzle:
+
+```tsx
+<div className="grid grid-cols-9 gap-4 mb-4">
+    {board.map((row, rowIndex) =>
+        row.map((cell, colIndex) => (
+            <Cell
+                key={`${rowIndex},${colIndex}`}
+                cell={cell}
+                onClick={handleCellClick}
+                isSelected={!isWon && selectedCell?.row === rowIndex && selectedCell?.col === colIndex}
+                highlighted={highlightedCells.has(`${rowIndex},${colIndex}`)}
+            />
+        ))
+    )}
+</div>
+```
+
+The outer `<div>` establishes a 9-column grid with gaps between the cells. We then map through each row and column of the board, rendering each cell using the `Cell` component. The key for each cell is set using its row and column index to ensure unique identification.
+
+### The `Cell` Component
+
+Let’s take a closer look at the `Cell` component, which is responsible for displaying each individual Sudoku cell:
+
+```tsx
+const Cell = ({ cell, onClick, isSelected, highlighted }: { cell: Cell; onClick: (cell: Cell) => void; isSelected: boolean; highlighted: boolean }) => {
+    return (
+        <div
+            className={`w-4 h-4 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg 
+            ${isSelected ? 'animate-pulse' : ''} 
+            cursor-pointer hover:bg-gray-400 transition-colors 
+            ${cell.editable ? 'bg-gray-200' : ''} 
+            ${highlighted ? 'bg-sky-200' : ''} 
+            ${cell.col === 2 || cell.col === 5 ? 'mr-2' : ''} 
+            ${cell.row === 2 || cell.row === 5 ? 'mb-4' : ''}`}
+            onClick={() => cell.editable && onClick(cell)}
+        >
+            {cell.value}
+        </div>
+    );
+};
+```
+
+This component takes in several props:
+- `cell`: Contains the cell's data, including its value, row, column, and whether it is editable.
+- `onClick`: A function to handle the cell click event, which triggers when the user interacts with the cell.
+- `isSelected`: A boolean indicating if the cell is currently selected by the user.
+- `highlighted`: A boolean that determines if the cell should be highlighted based on game rules.
+
+The cell's appearance changes based on its state. For example, the cell pulses when selected, becomes non-editable if it's part of the initial puzzle, and gets highlighted when appropriate.
+
+### Handling Cell Selection and Highlighting
+
+When a user clicks on a cell, we need to handle the logic for selecting it and highlighting related cells (e.g., cells in the same row, column, or 3x3 grid). Here’s how we handle that:
+
+```typescript
+const handleCellClick = (cell: Cell) => {
+    if (!cell.editable) {
+        return;
+    }
+
+    // Deselect the cell if it's already selected
+    if (selectedCell?.row === cell.row && selectedCell?.col === cell.col) {
+        setSelectedCell(null);
+        setHighlightedCells(new Set());
+        return;
+    }
+
+    // Select the cell and calculate the highlighted cells
+    setSelectedCell(cell);
+    setHighlightedCells(calculateHighlightedCells(cell));
+};
+```
+
+When a user clicks on a cell, we check if the cell is editable. If it’s already selected, we deselect it; otherwise, we set it as the selected cell and calculate which cells need to be highlighted.
+
+We manage this state with the following hooks:
+
+```tsx
+const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
+const [highlightedCells, setHighlightedCells] = useState<Set<string>>(new Set());
+```
+
+To highlight cells in the same row, column, and 3x3 grid, we use the following function:
+
+```typescript
+const calculateHighlightedCells = (cell: Cell) => {
+    const newHighlightedCells = new Set<string>();
+    const { row, col } = cell;
+
+    // Highlight row and column
+    for (let i = 0; i < 9; i++) {
+        newHighlightedCells.add(`${row},${i}`);
+        newHighlightedCells.add(`${i},${col}`);
+    }
+
+    // Highlight 3x3 grid
+    const startRow = Math.floor(row / 3) * 3;
+    const startCol = Math.floor(col / 3) * 3;
+    for (let r = startRow; r < startRow + 3; r++) {
+        for (let c = startCol; c < startCol + 3; c++) {
+            newHighlightedCells.add(`${r},${c}`);
+        }
+    }
+
+    return newHighlightedCells;
+};
+```
+
+This function calculates which cells to highlight by adding the relevant cells to a `Set`, ensuring that row, column, and grid highlights are applied efficiently.
+
+### Handling Number Selection
+
+When a user selects a number from the number selector, we need to update the value of the currently selected cell. Here’s how we handle number clicks:
+
+```typescript
+const handleNumberClick = (value: number) => {
+    if (selectedCell) {
+        const { row, col } = selectedCell;
+        setBoard((prevBoard) => {
+            const newBoard: Board = produce(prevBoard, (draft) => {
+                if (draft[row]?.[col]) {
+                    draft[row][col].value = value;
+                }
+            });
+            return newBoard;
+        });
+    }
+};
+```
+
+This function uses the `immer` library’s `produce` method to immutably update the board state with the new value.
+
+### Displaying the Number Selector
+
+The `NumberSelector` component allows users to pick a number to insert into the selected cell:
+
+```tsx
+<NumberSelector onClick={handleNumberClick} />
+```
+
+Whenever a number is clicked, the `handleNumberClick` function is triggered to update the board.
+
+### Handling Game Completion
+
+Finally, we need to check if the user has successfully completed the puzzle. We do this by validating the entire board state:
+
+
+```tsx
+
+import { checkSudokuSolution } from './sudoku';
+
+... 
+
+const [isWon, setIsWon] = useState(false);
+
+useEffect(() => {
+    if (checkSudokuSolution(board)) {
+        setIsWon(true);
+    }
+}, [board]);
+```
+
+
+The `checkSudokuSolution` function is similar to the `isValid` function from the previous chapter apart from the fact it verifies whether the board adheres to Sudoku rules by returning a bool. If the puzzle is solved correctly, we set the `isWon` state to `true`, indicating that the player has won the game.
+
+You can display a congratulatory message when the user wins:
+
+```tsx
+{isWon && <h2 className="text-xl sm:text-2xl font-bold text-green-600 mb-2 sm:mb-4">You won!</h2>}
+```
