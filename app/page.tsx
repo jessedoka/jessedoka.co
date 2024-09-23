@@ -73,7 +73,7 @@ export default function Page() {
 								target="_blank"
 								rel="noreferrer"
 								key={project.repo}
-								className="rounded border border-neutral-800 hover:bg-neutral-900 p-4 duration-500 transition-all cursor-pointer"
+								className="rounded border border-neutral-300 dark:border-neutral-800 hover:dark:bg-neutral-900 hover:bg-neutral-200 p-4 duration-500 transition-all cursor-pointer"
 							>
 								<div className="flex flex-row space-x-2 items-center">
 
