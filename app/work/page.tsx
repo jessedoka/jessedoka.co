@@ -6,7 +6,7 @@ export default function WorkPage() {
   const workExperiences = [
     {
       title: 'Singletrack',
-      role: 'Software Engineer',
+      role: 'Software Engineer Intern',
       description: 'Ruby on Rails intern with expertise in developing REST API-integrated applications for Salesforce. Contributed to design, implementation, and maintenance of key features, ensuring robust performance. Collaborated with the team to meet project objectives. Experienced in full-stack development and troubleshooting.',
       skills: [
         <SiRuby key="ruby" className="size-6"/>,
