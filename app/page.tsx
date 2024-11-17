@@ -53,16 +53,16 @@ export default function Page() {
 				<div className="space-y-2 mb-4 ">
 					<div>
 						<h1 className="text-2xl text-neutral-800 dark:text-neutral-400 font-medium">
-							Hey there, I&apos;m <span className="text-neutral-800 dark:text-neutral-200 ">Jesse</span> <span className="hover:animate-pulse">👋</span> Welcome to my digital Home 🏡
+							Hey there, I&apos;m <span className="text-neutral-800 dark:text-neutral-200 ">Jesse</span> <span className="hover:animate-pulse">👋</span> Welcome to my digital home 🏡
 						</h1>
 						<h1 className="text-2xl text-neutral-800 dark:text-neutral-400 font-medium">I love to build things and share my experiences.</h1>
 					</div>
 				</div>
 				<h1 className="text-neutral-800 dark:text-neutral-400 text-xl font-medium">
-					My <a href="https://github.com/jessedoka" className='hover:text-orange-400 hover:underline duration-300 transition'>journey</a> has taken me through <Link href="/dev/work" className='hover:text-orange-400 hover:underline duration-300 transition'>internships</Link> and projects where I have developed web applications, enhanced user interactions, and explored the realms of machine learning and predictive analytics.
+					My <a href="https://github.com/jessedoka" className='hover:text-orange-400 hover:underline duration-300 transition'>journey</a> has taken me through <Link href="/work" className='hover:text-orange-400 hover:underline duration-300 transition'>internships</Link> and projects where I have developed web applications, enhanced user interactions, and explored the realms of machine learning and predictive analytics.
 				</h1>
 				{/* projects */}
-				<div className='space-y-8'>
+				<div className='space-y-8' id="projects">
 					<h2 className="text-2xl font-medium text-neutral-900 dark:text-neutral-100">
 						Projects
 					</h2>
