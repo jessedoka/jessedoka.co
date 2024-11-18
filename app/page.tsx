@@ -36,8 +36,8 @@ const projects = [
 	},
 ];
 
-export default function Page() {
-	let allBlogs = getBlogPosts();
+export default async function Page() {
+	let allBlogs = await getBlogPosts();
 
 	return (
 		<section>

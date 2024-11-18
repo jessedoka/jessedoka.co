@@ -66,7 +66,7 @@ function getMDXData(dir: string) {
   });
 }
 
-export function getBlogPosts(tagsFilter?: string | string[]) {
+export async function getBlogPosts(tagsFilter?: string | string[]) {
   const contentDir = process.env.CONTENT_DIR || path.join(process.cwd(), 'content');
   const allPosts = getMDXData(contentDir);
   if (!tagsFilter) {

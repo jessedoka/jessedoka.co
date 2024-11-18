@@ -9,7 +9,8 @@ export async function generateMetadata({
 }:{
 	params: { slug: string };
 }): Promise<Metadata | undefined> {
-	let post = getBlogPosts().find((post) => post.slug === params.slug);
+	let posts = await getBlogPosts();
+	let post = posts.find((post) => post.slug === params.slug);
 	if (!post) {
 		return;
 	}
@@ -80,9 +81,10 @@ function formatDate(date: string) {
 	return `${fullDate} (${formattedDate})`;
 }
 
-export default function Blog({ params }: { params: { slug: string } }) {
+export default async function Blog({ params }: { params: { slug: string } }) {
 
-	let post = getBlogPosts().find((post) => post.slug === params.slug);
+	let posts = await getBlogPosts();
+	let post = posts.find((post) => post.slug === params.slug);
 
 	if (!post) {
 		notFound();
