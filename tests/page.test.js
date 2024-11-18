@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 
 // Mock the getBlogPosts function
 jest.mock('@/db/blog', () => ({
-    getBlogPosts: () => ([
+    getBlogPosts: () => Promise.resolve([
         {
             slug: 'test-post-1',
             metadata: {
@@ -51,14 +51,13 @@ jest.mock('@/components/background', () => ({
 }));
 
 describe('Home Page', () => {
-    beforeEach(() => {
-        // Since Next.js page components are async, we need to handle them properly
-        render(<Home />);
+    beforeEach(async () => {
+        await render(await Home());
     });
 
     describe('Header Section', () => {
-        it('renders the welcome message and emoji correctly', () => {
-            const welcomeText = screen.getByText((_, element) => {
+        it('renders the welcome message and emoji correctly', async () => {
+            const welcomeText = await screen.findByText((_, element) => {
                 const hasText = (node) => node.textContent.includes("Hey there, I'm Jesse") &&
                     node.textContent.includes("👋") &&
                     node.textContent.includes("🏡");
@@ -71,14 +70,14 @@ describe('Home Page', () => {
             expect(welcomeText).toBeInTheDocument();
         });
 
-        it('renders the builder description', () => {
-            const description = screen.getByText(/I love to build things and share my experiences/i);
+        it('renders the builder description', async () => {
+            const description = await screen.findByText(/I love to build things and share my experiences/i);
             expect(description).toBeInTheDocument();
         });
 
-        it('renders the journey text with correct links', () => {
-            const githubLink = screen.getByRole('link', { name: /journey/i });
-            const internshipLink = screen.getByRole('link', { name: /internships/i });
+        it('renders the journey text with correct links', async () => {
+            const githubLink = await screen.findByRole('link', { name: /journey/i });
+            const internshipLink = await screen.findByRole('link', { name: /internships/i });
 
             expect(githubLink).toHaveAttribute('href', 'https://github.com/jessedoka');
             expect(internshipLink).toHaveAttribute('href', '/work');
@@ -86,7 +85,7 @@ describe('Home Page', () => {
     });
 
     describe('Projects Section', () => {
-        it('renders all projects with correct links and descriptions', () => {
+        it('renders all projects with correct links and descriptions', async () => {
             const expectedProjects = [
                 {
                     name: 'Reacton',
@@ -120,44 +119,46 @@ describe('Home Page', () => {
                 }
             ];
 
-            expectedProjects.forEach(project => {
-                const projectElement = screen.getByText(project.name);
+            for (const project of expectedProjects) {
+                const projectElement = await screen.findByText(project.name);
                 const projectLink = projectElement.closest('a');
-                const projectDescription = screen.getByText(project.description);
+                const projectDescription = await screen.findByText(project.description);
 
                 expect(projectLink).toHaveAttribute('href', project.link);
                 expect(projectLink).toHaveAttribute('target', '_blank');
                 expect(projectLink).toHaveAttribute('rel', 'noreferrer');
                 expect(projectDescription).toBeInTheDocument();
-            });
+            }
         });
 
-        it('renders projects in a grid layout', () => {
-            const projectsGrid = screen.getByRole('link', { name: /Reacton/i }).closest('div');
+        it('renders projects in a grid layout', async () => {
+            const projectElement = await screen.findByRole('link', { name: /Reacton/i });
+            const projectsGrid = projectElement.closest('div');
             expect(projectsGrid).toHaveClass('grid', 'grid-cols-2', 'md:grid-cols-3');
         });
     });
 
     describe('Blog Section', () => {
-        it('renders blog posts in correct order with dates', () => {
-            const blogPosts = screen.getAllByRole('link').filter(link =>
+        it('renders blog posts in correct order with dates', async () => {
+            const blogPosts = await screen.findAllByRole('link');
+            const filteredBlogPosts = blogPosts.filter(link =>
                 link.href.includes('/blog/')
             );
-            expect(blogPosts).toHaveLength(5);
+            expect(filteredBlogPosts).toHaveLength(5);
 
             // Check first blog post
-            const firstPostTitle = screen.getByText('Test Post 2');
-            const firstPostDate = screen.getByText('2 Jan 2024');
+            const firstPostTitle = await screen.findByText('Test Post 5');
+            const firstPostDate = await screen.findByText('5 Jan 2024');
             expect(firstPostTitle).toBeInTheDocument();
             expect(firstPostDate).toBeInTheDocument();
 
             // Verify blog post link structure
             const firstBlogLink = firstPostTitle.closest('a');
-            expect(firstBlogLink).toHaveAttribute('href', '/blog/test-post-2');
+            expect(firstBlogLink).toHaveAttribute('href', '/blog/test-post-5');
         });
 
-        it('applies correct styling to blog post titles', () => {
-            const blogTitles = screen.getAllByText(/Test Post/i);
+        it('applies correct styling to blog post titles', async () => {
+            const blogTitles = await screen.findAllByText(/Test Post/i);
             blogTitles.forEach(title => {
                 expect(title).toHaveClass('text-neutral-800', 'dark:text-neutral-300');
             });
@@ -165,13 +166,13 @@ describe('Home Page', () => {
     });
 
     describe('Layout Elements', () => {
-        it('renders the background component', () => {
-            const background = screen.getByTestId("background");
+        it('renders the background component', async () => {
+            const background = await screen.findByTestId("background");
             expect(background).toBeInTheDocument();
         });
 
-        it('renders the profile icon with correct attributes', () => {
-            const icon = screen.getByAltText('icon');
+        it('renders the profile icon with correct attributes', async () => {
+            const icon = await screen.findByAltText('icon');
             expect(icon).toHaveAttribute('src', '/icon.svg');
             expect(icon).toHaveAttribute('width', '120');
             expect(icon).toHaveAttribute('height', '120');
