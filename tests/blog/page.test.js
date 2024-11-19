@@ -2,7 +2,6 @@ import { render, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import Page, { metadata } from '../../app/blog/page';
-import React from 'react';
 import { getBlogPosts } from '../../db/blog';
 import BlogPage from '../../components/blogpage';
 

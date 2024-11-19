@@ -49,7 +49,7 @@ export async function generateMetadata({
 	};
 }
 
-function formatDate(date: string) {
+export function formatDate(date: string) {
 	let currentDate = new Date();
 	if (!date.includes('T')) {
 		date = `${date}T00:00:00`;
@@ -88,7 +88,10 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 
 	if (!post) {
 		notFound();
+		return null;
 	}
+
+	const { metadata, content } = post;
 
 	return (
 		<section>
@@ -99,13 +102,13 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 					__html: JSON.stringify({
 						'@context': 'https://schema.org',
 						'@type': 'BlogPosting',
-						headline: post.metadata.title,
-						datePublished: post.metadata.publishedAt,
-						dateModified: post.metadata.publishedAt,
-						description: post.metadata.summary,
-						image: post.metadata.image
-							? `https://jessedoka.co${post.metadata.image}`
-							: `https://jessedoka.co/og?title=${post.metadata.title}`,
+						headline: metadata.title,
+						datePublished: metadata.publishedAt,
+						dateModified: metadata.publishedAt,
+						description: metadata.summary,
+						image: metadata.image
+							? `https://jessedoka.co${metadata.image}`
+							: `https://jessedoka.co/og?title=${metadata.title}`,
 						url: `https://jessedoka.co/blog/${post.slug}`,
 						author: {
 							'@type': 'Person',
@@ -115,15 +118,15 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 				}}
 			/>
 			<h1 className="title font-medium text-2xl tracking-tighter max-w-[650px]">
-				{post.metadata.title}
+				{metadata.title}
 			</h1>
 			<div className="flex justify-between items-center mt-2 mb-8 text-sm max-w-[650px]">
 				<p className="text-sm text-neutral-600 dark:text-neutral-400">
-					{formatDate(post.metadata.publishedAt)}
+					{formatDate(metadata.publishedAt)}
 				</p>
 			</div>
 			<article className="prose prose-quoteless prose-neutral dark:prose-invert">
-				<CustomMDX source={post.content} />
+				<CustomMDX source={content} />
 			</article>
 		</section>
 	);
