@@ -1,7 +1,7 @@
 import { getBlogPosts } from "@/db/blog"
 
 export default async function sitemap() {
-  let blogs = getBlogPosts().map((post) => ({
+  let blogs = (await getBlogPosts()).map((post) => ({
     url: `https://jessdoka.co/blog/${post.slug}`,
     lastModified: post.metadata.publishedAt,
   }));
