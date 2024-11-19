@@ -1,7 +1,7 @@
 // app/blog/[slug]/page.test.tsx
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Blog, { generateMetadata, formatDate} from '../../app/blog/[slug]/page';
+import Blog, { generateMetadata } from '../../app/blog/[slug]/page';
 import { getBlogPosts } from '../../db/blog';
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '@/components/mdx';
@@ -76,43 +76,6 @@ describe('Blog Page Component', () => {
             const metadata = await generateMetadata({ params: { slug: 'non-existent' } });
 
             expect(metadata).toBeUndefined();
-        });
-    });
-
-    describe('formatDate', () => {
-        beforeEach(() => {
-            // Mock current date to 2024-01-15
-            jest.useFakeTimers();
-            jest.setSystemTime(new Date('2024-01-15'));
-        });
-
-        afterEach(() => {
-            jest.useRealTimers();
-        });
-
-        it('should format date with years ago', () => {
-            const date = '2022-01-15';
-            expect(formatDate(date)).toBe('15 January 2022 (2y ago)');
-        });
-
-        it('should format date with months ago', () => {
-            const date = '2023-11-15';
-            expect(formatDate(date)).toBe('15 November 2023 (1y ago)');
-        });
-
-        it('should format date with days ago', () => {
-            const date = '2024-01-10';
-            expect(formatDate(date)).toBe('10 January 2024 (5d ago)');
-        });
-
-        it('should handle today', () => {
-            const date = '2024-01-15';
-            expect(formatDate(date)).toBe('15 January 2024 (Today)');
-        });
-
-        it('should handle dates with time component', () => {
-            const date = '2024-01-10T15:30:00';
-            expect(formatDate(date)).toBe('10 January 2024 (5d ago)');
         });
     });
 

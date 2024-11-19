@@ -49,7 +49,7 @@ export async function generateMetadata({
 	};
 }
 
-export function formatDate(date: string) {
+function formatDate(date: string) {
 	let currentDate = new Date();
 	if (!date.includes('T')) {
 		date = `${date}T00:00:00`;
