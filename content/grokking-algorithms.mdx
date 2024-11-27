@@ -1,0 +1,165 @@
+---
+title: Grokking Algorithms
+publishedAt: 2024-11-19
+summary: Dive into the world of algorithms with a beginner-friendly guide to key concepts and techniques
+---
+
+This is just quick note taking on what i have learnt so far when it comes to learning algorithms and here is a quick overview of what we will be covering.
+
+- [Binary Search](#binary-search)
+- [Simple Sorting](#sorting)
+- [Quick Data Structures](#quick-data-structures)
+- [Recursion](#recursion)
+- [Using what we learnt in Quick Sort](#quick-sort)
+- [Hash Tables](#hash-tables)
+
+### Binary Search
+
+Binary search is the process of searching for an element in a sorted array. 
+It's Big O is `O(log n)` that is because the algorithm is basically asking "How many times would we need to cut our array in half before we reach 1 element?"
+#### Implementation
+
+```python
+def binary_search(arr, target):
+	high = len(arr) - 1
+	low = 0 
+	while low <= high: 
+		mid = (high + low) // 2
+		if arr[mid] > target: 
+			high = mid - 1
+		elif arr[mid] < target:
+			low = mid + 1
+		else: 
+			return True
+	return False
+```
+## Sorting
+
+When it comes to sorting an algorithm the best way to do it is using Quicksort but lets start with selection sort just to ease our way into understanding how sorting works.
+### Selection Sort 
+
+With selection sort, the way it works is be selecting the largest element and popping it out of the array this would then modify the old array and produce a new largest element (the second largest) and so on. And as a result would then have a sorted array. 
+
+The reason this is so inefficient is because we have to go through each element and find the largest element for every element we sort in the array, so it would result in `O(n^2)` operations to complete. 
+
+Task: Try to implement that yourself. 
+## Quick Data Structures
+
+Before we look at a much faster way to sort let's look at both linked lists and arrays and when we should use them.
+
+**Arrays** are a collection of elements think of it as a list of elements. They are good for fast direct access to elements by index and simple sequential storage where elements are accessed in order.
+
+Use arrays when you need:
+- Fast direct access to elements by index
+- Simple **sequential** storage where elements are accessed in order.
+- Fixed-size collections where size is known upfront. 
+
+***Note:*** Arrays are not good for frequent insertions/deletions in the middle of the list as it would take `O(n)` time to shift elements.
+
+**Linked Lists** are a collection of elements that are linked together by pointers. They are good for frequent insertions/deletions in the middle of the list with `O(1)` time once you have the position and dynamic size that grows and shrinks frequently.
+
+Use linked lists when you need:
+- Frequent insertions/deletions in the middle of the list `O(1)` once you have the position)
+- Dynamic size that grows and shrinks frequently
+- No wasted memory for empty spots
+- Implementation of other data structures such as stacks or queues
+
+```python
+# Array - Good for fixed collection with direct indexing
+scores = [85, 92, 78, 90, 88]
+third_score = scores[2]  # Fast direct access
+
+# Linked List - Good for frequent insertions/deletions
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+```
+
+
+## Recursion
+
+OK, one more thing before we go back to it. Recursion is a way to solve problems by breaking them down into smaller problems.
+
+The way it works is by having a base case and a recursive case. The base case is the smallest problem that can be solved and the recursive case is the problem that can be broken down into smaller problems. 
+
+```python
+def countdown(i):
+	print(i)
+	if i <= 0:  # Base case
+		return
+	else:  # Recursive case
+		countdown(i - 1)
+```
+
+> For example, the above code would print out the numbers from `i` to `0` and then stop.
+
+## Using what we learnt in Quick Sort
+
+This is a fast algorithm and has quite a trick to it, this also using recursion. 
+
+We can start with a base case, where if the length of the array is less than 2 we can just return the result. 
+
+Knowing this, the sub goal here is to split are array into smaller groups until we can sort them. So we take a pivot which should be in the middle. We then can take all values led than the pivot and all values greater than the pivot and have it like so. 
+
+```math
+[less than] + pivot + [greater  than]
+```
+
+This partially sorted array is not enough as both `less than` and `greater than` are not sorted but are sorted around the pivot, so the next step is to sort them to. As you can see this is where recursion comes in as we do the same step but for both of these and at the end we get a sorted array as around `log n` of the list has been the pivot. 
+
+```python
+def quicksort(arr):
+	if len(arr) > 2: 
+		return arr
+	else: 
+		mid = len(arr) // 2 
+		pivot = arr[mid]
+		less = [i for i in arr[1:] if i <= pivot]
+		greater = [i for i in arr[1:] if i > pivot]
+		return quicksort(less) + [pivot] + quicksort([greater])
+```
+
+## Hash Tables. 
+
+Hash tables are a way to store key-value pairs. They are like arrays, but the keys are not ordered.
+
+Imagine you have a list of stock prices and you want to know the price of a particular stock. 
+You could go through the list one by one, but that would take `O(n)` time. Instead, you could use a hash table. A hash table lets you store a key-value pair. 
+You could store the stock symbol as the key and the price as the value.
+
+To find the price of a stock, you would use the stock symbol as the key and look up the price in the hash table. This would take `O(1)` time.
+
+```python
+# Hash Table - Good for fast lookups
+stocks = {}
+stocks['AAPL'] = 187.31
+stocks['GOOGL'] = 1196.51
+stocks['MSFT'] = 123.35
+
+price = stocks['AAPL']  # Fast lookup
+```
+
+> Hash tables are great for fast lookups, but they are not ordered. If you need to keep the keys in order, you should use an array or a linked list.
+
+<Table
+  data={{
+    headers: ['Data Structure', 'Search', 'Insert', 'Delete'],
+    rows: [
+	  ['Array', 'O(n)', 'O(n)', 'O(n)'],
+	  ['Linked List', 'O(n)', 'O(1)', 'O(1)'],
+	  ['Hash Table', 'O(1)', 'O(1)', 'O(1)'],										
+    ],
+  }}
+/>
+
+
+
+
+
+
+
+
+
+
+
