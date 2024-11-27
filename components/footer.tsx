@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SiGithub, SiLinkedin, SiGmail } from "react-icons/si";
+import { SiGithub, SiLinkedin, SiGmail, SiBluesky } from "react-icons/si";
 
 export default function Footer() {
     return (
@@ -8,8 +8,10 @@ export default function Footer() {
 
             <footer className="flex justify-between items-center ">
                 <span className='dark:text-neutral-200'>Jesse Doka</span>
-
                 <div className="flex gap-4 ">
+                    <Link href='https://bsky.app/profile/jessedoka.co'>
+                        <SiBluesky className="w-4 h-4 fill-gray-400" />
+                    </Link>
                     <Link href='https://github.com/jessedoka'>
                         <SiGithub className="w-4 h-4 fill-gray-400" />
                     </Link>
