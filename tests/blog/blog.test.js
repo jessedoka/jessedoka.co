@@ -99,6 +99,9 @@ describe('Blog Page Component', () => {
             expect(schemaData['@type']).toBe('BlogPosting');
             expect(schemaData.headline).toBe('Test Post');
 
+            // image should be present
+            expect(screen.getByAltText('Test Post')).toBeInTheDocument();
+
             // Check CustomMDX is called with correct props
             expect(CustomMDX).toHaveBeenCalledWith(
                 expect.objectContaining({

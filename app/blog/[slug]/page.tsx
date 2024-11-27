@@ -1,8 +1,9 @@
-
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '@/components/mdx';
+
 import { getBlogPosts } from '@/db/blog';
+import Image from 'next/image';
 
 export async function generateMetadata({
 	params,
@@ -13,7 +14,7 @@ export async function generateMetadata({
 	let post = posts.find((post) => post.slug === params.slug);
 	if (!post) {
 		return;
-	}
+	}  
 
 	let {
 		title,
@@ -21,6 +22,7 @@ export async function generateMetadata({
 		summary: description,
 		image,
 	} = post.metadata;
+
 	let ogImage = image
 		? `https://jessedoka.co${image}`
 		: `https://jessedoka.co/og?title=${title}`;
@@ -93,6 +95,8 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 
 	const { metadata, content } = post;
 
+	
+
 	return (
 		<section>
 			<script
@@ -125,9 +129,29 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 					{formatDate(metadata.publishedAt)}
 				</p>
 			</div>
+			{/* image */}
+			{metadata.image && (
+				<div className="mb-8">
+					<Image
+						src={metadata.image}
+						alt={metadata.title}
+						width={1200}
+						height={600}
+						className="rounded-lg"
+					/>
+				</div>
+			)}
 			<article className="prose prose-quoteless prose-neutral dark:prose-invert">
 				<CustomMDX source={content} />
 			</article>
 		</section>
 	);
+}
+
+export async function getStaticPaths() {
+	let posts = await getBlogPosts();
+	let paths = posts.map((post) => ({
+		params: { slug: post.slug },
+	}));
+	return { paths, fallback: false };
 }
