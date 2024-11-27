@@ -58,7 +58,7 @@ describe('WorkPage', () => {
 
         it('should render all achievements', () => {
             const achievements = [
-                'Specialized in integrating REST APIs with Salesforce',
+                'Specialised in integrating REST APIs with Salesforce',
                 'Ensured smooth data exchange between the Rails application and Salesforce',
                 'Worked collaboratively with a welcoming and friendly team',
                 'Applied engineering principles, including TDD',

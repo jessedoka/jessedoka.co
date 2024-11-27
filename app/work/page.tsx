@@ -15,9 +15,9 @@ export default function WorkPage() {
         <SiPostgresql key="postgresql" className="size-6" />
       ],
       achievements: [
-        'Specialized in integrating REST APIs with Salesforce, enhancing the application\'s functionality and connectivity.',
-        'Ensured smooth data exchange between the Rails application and Salesforce, optimizing overall system performance.',
-        'Worked collaboratively with a welcoming and friendly team to meet project objectives and deadlines.',
+        'Specialised in integrating REST APIs with Salesforce, enhancing the application\'s functionality and connectivity.',
+        'Ensured smooth data exchange between the Rails application and Salesforce, optimising overall system performance.',
+        'Worked collaboratively with a welcoming and friendly team to meet project objectives.',
         'Applied engineering principles, including TDD, to contribute to the design and development of software solutions.',
       ],
     },
