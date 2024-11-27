@@ -14,31 +14,34 @@ import "prismjs/components/prism-tsx";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-json";
 
-function Table({ data }:{
-  data: {
-    headers: string[];
-    rows: string[][];
-  };
-}) {
+function Table({ data }: { data: { headers: string[]; rows: string[][] } }) {
   let headers = data.headers.map((header, index) => (
-    <th key={index}>{header}</th>
-  ));
+    <th key={index} className="px-6 py-4 font-medium  whitespace-nowrap">
+      {header}
+    </th>
+  ))
   let rows = data.rows.map((row, index) => (
-    <tr key={index}>
+    <tr key={index} className="border-b ">
       {row.map((cell, cellIndex) => (
-        <td key={cellIndex}>{cell}</td>
+        <td key={cellIndex} className="px-6 py-4">
+          {cell}
+        </td>
       ))}
     </tr>
-  ));
+  ))
 
   return (
-    <table>
-      <thead>
-        <tr>{headers}</tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
-  );
+    <div className="flex items-center justify-center">
+      <div className="relative">
+        <table className="w-full text-sm text-left rtl:text-right">
+          <thead>
+            <tr>{headers}</tr>
+          </thead>
+          <tbody>{rows}</tbody>
+        </table>
+      </div>
+    </div>
+  )
 }
 
 function CustomLink(props: any) {
@@ -209,7 +212,6 @@ let components = {
 };
 
 export function CustomMDX(props: any) {
-  console.log(props);
   return (
     <MDXRemote
       {...props}
