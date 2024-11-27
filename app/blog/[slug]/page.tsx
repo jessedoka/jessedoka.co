@@ -147,11 +147,3 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 		</section>
 	);
 }
-
-export async function getStaticPaths() {
-	let posts = await getBlogPosts();
-	let paths = posts.map((post) => ({
-		params: { slug: post.slug },
-	}));
-	return { paths, fallback: false };
-}
