@@ -11,17 +11,13 @@ function calculateReadingTime(content: string) {
     return Math.ceil(minutes);
 }
 
-export default function BlogPage({ allBlogs, section }: { allBlogs: any[], section: 'photography' | 'dev' }) {
+export default function BlogPage({ allBlogs }: { allBlogs: any[], section: 'photography' | 'dev' }) {
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     const tags = allBlogs.reduce((acc, post) => {
         post.tags
             .filter((tag: any) => {
-                if (section === 'dev') {
-                    return !tag.includes('draft') && !tag.includes('photography');
-                } else {
-                    return tag.includes('photography') && !tag.includes('draft');
-                }
+                return tag !== 'draft';
             })
             .forEach((tag: any) => {
                 if (!acc.includes(tag)) {
@@ -37,7 +33,7 @@ export default function BlogPage({ allBlogs, section }: { allBlogs: any[], secti
                 blog
             </h1>
 
-            {/* <div className='flex flex-row space-x-4 mb-8'>
+            <div className='flex flex-row space-x-4 mb-8'>
                 <button
                     className={`text-neutral-600 dark:text-zinc-400
                         hover:text-neutral-600 dark:hover:text-zinc-200
@@ -57,15 +53,14 @@ export default function BlogPage({ allBlogs, section }: { allBlogs: any[], secti
                         {tag}
                     </button>
                 ))}
-            </div> */}
+            </div>
 
             {allBlogs
                 .filter((post) => {
-                    if (section === 'dev') {
-                        return !post.tags.includes('draft') && !post.tags.includes('photography') && (selectedTag ? post.tags.includes(selectedTag) : true);
-                    } else {
-                        return post.tags.includes('photography') && (selectedTag ? post.tags.includes(selectedTag) : true);
+                    if (selectedTag === null) {
+                        return true;
                     }
+                    return post.tags.includes(selectedTag);
                 })
                 .sort((a, b) => {
                     if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {

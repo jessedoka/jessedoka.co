@@ -1,5 +1,6 @@
 "use client";
 import { usePageMetadata } from "@/hooks/usepagemetadata"; 
+import { useMemo } from "react";
 import { SiRuby, SiRubyonrails, SiTypescript, SiPostgresql} from "react-icons/si";
 
 export default function WorkPage() {
@@ -8,12 +9,12 @@ export default function WorkPage() {
       title: 'Singletrack',
       role: 'Software Engineer Intern',
       description: 'Ruby on Rails intern with expertise in developing REST API-integrated applications for Salesforce. Contributed to design, implementation, and maintenance of key features, ensuring robust performance. Collaborated with the team to meet project objectives. Experienced in full-stack development and troubleshooting.',
-      skills: [
-        <SiRuby key="ruby" className="size-6"/>,
-        <SiRubyonrails key="rails" className="size-6"/>,
+      skills: useMemo(() => [
+        <SiRuby key="ruby" className="size-6" />,
+        <SiRubyonrails key="rails" className="size-6" />,
         <SiTypescript key="typescript" className="size-6" />,
         <SiPostgresql key="postgresql" className="size-6" />
-      ],
+      ], []),
       achievements: [
         'Specialised in integrating REST APIs with Salesforce, enhancing the application\'s functionality and connectivity.',
         'Ensured smooth data exchange between the Rails application and Salesforce, optimising overall system performance.',
