@@ -24,10 +24,8 @@ void main() {
     // Get the pixel position
     vec2 u = gl_FragCoord.xy;
 
-    
-    
-    // u *= sin(u / u_time * 20.) * 0.02; // ?(experimental) (comment out the line below)
-   
+    // (experimental) (comment out the line below)
+    // u *= sin(u / u_time * 20.) * 0.02; 
 
     u += u - r; // mirror
 
@@ -42,7 +40,6 @@ void main() {
     // Set the movement
     float m = u_time * 2.;
 
-    // Loop 100 times
     for (float i = 0.; i < 1e2; i++) {
         // Get the position
         vec3 p = t * normalize(vec3(abs(u/r.y),1.));

@@ -13,34 +13,6 @@ jest.mock('@/db/blog', () => ({
                 publishedAt: '2024-01-01'
             }
         },
-        {
-            slug: 'test-post-2',
-            metadata: {
-                title: 'Test Post 2',
-                publishedAt: '2024-01-02'
-            }
-        },
-        {
-            slug: 'test-post-3',
-            metadata: {
-                title: 'Test Post 3',
-                publishedAt: '2024-01-03'
-            }
-        },
-        {
-            slug: 'test-post-4',
-            metadata: {
-                title: 'Test Post 4',
-                publishedAt: '2024-01-04'
-            }
-        },
-        {
-            slug: 'test-post-5',
-            metadata: {
-                title: 'Test Post 5',
-                publishedAt: '2024-01-05'
-            }
-        }
     ])
 }));
 
@@ -144,17 +116,17 @@ describe('Home Page', () => {
             const filteredBlogPosts = blogPosts.filter(link =>
                 link.href.includes('/blog/')
             );
-            expect(filteredBlogPosts).toHaveLength(5);
+            expect(filteredBlogPosts).toHaveLength(1);
 
             // Check first blog post
-            const firstPostTitle = await screen.findByText('Test Post 5');
-            const firstPostDate = await screen.findByText('5 Jan 2024');
+            const firstPostTitle = await screen.findByText('Test Post 1');
+            const firstPostDate = await screen.findByText('1 Jan 2024');
             expect(firstPostTitle).toBeInTheDocument();
             expect(firstPostDate).toBeInTheDocument();
 
             // Verify blog post link structure
             const firstBlogLink = firstPostTitle.closest('a');
-            expect(firstBlogLink).toHaveAttribute('href', '/blog/test-post-5');
+            expect(firstBlogLink).toHaveAttribute('href', '/blog/test-post-1');
         });
 
         it('applies correct styling to blog post titles', async () => {

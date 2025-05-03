@@ -1,19 +1,12 @@
 import Link from 'next/link';
 import Breadcrumb  from '@/components/breadcrumb';
 
-const navItems = {
-  '/': {
-    name: 'home',
-  },
-  '/work': {
-    name: 'work',
-  },
-  '/blog': {
-    name: 'blog',
-  },
-};
+export interface NavItem {
+  name: string;
+}
 
-export function Navbar() {
+export function Navbar(NavItems: Record<string, NavItem>) {
+
   return (
     <aside className="-ml-[8px] mb-4 tracking-tight">
       <div className="lg:sticky lg:top-20">
@@ -22,7 +15,7 @@ export function Navbar() {
           id="nav"
         >
           <div className="flex flex-row space-x-0 pr-10">
-            {Object.entries(navItems).map(([path, { name }]) => {
+            {Object.entries(NavItems).map(([path, { name }]) => {
               return (
                 <Link
                   key={path}

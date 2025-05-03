@@ -1,12 +1,5 @@
 import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import { cn } from "@/lib/utils";
-import Footer from '@/components/footer';
-import "./globals.css";
-
+import { Navbar, NavItem } from '@/components/nav';
 
 const random = (length: number = 7) => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -45,27 +38,17 @@ export const metadata: Metadata = {
     },
 };
 
-export default function RootLayout({
+export default function StudioLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     return ( 
-        <html
-            lang="en"
-            className={cn(
-                'text-black bg-white dark:text-white dark:bg-[#111010]',
-                GeistSans.variable,
-                GeistMono.variable
-            )}
-        >
-            <body>
-                <main>
-                    {children}
-                </main>
-                <Analytics />
-                <SpeedInsights />
-            </body>
-        </html>
+        <main className="antialiased max-w-2xl md:flex-row mx-4 lg:mx-auto d-flex flex-column min-vh-100 mb-auto mt-8">
+            <div className="flex-auto min-w-0 flex flex-col px-2 md:px-0 mb-auto">
+                <Navbar />
+                {children}
+            </div>
+        </main>
     );
 }
