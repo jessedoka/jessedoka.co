@@ -4,8 +4,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "images.unsplash.com",
+        protocol: 'https',
+        hostname: '**.r2.cloudflarestorage.com', // any bucket on R2
+        pathname: '/**',                         // any file
       },
     ],
   },
