@@ -81,33 +81,27 @@ export default function WorkPage() {
 	});	  
 
 	return (
-		<main className="antialiased max-w-4xl md:flex-row mx-4 lg:mx-auto flex-column min-vh-100 mb-auto mt-8">
-			<div className="flex-auto min-w-0 flex flex-col px-2 md:px-0 mb-auto">
-				<Navbar {...navItems} />
-				<section className="prose dark:prose-invert max-w-none mx-auto px-4 lg:px-0">
-					<h1 className="font-medium text-2xl mb-8 tracking-tighter">my work</h1>
-					<div className="prose dark:prose-invert">
-						{workExperiences.map((experience, index) => (
-							<div key={index}>
-								<h2 className="font-medium text-xl mb-1 tracking-tighter">{experience.title}</h2>
-								<p className="text-neutral-600 dark:text-neutral-400 text-sm">{experience.role}</p>
-								<p>{experience.description}</p>
-								<div className='w-full flex flex-wrap flex-row justify-center p-4 border border-neutral-800 rounded-md bg-white/10 dark:bg-black/10 mb-12 space-x-6'>
-									{experience.skills.map((skill, sIndex) => (
-										<div key={sIndex}>{skill}</div>
-									))}
-								</div>
-								<ul>
-									{experience.achievements.map((achievement, aIndex) => (
-										<li key={aIndex}>{achievement}</li>
-									))}
-								</ul>
-							</div>
-						))}
+		<section className="prose dark:prose-invert max-w-none mx-auto px-4 lg:px-0">
+			<h1 className="font-medium text-2xl mb-8 tracking-tighter">my work</h1>
+			<div className="prose dark:prose-invert">
+				{workExperiences.map((experience, index) => (
+					<div key={index}>
+						<h2 className="font-medium text-xl mb-1 tracking-tighter">{experience.title}</h2>
+						<p className="text-neutral-600 dark:text-neutral-400 text-sm">{experience.role}</p>
+						<p>{experience.description}</p>
+						<div className='w-full flex flex-wrap flex-row justify-center p-4 border border-neutral-800 rounded-md bg-white/10 dark:bg-black/10 mb-12 space-x-6'>
+							{experience.skills.map((skill, sIndex) => (
+								<div key={sIndex}>{skill}</div>
+							))}
+						</div>
+						<ul>
+							{experience.achievements.map((achievement, aIndex) => (
+								<li key={aIndex}>{achievement}</li>
+							))}
+						</ul>
 					</div>
-				</section>
+				))}
 			</div>
-			<Footer />
-		</main>
+		</section>
 	);
 }

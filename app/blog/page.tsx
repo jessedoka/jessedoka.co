@@ -12,5 +12,5 @@ export default async function Page() {
   if (allBlogs.length === 0) {
     return <div>No blog posts available.</div>;
   }
-  return <BlogPage allBlogs={allBlogs} section="dev" />;
+  return <BlogPage allBlogs={allBlogs} />;
 }
