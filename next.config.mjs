@@ -5,8 +5,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.r2.cloudflarestorage.com', // any bucket on R2
-        pathname: '/**',                         // any file
+        hostname: '**.r2.cloudflarestorage.com',
+        pathname: '/**',                         
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.jessedoka.co',
+        pathname: '/**',
       },
     ],
   },

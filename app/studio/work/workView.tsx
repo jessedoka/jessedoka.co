@@ -7,7 +7,7 @@ export default function WorkView({ images }: { images: string[] }) {
     const height = 500; // Default height for aspect ratio
     return (
         <div
-            className="grid gap-4 overflow-auto h-[600px]"
+            className="grid gap-4 overflow-auto h-[635px]"
             style={{
                 scrollbarWidth: 'none', // Firefox
                 msOverflowStyle: 'none', // IE and Edge

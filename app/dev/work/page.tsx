@@ -9,14 +9,7 @@ import {
 	SiSalesforce,
 	SiJavascript,
 } from "react-icons/si";
-import { Navbar, NavItem } from '@/components/nav';
-import Footer from "@/components/footer";
 
-const navItems: Record<string, NavItem> = {
-	'/dev': { name: 'home' },
-	'/dev/work': { name: 'work' },
-	'/blog': { name: 'blog' },
-};
 
 interface WorkExperience {
 	title: string;

@@ -4,9 +4,6 @@ import Footer from '@/components/footer';
 const studioNavItems: Record<string, NavItem> = {
     '/studio': { name: 'home' },
     '/studio/work': { name: 'work' },
-    '/blog': { name: 'blog' },
-    '/studio/photography': { name: 'photography' },
-    '/studio/store': { name: 'store' },
     '/studio/gear': { name: 'gear' }
 };
 

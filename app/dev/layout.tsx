@@ -1,7 +1,7 @@
 import { Navbar, NavItem } from '@/components/nav';
 import Footer from '@/components/footer';
 
-export const devNavItems: Record<string, NavItem> = {
+const devNavItems: Record<string, NavItem> = {
     '/dev': { name: 'home' },
     '/dev/work': { name: 'work' },
     '/blog': { name: 'blog' }

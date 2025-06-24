@@ -11,10 +11,10 @@ export function Navbar(NavItems: Record<string, NavItem>) {
     <aside className="-ml-[8px] mb-4 tracking-tight">
       <div className="lg:sticky lg:top-20">
         <nav
-          className="flex flex-row justify-between relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative"
+          className="flex flex-row justify-center md:justify-between relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative items-center"
           id="nav"
         >
-          <div className="flex flex-row space-x-0 pr-10">
+          <div className="flex flex-row space-x-0">
             {Object.entries(NavItems).map(([path, { name }]) => {
               return (
                 <Link

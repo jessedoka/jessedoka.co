@@ -1,7 +1,5 @@
 import Link from 'next/link';
 import { getBlogPosts } from '@/db/blog';
-import { Navbar, NavItem } from '@/components/nav';
-import Footer from '@/components/footer';
 
 const projects = [
 	{
@@ -35,12 +33,6 @@ const projects = [
 		description: "A Discord bot that just says unk",
 	},
 ];
-
-const navItems: Record<string, NavItem> = {
-	'/dev': { name: 'home' },
-	'/dev/work': { name: 'work' },
-	'/blog': { name: 'blog' },
-};
 
 export default async function Page() {
 	let allBlogs = await getBlogPosts();
