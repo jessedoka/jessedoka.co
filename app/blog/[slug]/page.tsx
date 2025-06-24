@@ -90,13 +90,10 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 
 	if (!post) {
 		notFound();
-		return null;
 	}
 
 	const { metadata, content } = post;
-
 	
-
 	return (
 		<section>
 			<script

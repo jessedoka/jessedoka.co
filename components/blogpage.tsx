@@ -11,7 +11,7 @@ function calculateReadingTime(content: string) {
     return Math.ceil(minutes);
 }
 
-export default function BlogPage({ allBlogs }: { allBlogs: any[], section: 'photography' | 'dev' }) {
+export default function BlogPage({ allBlogs }: { allBlogs: any[]}) {
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     const tags = allBlogs.reduce((acc, post) => {

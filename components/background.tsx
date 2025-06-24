@@ -20,16 +20,11 @@ export default function Background({width, height}: {width: number, height: numb
             }
         })();
     }, [canvas]);
-    // const onSaveShader = useCallback(
-    //     (content: string) => {
-    //         sandbox?.load(content);
-    //     },
-    //     [sandbox]
-    // );
+    
     return (
         <div className="w-full max-h-[10rem] overflow-hidden">
             <canvas
-                className="glsl-canvas w-full"
+                className="w-full"
                 data-fragment-url="worm.frag"
                 width={width}
                 height={height}

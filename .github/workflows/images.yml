@@ -1,0 +1,22 @@
+# .github/workflows/images.yml
+name: Build & Upload Images
+
+on:
+  push:
+    paths: ["raw/**"]     # run only when you add/replace originals
+  workflow_dispatch:      # …or manually from the Actions tab
+
+jobs:
+  variants:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+      - run: node scripts/generate-image-variants.mjs
+        env:
+          R2_ENDPOINT:        ${{ secrets.R2_ENDPOINT }}
+          R2_BUCKET:          ${{ secrets.R2_BUCKET }}
+          R2_ACCESS_KEY_ID:   ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}

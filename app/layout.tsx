@@ -3,10 +3,9 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { cn } from "@/lib/utils"
-import Footer from '@/components/footer';
-import "./globals.css"
-import { Navbar } from '@/components/nav';
+import { cn } from "@/lib/utils";
+import "./globals.css";
+
 
 const random = (length: number = 7) => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -50,7 +49,7 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return (
+    return ( 
         <html
             lang="en"
             className={cn(
@@ -60,15 +59,11 @@ export default function RootLayout({
             )}
         >
             <body>
-                <main className="antialiased max-w-2xl md:flex-row mx-4 lg:mx-auto d-flex flex-column min-vh-100 mb-auto mt-8">
-                    <div className="flex-auto min-w-0 flex flex-col px-2 md:px-0 mb-auto">
-                        <Navbar />
-                        {children}
-                    </div>
-                    <Footer />
-                    <Analytics />
-                    <SpeedInsights />
+                <main>
+                    {children}
                 </main>
+                <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     );
