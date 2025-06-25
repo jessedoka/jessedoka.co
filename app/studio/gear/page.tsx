@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export default async function StudioPage() { 
 	return (
-		<section className='antialiased max-w-4xl md:flex-row mx-4 lg:mx-auto flex-column min-vh-100 mb-auto p-8'>
+		<section className='antialiased max-w-4xl md:flex-row lg:mx-auto flex-column min-vh-100 mb-auto px-2 sm:px-4 md:p-8'>
 			<div className="flex flex-col space-y-4 text-center">
 				<h1 className="font-medium text-4xl mb-8 tracking-tighter">
 					My Gear
