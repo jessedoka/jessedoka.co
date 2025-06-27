@@ -9,7 +9,6 @@ export default async function StudioPage() {
 				</h1>
 			</div>
 
-			{/* First item: image right, text left */}
 			<div className="flex flex-col md:flex-row items-center md:items-start md:space-x-8 space-y-4 md:space-y-0 mt-8">
 				<div className="flex-1 text-left">
 					<h2 className="text-2xl font-semibold mb-2">Apple iPhone 16 Pro</h2>

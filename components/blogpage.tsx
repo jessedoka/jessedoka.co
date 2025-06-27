@@ -17,7 +17,7 @@ export default function BlogPage({ allBlogs }: { allBlogs: any[]}) {
     const tags = allBlogs.reduce((acc, post) => {
         post.tags
             .filter((tag: any) => {
-                return tag !== 'draft';
+                return tag !== 'draft' || tag !== 'work';
             })
             .forEach((tag: any) => {
                 if (!acc.includes(tag)) {
