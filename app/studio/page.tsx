@@ -25,6 +25,7 @@ export default async function StudioPage() {
 					<a href={`/studio/work/${work.url}`} className="block relative">
 						<Image
 							width={1920}
+							height={0}
 							loading="lazy"
 							src={work.banner}
 							alt={work.name}
