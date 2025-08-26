@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 const works = [
-    { name: 'Keswick', url: 'keswick', banner: 'https://img.jessedoka.co/raw/thelakes/A7407626-w1920.webp'},
+    { name: 'Keswick', url: 'keswick', banner: 'https://img.jessedoka.co/raw/keswick/A7407626-w1920.webp'},
     { name: 'Wales', url: 'wales', banner: 'https://img.jessedoka.co/raw/wales/A7402585-w1920.webp'},
     { name: 'King Of The Ring', url: 'kingofthering', banner: 'https://img.jessedoka.co/raw/kingofthering/A7408567-w1920.webp'},
 ];
