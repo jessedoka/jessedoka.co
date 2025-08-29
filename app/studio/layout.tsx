@@ -1,4 +1,5 @@
-import { Navbar, NavItem } from '@/components/nav';
+import { Navbar } from '@/components/nav';
+import type { NavItem } from '@/components/nav';
 import Footer from '@/components/footer';
 
 const studioNavItems: Record<string, NavItem> = {

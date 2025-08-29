@@ -1,6 +1,7 @@
 "use client";
 import { usePageMetadata } from "@/hooks/usepagemetadata";
-import { ReactNode, useMemo } from "react";
+import type { ReactNode } from "react";
+import { useMemo } from "react";
 import {
 	SiRuby,
 	SiRubyonrails,

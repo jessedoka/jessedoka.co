@@ -2,12 +2,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { TweetComponent } from './tweet';
-import React, { ReactNode } from 'react';
+import React from 'react';
+import type { ReactNode } from 'react';
 import Prism from "prismjs";
 import "prism-themes/themes/prism-one-dark.css";
 
 // import all languages
-
 import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-typescript";
 import "prismjs/components/prism-tsx";
@@ -148,7 +148,7 @@ function Code({ ...props }) {
   let language = props.className.replace("language-", "");
 
   // using prism to highlight code
-  let html = Prism.highlight(code, Prism.languages[language], language);
+  let html = Prism.highlight(code, Prism.languages[language]!, language);
   let className = `language-${language}`;
 
   return (

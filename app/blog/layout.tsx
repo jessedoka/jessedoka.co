@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Navbar, NavItem } from '@/components/nav';
+import { Navbar } from '@/components/nav';
 
 const random = (length: number = 7) => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
