@@ -61,10 +61,11 @@ export default async function Page() {
 								<a href={`/studio/work/${work.url}`} className="block relative">
 									<Image
 										width={1920}
-										height={0}
+										height={1080}
 										loading="lazy"
 										src={work.banner}
-										alt={work.name}
+										alt={`${work.name} — featured studio piece`}
+										priority
 										className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
 									/>
 									<h2 className="absolute inset-0 flex items-center justify-center text-white text-center font-medium text-2xl tracking-tighter">
