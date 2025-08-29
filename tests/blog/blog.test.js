@@ -44,14 +44,14 @@ describe('Blog Page Component', () => {
                     description: 'Test summary',
                     type: 'article',
                     publishedTime: '2024-01-01',
-                    url: 'https://jessedoka.co/blog/test-post',
-                    images: [{ url: 'https://jessedoka.co/test-image.jpg' }],
+                    url: 'process.env.SITE!/blog/test-post',
+                    images: [{ url: 'process.env.SITE!/test-image.jpg' }],
                 },
                 twitter: {
                     card: 'summary_large_image',
                     title: 'Test Post',
                     description: 'Test summary',
-                    images: ['https://jessedoka.co/test-image.jpg'],
+                    images: ['process.env.SITE!/test-image.jpg'],
                 },
             });
         });
@@ -66,7 +66,7 @@ describe('Blog Page Component', () => {
             const metadata = await generateMetadata({ params: { slug: 'test-post' } });
 
             expect(metadata?.openGraph.images[0].url).toBe(
-                'https://jessedoka.co/og?title=Test Post'
+                'process.env.SITE!/og?title=Test Post'
             );
         });
 

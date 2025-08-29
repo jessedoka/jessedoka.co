@@ -5,7 +5,7 @@ export default function robots() {
         userAgent: '*',
       },
     ],
-    sitemap: 'https://jessedoka.co/sitemap.xml',
-    host: 'https://jessedoka.co',
+    sitemap: 'process.env.SITE!/sitemap.xml',
+    host: 'process.env.SITE!',
   };
 }

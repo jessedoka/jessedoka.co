@@ -23,9 +23,8 @@ export async function generateMetadata({
 		image,
 	} = post.metadata;
 
-	let ogImage = image
-		? `https://jessedoka.co${image}`
-		: `https://jessedoka.co/og?title=${title}`;
+	let SITE = process.env.SITE!; 
+	let ogImage = image ? `${SITE}${image}` : `${SITE}/og?title=${encodeURIComponent(title)}`;
 
 	return {
 		title,
@@ -35,7 +34,7 @@ export async function generateMetadata({
 			description,
 			type: 'article',
 			publishedTime,
-			url: `https://jessedoka.co/blog/${post.slug}`,
+			url: `${SITE}/blog/${post.slug}`,
 			images: [
 				{
 					url: ogImage,
@@ -108,9 +107,9 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 						dateModified: metadata.publishedAt,
 						description: metadata.summary,
 						image: metadata.image
-							? `https://jessedoka.co${metadata.image}`
-							: `https://jessedoka.co/og?title=${metadata.title}`,
-						url: `https://jessedoka.co/blog/${post.slug}`,
+							? `process.env.SITE!${metadata.image}`
+							: `process.env.SITE!/og?title=${metadata.title}`,
+						url: `process.env.SITE!/blog/${post.slug}`,
 						author: {
 							'@type': 'Person',
 							name: 'Jesse Doka',

@@ -7,7 +7,7 @@ export default async function sitemap() {
   }));
 
   let routes = ['', '/blog', '/work'].map((route) => ({
-    url: `https://jessedoka.co/${route}`,
+    url: `process.env.SITE!/${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }));
 
