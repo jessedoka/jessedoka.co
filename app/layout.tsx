@@ -6,22 +6,9 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
-
-const random = (length: number = 7) => {
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        result += alphabet[Math.floor(Math.random() * alphabet.length)];
-    }
-    return result;
-};
-
 export const metadata: Metadata = {
     metadataBase: new URL('https://www.jessedoka.co/'),
-    title: {
-        default: `${random()} is a word`,
-        template: '%s | Jesse Doka',
-    },
+    title: { default: 'Jesse Doka', template: '%s | Jesse Doka' },
     description: 'Developer',
     openGraph: {
         title: 'Jesse Doka',
