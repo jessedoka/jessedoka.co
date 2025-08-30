@@ -1,4 +1,4 @@
-// scripts/generate-r2-variants.mjs
+import { serverEnv } from "../lib/env.mjs";
 import { S3Client, ListObjectsV2Command, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import sharp from "sharp";
 
@@ -10,10 +10,10 @@ const FORMATS = [
 
 const s3 = new S3Client({
     region: "auto",
-    endpoint: process.env.R2_ENDPOINT,
+    endpoint: serverEnv.R2_ENDPOINT,
     credentials: {
-        accessKeyId: process.env.R2_ACCESS_KEY_ID,
-        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+        accessKeyId: serverEnv.R2_ACCESS_KEY_ID,
+        secretAccessKey: serverEnv.R2_SECRET_ACCESS_KEY,
     },
 });
 
@@ -34,7 +34,7 @@ async function ensureVariants(key) {
     const base = key.replace(/\.[^.]+$/, "");           // photo-1
     const ext = key.split(".").pop().toLowerCase();    // jpg / png …
 
-    const origObj = await s3.send(new GetObjectCommand({ Bucket: process.env.R2_BUCKET, Key: key }));
+    const origObj = await s3.send(new GetObjectCommand({ Bucket: serverEnv.R2_BUCKET, Key: key }));
     const origBuf = await origObj.Body.transformToByteArray();
 
     await Promise.all(WIDTHS.flatMap(width =>
@@ -42,13 +42,13 @@ async function ensureVariants(key) {
             const outKey = `${base}-w${width}.${fmt}`;
             // Skip if variant already exists
             try {
-                await s3.send(new HeadObjectCommand({ Bucket: process.env.R2_BUCKET, Key: outKey }));
+                await s3.send(new HeadObjectCommand({ Bucket: serverEnv.R2_BUCKET, Key: outKey }));
                 return; // exists → skip
             } catch { }
 
             const buffer = await sharp(origBuf).resize({ width }).toFormat(fmt, opts).toBuffer();
             await s3.send(new PutObjectCommand({
-                Bucket: process.env.R2_BUCKET,
+                Bucket: serverEnv.R2_BUCKET,
                 Key: outKey,
                 Body: buffer,
                 ContentType: `image/${fmt}`,
@@ -59,7 +59,7 @@ async function ensureVariants(key) {
     ));
 }
 
-for await (const key of listObjects(process.env.R2_BUCKET, "raw/")) {
+for await (const key of listObjects(serverEnv.R2_BUCKET, "raw/")) {
     await ensureVariants(key);
 }
 console.log("All missing variants now exist in R2");

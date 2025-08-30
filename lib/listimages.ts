@@ -1,4 +1,4 @@
-// lib/listImages.ts
+import { serverEnv } from './env.mjs';
 import path from 'node:path';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { GetObjectCommand } from '@aws-sdk/client-s3';
@@ -12,7 +12,7 @@ export async function listImages(prefix: string): Promise<string[]> {
     do {
         const response = await r2.send(
             new ListObjectsV2Command({
-                Bucket: process.env.R2_BUCKET!,
+                Bucket: serverEnv.R2_BUCKET!,
                 Prefix: prefix,
                 ContinuationToken,
             })
@@ -44,7 +44,7 @@ export async function getSignedImageUrls(basePath: string, variantCallback?: (ke
 
     return Promise.all(
         variantKeys.map(key =>
-            getSignedUrl(r2, new GetObjectCommand({ Bucket: process.env.R2_BUCKET!, Key: key }), { expiresIn: 3600 })
+            getSignedUrl(r2, new GetObjectCommand({ Bucket: serverEnv.R2_BUCKET!, Key: key }), { expiresIn: 3600 })
         )
     );
 }
