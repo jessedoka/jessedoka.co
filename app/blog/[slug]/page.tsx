@@ -1,3 +1,4 @@
+import { publicEnv } from '@/lib/env.mjs';
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '@/components/mdx';
@@ -21,10 +22,10 @@ export async function generateMetadata({
 		publishedAt: publishedTime,
 		summary: description,
 		image,
-	} = post.metadata;
+	} = post.metadata
 
-	let SITE = process.env.SITE!; 
-	let ogImage = image ? `${SITE}${image}` : `${SITE}/og?title=${encodeURIComponent(title)}`;
+	let NEXT_PUBLIC_SITE_URL = publicEnv.NEXT_PUBLIC_SITE_URL!; 
+	let ogImage = image ? `${NEXT_PUBLIC_SITE_URL}${image}` : `${NEXT_PUBLIC_SITE_URL}/og?title=${encodeURIComponent(title)}`;
 
 	return {
 		title,
@@ -34,18 +35,12 @@ export async function generateMetadata({
 			description,
 			type: 'article',
 			publishedTime,
-			url: `${SITE}/blog/${post.slug}`,
+			url: `${NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`,
 			images: [
 				{
 					url: ogImage,
 				},
 			],
-		},
-		twitter: {
-			card: 'summary_large_image',
-			title,
-			description,
-			images: [ogImage],
 		},
 	};
 }

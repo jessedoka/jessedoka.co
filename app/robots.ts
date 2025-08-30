@@ -1,3 +1,5 @@
+import { publicEnv } from "@/lib/env.mjs";
+
 export default function robots() {
   return {
     rules: [
@@ -5,7 +7,7 @@ export default function robots() {
         userAgent: '*',
       },
     ],
-    sitemap: 'process.env.SITE!/sitemap.xml',
-    host: 'process.env.SITE!',
+    sitemap: `${publicEnv.NEXT_PUBLIC_SITE_URL!}/sitemap.xml`,
+    host: `${publicEnv.NEXT_PUBLIC_SITE_URL!}`,
   };
 }
