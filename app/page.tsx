@@ -62,7 +62,6 @@ export default async function Page() {
 									<Image
 										width={1920}
 										height={1080}
-										loading="lazy"
 										src={work.banner}
 										alt={`${work.name} — featured studio piece`}
 										priority

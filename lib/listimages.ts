@@ -33,18 +33,56 @@ export async function listImages(prefix: string): Promise<string[]> {
     return filtered;
   }
 
-export async function getSignedImageUrls(basePath: string, variantCallback?: (key: string) => string) {
+
+export async function getOptimizedImageUrls(basePath: string, userAgent?: string) {
     const keys = await listImages(basePath);
+    
+    const isMobile = userAgent ? /Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) : false;
 
-    const transform = variantCallback ?? ((key: string) => {
-        const { dir, name } = path.parse(key);
-        return `${dir}/${name}-w640.webp`;
-    });
-    const variantKeys = keys.map(transform);
+    const urls = await Promise.all(
+        keys.map(async (key) => {
+            const { dir, name } = path.parse(key);
+            
+            // Define variants in order of preference based on device type
+            const variants = isMobile 
+                ? [
+                    `${dir}/${name}-w320.webp`,   // Small mobile first
+                    `${dir}/${name}-w640.webp`,   // Medium mobile
+                    `${dir}/${name}-w1280.webp`,  // Large mobile
+                ]
+                : [
+                    `${dir}/${name}-w1280.webp`,  // High quality desktop first
+                    `${dir}/${name}-w640.webp`,   // Medium desktop
+                    `${dir}/${name}-w320.webp`,   // Small desktop
+                ];
 
-    return Promise.all(
-        variantKeys.map(key =>
-            getSignedUrl(r2, new GetObjectCommand({ Bucket: serverEnv.R2_BUCKET!, Key: key }), { expiresIn: 3600 })
-        )
+            for (const variantKey of variants) {
+                try {
+                    const variantUrl = await getSignedUrl(
+                        r2, 
+                        new GetObjectCommand({ Bucket: serverEnv.R2_BUCKET!, Key: variantKey }), 
+                        { expiresIn: 3600 }
+                    );
+                    return { url: variantUrl, fallback: null };
+                } catch (error) {
+                    // Continue to next variant
+                    continue;
+                }
+            }
+
+            // If no variants exist, fall back to original
+            try {
+                const fallbackUrl = await getSignedUrl(
+                    r2, 
+                    new GetObjectCommand({ Bucket: serverEnv.R2_BUCKET!, Key: key }), 
+                    { expiresIn: 3600 }
+                );
+                return { url: fallbackUrl, fallback: true };
+            } catch (error) {
+                throw new Error(`Failed to load image: ${key}`);
+            }
+        })
     );
+
+    return urls;
 }
