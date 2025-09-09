@@ -107,7 +107,7 @@ export async function getProgressiveImageUrls(basePath: string, userAgent?: stri
                 original: key
             };
 
-            const urls = {};
+            const urls: Record<string, string> = {};
             
             // Generate signed URLs for each quality level
             for (const [quality, variantKey] of Object.entries(qualityLevels)) {

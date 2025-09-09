@@ -30,7 +30,7 @@ export default function ProgressiveImage({
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
+                if (entry?.isIntersecting) {
                     setIsInView(true);
                     observer.disconnect();
                 }
@@ -49,7 +49,7 @@ export default function ProgressiveImage({
         if (!isInView) return;
 
         // Create a new image to preload
-        const img = new Image();
+        const img = new window.Image();
         img.onload = () => {
             setImageSrc(src);
             setIsLoaded(true);
