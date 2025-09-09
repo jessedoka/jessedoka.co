@@ -26,7 +26,7 @@ export default function WorkView({ images }: { images: (string | { url: string; 
                 const isFallback = typeof src === 'object' && src.fallback;
                 
                 return (
-                    <div key={i} className="relative">
+                    <div key={i}>
                         <Image
                             src={imageSrc}
                             width={width}
