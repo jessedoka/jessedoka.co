@@ -1,4 +1,4 @@
-// app/gallery/FadeInImage.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -21,7 +21,7 @@ export default function FadeInImage({
     const [loaded, setLoaded] = useState(false);
     const [hasError, setHasError] = useState(false);
     
-    // Handle both string URLs and object with fallback info
+    
     const imageSrc = typeof src === 'string' ? src : src.url;
     const isFallback = typeof src === 'object' && src.fallback;
 
@@ -31,7 +31,7 @@ export default function FadeInImage({
             animate={loaded && { opacity: 1, scale: 1 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="relative overflow-hidden shadow"
-            style={{ aspectRatio: `${width} / ${height}` }} // keeps layout stable
+            style={{ aspectRatio: `${width} / ${height}` }} 
         >
             {hasError ? (
                 <div className="flex items-center justify-center bg-gray-100 text-gray-500 text-sm">

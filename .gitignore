@@ -26,7 +26,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+.env.local.dev
+.env.local.prod
 
 # vercel
 .vercel
@@ -38,3 +39,4 @@ install.sh
 
 # Million Lint
 .million
+.env.local

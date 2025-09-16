@@ -3,15 +3,15 @@
 import Image from 'next/image';
 
 export default function WorkView({ images }: { images: (string | { url: string; fallback?: boolean | null })[] }) {
-    const width = 500; // Default width for aspect ratio
-    const height = 500; // Default height for aspect ratio
+    const width = 500; 
+    const height = 500; 
     
     return (
         <div
             className="grid gap-4 overflow-auto h-[635px]"
             style={{
-                scrollbarWidth: 'none', // Firefox
-                msOverflowStyle: 'none', // IE and Edge
+                scrollbarWidth: 'none', 
+                msOverflowStyle: 'none', 
                 WebkitOverflowScrolling: 'touch',
             }}
         >

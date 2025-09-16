@@ -26,7 +26,7 @@ export default function ProgressiveImage({
     const imgRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (priority) return; // Skip intersection observer for priority images
+        if (priority) return; 
 
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -48,7 +48,7 @@ export default function ProgressiveImage({
     useEffect(() => {
         if (!isInView) return;
 
-        // Create a new image to preload
+        
         const img = new window.Image();
         img.onload = () => {
             setImageSrc(src);
@@ -60,7 +60,7 @@ export default function ProgressiveImage({
     return (
         <div ref={imgRef} className={`relative ${className}`}>
             {!isInView ? (
-                // Placeholder while not in view
+                
                 <div 
                     className="bg-gray-200 animate-pulse"
                     style={{ width, height }}

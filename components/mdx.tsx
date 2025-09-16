@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
 import Prism from "prismjs";
 import "prism-themes/themes/prism-one-dark.css";
 
-// import all languages
+
 import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-typescript";
 import "prismjs/components/prism-tsx";
@@ -138,7 +138,7 @@ function ConsCard({ title, cons }: {
 function Code({ ...props }) {
   let code = props.children.trim();
 
-  // If no language is specified, return the code block without highlighting
+  
   if (!props.className || !Prism.languages[props.className.replace("language-", "")]) {
     return (
       <code className='font-medium'>{code}</code>
@@ -147,7 +147,7 @@ function Code({ ...props }) {
 
   let language = props.className.replace("language-", "");
 
-  // using prism to highlight code
+  
   let html = Prism.highlight(code, Prism.languages[language]!, language);
   let className = `language-${language}`;
 
@@ -165,11 +165,11 @@ function slugify(str: string) {
   return str
     .toString()
     .toLowerCase()
-    .trim() // Remove whitespace from both ends of a string
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/&/g, '-and-') // Replace & with 'and'
-    .replace(/[^\w\-]+/g, '') // Remove all non-word characters except for -
-    .replace(/\-\-+/g, '-'); // Replace multiple - with single -
+    .trim() 
+    .replace(/\s+/g, '-') 
+    .replace(/&/g, '-and-') 
+    .replace(/[^\w\-]+/g, '') 
+    .replace(/\-\-+/g, '-'); 
 }
 
 function createHeading(level: number) {

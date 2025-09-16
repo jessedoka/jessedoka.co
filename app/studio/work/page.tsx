@@ -24,10 +24,11 @@ export default async function WorkPage() {
                         <a href={`/studio/work/${work.url}`} className="block relative">
                             <Image
                                 width={1920}
+                                height={1080}
                                 loading="lazy"
                                 src={work.banner}
                                 alt={work.name}
-                                className="w-full h-auto object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+                                className="w-full h-auto object-cover rounded-sm transition-transform duration-300 group-hover:scale-105"
                             />
                             <h2 className="absolute inset-0 flex items-center justify-center text-white rounded-lg text-center font-medium text-2xl mb-8 tracking-tighter">
                                 {work.name}

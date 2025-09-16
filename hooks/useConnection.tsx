@@ -12,7 +12,7 @@ export function useConnection() {
     const [connection, setConnection] = useState<ConnectionInfo | null>(null);
 
     useEffect(() => {
-        // Check if the browser supports the Network Information API
+        
         if ('connection' in navigator) {
             const conn = (navigator as any).connection;
             
@@ -29,7 +29,7 @@ export function useConnection() {
 
             return () => conn.removeEventListener('change', updateConnection);
         } else {
-            // Fallback for browsers that don't support the API
+            
             setConnection({
                 effectiveType: '4g',
                 downlink: 10,

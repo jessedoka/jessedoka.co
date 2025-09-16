@@ -5,7 +5,8 @@ import Footer from '@/components/footer';
 const studioNavItems: Record<string, NavItem> = {
     '/studio': { name: 'home' },
     '/studio/work': { name: 'work' },
-    '/studio/gear': { name: 'gear' }
+    '/studio/gear': { name: 'gear' },
+    '/studio/store': { name: 'store' }
 };
 
 export default function StudioLayout({ children }: { children: React.ReactNode }) {
