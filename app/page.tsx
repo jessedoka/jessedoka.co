@@ -36,13 +36,13 @@ export default async function Page() {
 
 						{/* two links studio and dev flex row */}
 						<div className="flex flex-col md:flex-row md:space-y-0 justify-center">
-							<Link
+							{/* <Link
 								href="/studio"
 								className="rounded hover:dark:bg-neutral-900 hover:bg-neutral-200 p-4 duration-500 transition-all cursor-pointer flex flex-col items-center justify-center"
 							>
 								<p className="text font-medium">Studio</p>
 								<p className="text-sm text-neutral-700 dark:text-neutral-300">My creative space</p>
-							</Link>
+							</Link> */}
 							<Link
 								href="/dev"
 								className="rounded hover:dark:bg-neutral-900 hover:bg-neutral-200 p-4 duration-500 transition-all cursor-pointer flex flex-col items-center justify-center"
