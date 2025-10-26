@@ -8,9 +8,9 @@ export default async function Page() {
 
 	const allBlogs = await getBlogPosts();
 
-	const works = [
-		{ name: 'Keswick', url: 'keswick', banner: 'https://img.jessedoka.co/raw/keswick/A7407626-w1920.webp' },
-	];
+	// const works = [
+	// 	{ name: 'Keswick', url: 'keswick', banner: 'https://img.jessedoka.co/raw/keswick/A7407626-w1920.webp' },
+	// ];
 
 	return (
 		<main className="antialiased max-w-4xl md:flex-row mx-4 lg:mx-auto flex-column min-vh-100 mb-auto mt-8">
@@ -56,7 +56,7 @@ export default async function Page() {
 							Recent Works
 						</h2>
 
-						{works.map((work) => (
+						{/* {works.map((work) => (
 							<div key={work.url} className="group relative w-full max-h-[15rem] overflow-hidden flex justify-center items-center mb-10">
 								<a href={`/studio/work/${work.url}`} className="block relative">
 									<Image
@@ -72,7 +72,7 @@ export default async function Page() {
 									</h2>
 								</a>
 							</div>
-						))}
+						))} */}
 
 
 						<h2 className="text-2xl font-medium text-neutral-900 dark:text-neutral-100">
