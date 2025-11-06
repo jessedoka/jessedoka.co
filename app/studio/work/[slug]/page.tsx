@@ -2,11 +2,11 @@ import Works from "../works";
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '@/components/mdx';
 
-import { getBlogPosts } from '@/db/blog';
+import { getStudioPosts } from '@/db/blog';
 
 export default async function Work({ params }: { params: { slug: string } }) {
 
-    let posts = await getBlogPosts();
+    let posts = await getStudioPosts();
     let post = posts.find((post) => post.slug === params.slug);
 
     if (!post) {
