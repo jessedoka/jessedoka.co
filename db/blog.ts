@@ -75,3 +75,10 @@ export async function getBlogPosts() {
 
   return allPosts.filter(post => !post.tags.includes('studio'));
 }
+
+export async function getStudioPosts() {
+  const contentDir = process.env.CONTENT_DIR || path.join(process.cwd(), 'content');
+  const allPosts = getMDXData(contentDir);
+
+  return allPosts.filter(post => post.tags.includes('studio'));
+}
