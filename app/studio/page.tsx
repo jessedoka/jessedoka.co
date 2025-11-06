@@ -4,7 +4,7 @@ import Image from 'next/image'
 export default async function StudioPage() { 
 
 	const works = [
-		{ name: 'Keswick', url: 'keswick', banner: 'https://img.jessedoka.co/raw/keswick/A7407626-w1920.webp' },
+		{ name: 'Keswick', url: 'keswick', banner: 'https://img.jessedoka.co/assets/portfolio/landscapes/keswick/variants/keswick_loneIsland-w1920.webp' },
 	];
 
 	return (
