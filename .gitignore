@@ -38,3 +38,8 @@ install.sh
 
 # Million Lint
 .million
+.env.local
+.env.local.prod
+.env.local.dev
+
+docs/*

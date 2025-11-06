@@ -7,6 +7,6 @@ export default async function Gallery() {
     const headersList = await headers();
     const userAgent = headersList.get('user-agent') || '';
     
-    const urls = await getOptimizedImageUrls('raw/gallery', userAgent);
+    const urls = await getOptimizedImageUrls('assets/portfolio/gallery', userAgent);
     return <GalleryGrid images={urls.map(url => url.url)} />;
 }
