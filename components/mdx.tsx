@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { TweetComponent } from './tweet';
 import React from 'react';
 import type { ReactNode } from 'react';
 import Prism from "prismjs";
@@ -206,7 +205,6 @@ let components = {
   Callout,
   ProsCard,
   ConsCard,
-  StaticTweet: TweetComponent,
   code: Code,
   Table,
 };

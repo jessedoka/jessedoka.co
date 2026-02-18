@@ -3,14 +3,14 @@ import Image from "next/image";
 import Background from "@/components/background";
 import Footer from '@/components/footer';
 import { getBlogPosts } from '@/db/blog';
+import { WORKS } from '@/app/studio/work/constants';
+import { formatShortDate } from '@/lib/utils';
 
 export default async function Page() {
 
 	const allBlogs = await getBlogPosts();
 
-	const works = [
-		{ name: 'Keswick', url: 'keswick', banner: 'https://img.jessedoka.co/assets/portfolio/landscapes/keswick/variants/keswick_loneIsland-w1920.webp' },
-	];
+	const works = WORKS.filter((w) => w.featured);
 
 	return (
 		<main className="antialiased max-w-4xl md:flex-row mx-4 lg:mx-auto flex-column min-vh-100 mb-auto mt-8">
@@ -100,14 +100,7 @@ export default async function Page() {
 												{post.metadata.title}
 											</p>
 											<p className='text-neutral-700 dark:text-neutral-300 text-sm'>
-												{new Date(post.metadata.publishedAt).toLocaleDateString(
-													'en-gb',
-													{
-														year: 'numeric',
-														month: 'short',
-														day: 'numeric',
-													}
-												)}
+												{formatShortDate(post.metadata.publishedAt)}
 											</p>
 										</div>
 									</div>

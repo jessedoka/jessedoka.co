@@ -1,11 +1,5 @@
 import Image from 'next/image';
-import { WORK_PATHS } from './constants';
-
-const works = [
-    { name: 'Keswick', url: 'keswick', banner: 'https://img.jessedoka.co/assets/portfolio/landscapes/keswick/variants/keswick_loneIsland-w1920.webp'},
-    { name: 'Wales', url: 'wales', banner: 'https://img.jessedoka.co/assets/portfolio/landscapes/wales/variants/wales_viewsBeforeSnowdon2-w1920.webp'},
-    { name: 'King Of The Ring', url: 'kingofthering', banner: 'https://img.jessedoka.co/assets/portfolio/events/kingofthering/variants/kingofthering_greyScaleSidePunch-w1920.webp'},
-];
+import { WORKS } from './constants';
 
 export default async function WorkPage() {
 
@@ -20,7 +14,7 @@ export default async function WorkPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {works.map((work) => (
+                {WORKS.map((work) => (
                     <div key={work.url} className="group relative">
                         <a href={`/studio/work/${work.url}`} className="block relative">
                             <Image

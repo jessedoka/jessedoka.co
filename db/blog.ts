@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-type Metadata = {
+export type Metadata = {
   title: string;
   publishedAt: string;
   summary: string;
@@ -47,27 +47,22 @@ function readMDXFile(filePath: string) {
   return parseFrontmatter(rawContent);
 }
 
-function extractTweetIds(content: string) {
-  let tweetMatches = content.match(/<StaticTweet\sid="[0-9]+"\s\/>/g);
-  return tweetMatches?.map((tweet) => tweet.match(/[0-9]+/g)?.[0]) || [];
-}
-
 function getMDXData(dir: string) {
   let mdxFiles = getMDXFiles(dir);
   return mdxFiles.map(({ filePath, subDir }) => {
     let { metadata, content } = readMDXFile(filePath);
     let slug = path.basename(filePath, path.extname(filePath));
-    let tweetIds = extractTweetIds(content);
-    let tags = subDir.split(path.sep).filter(Boolean); // Split subDir by path separator and filter out empty strings
+    let tags = subDir.split(path.sep).filter(Boolean);
     return {
       metadata,
       slug,
-      tweetIds,
       content,
-      tags, // Add tags to the return object
+      tags,
     };
   });
 }
+
+export type BlogPost = Awaited<ReturnType<typeof getBlogPosts>>[number];
 
 export async function getBlogPosts() {
   const contentDir = process.env.CONTENT_DIR || path.join(process.cwd(), 'content');

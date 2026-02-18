@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getBlogPosts } from '@/db/blog';
+import { formatShortDate } from '@/lib/utils';
 
 const projects = [
 	{
@@ -98,14 +99,7 @@ export default async function Page() {
 											{post.metadata.title}
 										</p>
 										<p className='text-neutral-700 dark:text-neutral-300 text-sm'>
-											{new Date(post.metadata.publishedAt).toLocaleDateString(
-												'en-gb',
-												{
-													year: 'numeric',
-													month: 'short',
-													day: 'numeric',
-												}
-											)}
+											{formatShortDate(post.metadata.publishedAt)}
 										</p>
 									</div>
 								</div>

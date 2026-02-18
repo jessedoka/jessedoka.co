@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import type { BlogPost } from '@/db/blog';
+import { formatShortDate } from '@/lib/utils';
 
 const wordsPerMinute = 300;
 
@@ -11,15 +13,15 @@ function calculateReadingTime(content: string) {
     return Math.ceil(minutes);
 }
 
-export default function BlogPage({ allBlogs }: { allBlogs: any[]}) {
+export default function BlogPage({ allBlogs }: { allBlogs: BlogPost[] }) {
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     const tags = allBlogs.reduce((acc, post) => {
         post.tags
-            .filter((tag: any) => {
-                return tag !== 'draft' || tag !== 'work';
+            .filter((tag: string) => {
+                return tag !== 'draft' && tag !== 'work';
             })
-            .forEach((tag: any) => {
+            .forEach((tag: string) => {
                 if (!acc.includes(tag)) {
                     acc.push(tag);
                 }
@@ -42,7 +44,7 @@ export default function BlogPage({ allBlogs }: { allBlogs: any[]}) {
                 >
                     all
                 </button>
-                {tags.map((tag: any) => (
+                {tags.map((tag: string) => (
                     <button
                         key={tag}
                         className={`text-neutral-600 dark:text-zinc-400
@@ -87,11 +89,7 @@ export default function BlogPage({ allBlogs }: { allBlogs: any[]}) {
 
                             <div className='flex flex-row space-x-2 justify-between'>
                                 <p className="text-neutral-600 dark:text-neutral-400 text-sm">
-                                    {new Date(post.metadata.publishedAt).toLocaleDateString('en-gb', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric',
-                                    })}
+                                    {formatShortDate(post.metadata.publishedAt)}
                                 </p>
 
                                 <p className="text-neutral-600 dark:text-neutral-400 text-sm">

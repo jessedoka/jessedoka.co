@@ -5,6 +5,7 @@ import { CustomMDX } from '@/components/mdx';
 
 import { getBlogPosts } from '@/db/blog';
 import Image from 'next/image';
+import { formatDate } from '@/lib/utils';
 
 export async function generateMetadata({
 	params,
@@ -45,37 +46,6 @@ export async function generateMetadata({
 	};
 }
 
-function formatDate(date: string) {
-	let currentDate = new Date();
-	if (!date.includes('T')) {
-		date = `${date}T00:00:00`;
-	}
-	let targetDate = new Date(date);
-
-	let yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-	let monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-	let daysAgo = currentDate.getDate() - targetDate.getDate();
-
-	let formattedDate = '';
-
-	if (yearsAgo > 0) {
-		formattedDate = `${yearsAgo}y ago`;
-	} else if (monthsAgo > 0) {
-		formattedDate = `${monthsAgo}mo ago`;
-	} else if (daysAgo > 0) {
-		formattedDate = `${daysAgo}d ago`;
-	} else {
-		formattedDate = 'Today';
-	}
-
-	let fullDate = targetDate.toLocaleString('en-gb', {
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	});
-
-	return `${fullDate} (${formattedDate})`;
-}
 
 export default async function Blog({ params }: { params: { slug: string } }) {
 

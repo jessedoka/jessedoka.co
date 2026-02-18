@@ -1,26 +1,29 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-// @ts-ignore
-import shader from "@/public/worm.frag";
-
-// const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
+import { useEffect, useRef } from "react";
+import type GlslCanvas from "glslCanvas";
 
 export default function Background({width, height}: {width: number, height: number}) {
-    const canvas = useRef<HTMLCanvasElement | null>(null);
-    const [sandbox, setSandbox] = useState<any | null>(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const sandboxRef = useRef<GlslCanvas | null>(null);
+
     useEffect(() => {
+        if (!canvasRef.current) return;
+
+        let cancelled = false;
+
         (async () => {
-            if (canvas.current) {
-                // also cannot be loaded via server side since it requires 'window'
-                // @ts-ignore
-                const { default: GlslCanvas } = await import("glslCanvas");
-                const sandbox = new GlslCanvas(canvas.current);
-                setSandbox(sandbox);
-            }
+            const { default: GlslCanvas } = await import("glslCanvas");
+            if (cancelled) return;
+            sandboxRef.current = new GlslCanvas(canvasRef.current!);
         })();
-    }, [canvas]);
-    
+
+        return () => {
+            cancelled = true;
+            sandboxRef.current?.destroy();
+            sandboxRef.current = null;
+        };
+    }, []);
+
     return (
         <div className="w-full max-h-[10rem] overflow-hidden">
             <canvas
@@ -28,7 +31,7 @@ export default function Background({width, height}: {width: number, height: numb
                 data-fragment-url="worm.frag"
                 width={width}
                 height={height}
-                ref={canvas}
+                ref={canvasRef}
             ></canvas>
         </div>
     )
