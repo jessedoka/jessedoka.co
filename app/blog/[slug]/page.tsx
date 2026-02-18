@@ -10,10 +10,11 @@ import { formatDate } from '@/lib/utils';
 export async function generateMetadata({
 	params,
 }:{
-	params: { slug: string };
+	params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {
+	const { slug } = await params;
 	let posts = await getBlogPosts();
-	let post = posts.find((post) => post.slug === params.slug);
+	let post = posts.find((post) => post.slug === slug);
 	if (!post) {
 		return;
 	}  
@@ -47,10 +48,10 @@ export async function generateMetadata({
 }
 
 
-export default async function Blog({ params }: { params: { slug: string } }) {
-
+export default async function Blog({ params }: { params: Promise<{ slug: string }> }) {
+	const { slug } = await params;
 	let posts = await getBlogPosts();
-	let post = posts.find((post) => post.slug === params.slug);
+	let post = posts.find((post) => post.slug === slug);
 
 	if (!post) {
 		notFound();
