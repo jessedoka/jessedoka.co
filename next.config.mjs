@@ -1,8 +1,8 @@
 import "./lib/env.mjs";
 
-import MillionLint from "@million/lint";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['next-mdx-remote'],
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60 * 60 * 24 * 7,
@@ -39,4 +39,4 @@ const nextConfig = {
   },
 };
 
-export default MillionLint.next({ rsc: true })(nextConfig);
+export default nextConfig;
