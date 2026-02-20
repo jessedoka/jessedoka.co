@@ -61,78 +61,89 @@ async function* listObjects(bucket, prefix = "") {
     } while (ContinuationToken);
 }
 
+function createProgressBar(total, prefixLabel = "") {
+    const barWidth = 28;
+    return {
+        update(current, taskLabel = "") {
+            const pct = total ? Math.min(1, current / total) : 0;
+            const filled = Math.round(barWidth * pct);
+            const bar = "█".repeat(filled) + "░".repeat(barWidth - filled);
+            const pctStr = (pct * 100).toFixed(0).padStart(3);
+            const task = taskLabel.length > 48 ? "…" + taskLabel.slice(-47) : taskLabel;
+            const line = `\r ${prefixLabel}[${bar}] ${pctStr}% (${current}/${total}) ${task}`;
+            process.stdout.write(line.padEnd(process.stdout.columns || 80));
+        },
+        done() {
+            process.stdout.write("\n");
+        },
+    };
+}
+
 async function ensureVariants(key) {
     // Skip if this key is already a variant
     if (/-w\d+\.(webp|avif)$/.test(key)) return;
-    
     // Skip placeholder files like .gitkeep
-    if (key.endsWith('.gitkeep')) return;
-    
+    if (key.endsWith(".gitkeep")) return;
     // Skip files that are already in a variants folder
-    if (key.includes('/variants/')) return;
-    
+    if (key.includes("/variants/")) return;
     // Only process image files (jpg, jpeg, png, etc.)
-    if (!/\.(jpe?g|png|gif|webp)$/i.test(key)) {
-        console.log(`⏭️  skipping non-image: ${key}`);
-        return;
-    }
-
+    if (!/\.(jpe?g|png|gif|webp)$/i.test(key)) return;
     // Parse the key to extract directory and filename
-    const keyParts = key.split('/');
-    const filename = keyParts.pop(); // e.g., "example.jpg"
-    
-    // If no directory (just filename), skip or handle differently
-    if (keyParts.length === 0) {
-        console.log(`⏭️  skipping root-level file: ${key}`);
-        return;
-    }
-    
-    const directory = keyParts.join('/'); // e.g., "assets/portfolio/landscapes/keswick"
-    
-    // Create variant folder name inside the directory
-    // e.g., "assets/portfolio/landscapes/keswick" -> "assets/portfolio/landscapes/keswick/variants"
+    const keyParts = key.split("/");
+    const filename = keyParts.pop();
+    if (keyParts.length === 0) return;
+
+    const directory = keyParts.join("/");
     const variantDir = `${directory}/variants`;
-    
-    // Get base filename without extension (e.g., "example" from "example.jpg")
     const baseFilename = filename.replace(/\.[^.]+$/, "");
-    
-    console.log(`Processing: ${key} -> variants in ${variantDir}/`);
-    
+
     // Download original image
     const origObj = await s3.send(new GetObjectCommand({ Bucket: serverEnv.R2_BUCKET, Key: key }));
     const origBuf = await origObj.Body.transformToByteArray();
 
-    await Promise.all(WIDTHS.flatMap(width =>
-        FORMATS.map(async ({ ext: fmt, opts }) => {
-            // Create variant key in the variants subfolder
-            // e.g., "assets/portfolio/landscapes/keswick/variants/example-w320.webp"
-            const outKey = `${variantDir}/${baseFilename}-w${width}.${fmt}`;
-            
-            // Skip if variant already exists
-            try {
-                await s3.send(new HeadObjectCommand({ Bucket: serverEnv.R2_BUCKET, Key: outKey }));
-                console.log(`  ✓ exists: ${outKey}`);
-                return; // exists → skip
-            } catch { }
+    await Promise.all(
+        WIDTHS.flatMap((width) =>
+            FORMATS.map(async ({ ext: fmt, opts }) => {
+                const outKey = `${variantDir}/${baseFilename}-w${width}.${fmt}`;
+                try {
+                    await s3.send(new HeadObjectCommand({ Bucket: serverEnv.R2_BUCKET, Key: outKey }));
+                    return;
+                } catch { }
+                const buffer = await sharp(origBuf).resize({ width }).toFormat(fmt, opts).toBuffer();
+                await s3.send(new PutObjectCommand({
+                    Bucket: serverEnv.R2_BUCKET,
+                    Key: outKey,
+                    Body: buffer,
+                    ContentType: `image/${fmt}`,
+                    CacheControl: "public, max-age=31536000, immutable",
+                }));
+            })
+        )
+    );
 
-            const buffer = await sharp(origBuf).resize({ width }).toFormat(fmt, opts).toBuffer();
-            await s3.send(new PutObjectCommand({
-                Bucket: serverEnv.R2_BUCKET,
-                Key: outKey,
-                Body: buffer,
-                ContentType: `image/${fmt}`,
-                CacheControl: "public, max-age=31536000, immutable",
-            }));
-            console.log(`✔︎ uploaded: ${outKey}`);
-        })
-    ));
 }
 
-// Allow prefix to be passed as command line argument or use default
 const prefix = process.argv[2] || "assets/";
 
 console.log(`Generating variants for prefix: ${prefix}`);
+const keys = [];
 for await (const key of listObjects(serverEnv.R2_BUCKET, prefix)) {
-    await ensureVariants(key);
+    keys.push(key);
 }
+
+const total = keys.length;
+if (total === 0) {
+    console.log(`No objects found under prefix: ${prefix}`);
+    process.exit(0);
+}
+
+const bar = createProgressBar(total, "Variants ");
+let current = 0;
+for (const key of keys) {
+    bar.update(current, key);
+    await ensureVariants(key);
+    current += 1;
+}
+bar.update(current, "Done");
+bar.done();
 console.log("All missing variants now exist in R2");
