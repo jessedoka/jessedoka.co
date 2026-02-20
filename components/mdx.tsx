@@ -13,7 +13,7 @@ import "prismjs/components/prism-tsx";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-json";
 
-function Table({ data }: { data: { headers: string[]; rows: string[][] } }) {
+export function Table({ data }: { data: { headers: string[]; rows: string[][] } }) {
   let headers = data.headers.map((header, index) => (
     <th key={index} className="px-6 py-4 font-medium  whitespace-nowrap">
       {header}
@@ -43,7 +43,7 @@ function Table({ data }: { data: { headers: string[]; rows: string[][] } }) {
   )
 }
 
-function CustomLink(props: any) {
+export function CustomLink(props: any) {
   let href = props.href;
 
   if (href.startsWith('/')) {
@@ -65,7 +65,7 @@ function RoundedImage(props: any) {
   return <Image alt={props.alt} className="rounded-lg" {...props} />;
 }
 
-function Callout(props: any) {
+export function Callout(props: any) {
   return (
     <div className="px-4 py-3 border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 rounded p-1 text-sm flex items-center text-neutral-900 dark:text-neutral-100 mb-8">
       <div className="flex items-center w-4 mr-4">{props.emoji}</div>
@@ -74,7 +74,7 @@ function Callout(props: any) {
   );
 }
 
-function ProsCard({ title, pros }: {
+export function ProsCard({ title, pros }: {
   title: string;
   pros: string[];
 }) {
@@ -106,7 +106,7 @@ function ProsCard({ title, pros }: {
   );
 }
 
-function ConsCard({ title, cons }: {
+export function ConsCard({ title, cons }: {
   title: string;
   cons: string[];
 }) {
@@ -134,7 +134,7 @@ function ConsCard({ title, cons }: {
   );
 }
 
-function Code({ ...props }) {
+export function Code({ ...props }) {
   let code = props.children.trim();
 
   // If no language is specified, return the code block without highlighting
@@ -160,7 +160,7 @@ function Code({ ...props }) {
   );
 }
 
-function slugify(str: string) {
+export function slugify(str: string) {
   return str
     .toString()
     .toLowerCase()
@@ -171,7 +171,7 @@ function slugify(str: string) {
     .replace(/\-\-+/g, '-'); // Replace multiple - with single -
 }
 
-function createHeading(level: number) {
+export function createHeading(level: number) {
   const Heading = ({ children }: { children: ReactNode }) => {
     let slug = slugify(children as string);
     return React.createElement(
@@ -213,7 +213,12 @@ export function CustomMDX(props: any) {
   return (
     <MDXRemote
       {...props}
-      options={{ ...props.options, blockJS: false }}
+      options={{
+        ...props.options,
+        // With next-mdx-remote/rsc, options are forwarded to the internal serialize() call
+        // (see compileMDX in the library), so blockJS is applied at compile time, not render time.
+        blockJS: false,
+      }}
       components={{ ...components, ...(props.components || {}) }}
     />
   );

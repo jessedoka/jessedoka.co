@@ -1,20 +1,29 @@
-# .github/workflows/images.yml
-name: Build & Upload Images
+name: CI
 
 on:
   push:
-    paths: ["raw/**"]     # run only when you add/replace originals
-  workflow_dispatch:      # …or manually from the Actions tab
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  variants:
+  test-and-variants:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - run: npm ci
-      - run: node scripts/generate-image-variants.mjs
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Generate image variants
+        run: node scripts/generate-image-variants.mjs
         env:
           R2_ENDPOINT:        ${{ secrets.R2_ENDPOINT }}
           R2_BUCKET:          ${{ secrets.R2_BUCKET }}
