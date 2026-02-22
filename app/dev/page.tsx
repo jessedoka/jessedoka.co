@@ -5,13 +5,8 @@ import { formatShortDate } from '@/lib/utils';
 const projects = [
 	{
 		repo: "Reacton",
-		link: "https://github.com/jessedoka/reacton",
+		link: "https://reactontech.vercel.app",
 		description: "Reaction Tester built with React",
-	},
-	{
-		repo: "InkByter",
-		link: "https://github.com/jessedoka/InkByter",
-		description: "Simple Text Editor made in C",
 	},
 	{
 		repo: "LCT",
@@ -19,19 +14,9 @@ const projects = [
 		description: "A tool for building and managing sentiment analysis lexicons.",
 	},
 	{
-		repo: "Rankhacker",
-		link: "https://github.com/jessedoka/rankhacker",
-		description: "A place where I put all the programming challenges I do",
-	},
-	{
 		repo: "Sudoka",
-		link: "https://github.com/jessedoka/sudoka",
+		link: "https://sudoka.vercel.app",
 		description: "A Sudoku game with REST API",
-	},
-	{
-		repo: "Unkbot",
-		link: "https://github.com/jessedoka/unkbot",
-		description: "A Discord bot that just says unk",
 	},
 ];
 
@@ -42,7 +27,7 @@ export default async function Page() {
 		<section>
 			<div className="flex flex-col space-y-4">
 				<h1 className="text-neutral-800 dark:text-neutral-400 text-xl font-medium">
-					My <a href="https://github.com/jessedoka" className='hover:text-orange-400 hover:underline duration-300 transition'>journey</a> has taken me through <Link href="/work" className='hover:text-orange-400 hover:underline duration-300 transition'>internships</Link> and projects where I have developed web applications, enhanced user interactions, and explored the realms of machine learning and predictive analytics.
+					My <a href="https://github.com/jessedoka" className='hover:text-orange-400 hover:underline duration-300 transition'>journey</a> has taken me through <Link href="/work" className='hover:text-orange-400 hover:underline duration-300 transition'>work experiences</Link> and projects where I have developed applications, enhanced user interactions, and explored the realms of machine learning and predictive analytics.
 				</h1>
 				{/* projects */}
 				<div className='space-y-8' id="projects">
