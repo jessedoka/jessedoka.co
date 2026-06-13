@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { SiGithub, SiLinkedin, SiGmail, SiInstagram } from "react-icons/si";
+import { SiGithub, SiGmail, SiInstagram } from "react-icons/si";
+import { FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
     return (
@@ -16,7 +17,7 @@ export default function Footer() {
                     </Link>
 
                     <Link href='https://www.linkedin.com/in/jesse-doka/'>
-                        <SiLinkedin className="w-4 h-4 fill-gray-400" />
+                        <FaLinkedin className="w-4 h-4 fill-gray-400" />
                     </Link>
 
                     <Link href='mailto:jcsscdoka@gmail.com'>

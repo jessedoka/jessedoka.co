@@ -28,10 +28,10 @@ export default function FadeInImage({
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
-            animate={loaded && { opacity: 1, scale: 1 }}
+            animate={loaded || hasError ? { opacity: 1, scale: 1 } : false}
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="relative overflow-hidden shadow"
-            style={{ aspectRatio: `${width} / ${height}` }} // keeps layout stable
+            style={{ aspectRatio: `${width} / ${height}` }}
         >
             {hasError ? (
                 <div className="flex items-center justify-center bg-gray-100 text-gray-500 text-sm">

@@ -5,12 +5,12 @@ import { useMemo } from "react";
 import {
 	SiRuby,
 	SiRubyonrails,
-	SiTypescript,
 	SiPostgresql,
 	SiSalesforce,
 	SiJavascript,
+	SiPython,
 } from "react-icons/si";
-
+import { FaAws } from "react-icons/fa";
 
 interface WorkExperience {
 	title: string;
@@ -25,35 +25,29 @@ export default function WorkPage() {
 	const workExperiences: WorkExperience[] = [
 		{
 			title: 'Singletrack',
-			role: 'Developer',
-			description: 'Salesforce Developement',
+			role: 'Software Engineer · previously Software Engineer Intern',
+			description: 'Returned as a full-time engineer after a Ruby on Rails \
+			internship integrating REST APIs with Salesforce. Now ship production \
+			code across a large Salesforce platform (Apex, LWC/Aura), Ruby services and Python on AWS alongside CI/CD, \
+			auth and security work. Trusted with production hotfixes and front-line \
+			delivery for global capital-markets clients.',
 			currentlyWorking: true,
 			skills: useMemo(() => [
 				<SiJavascript key="typescript" className="size-6" />,
 				<SiSalesforce key="salesforce" className="size-6" />,
-			], []),
-			achievements: [
-				// -- build kanban board service.
-			],
-		},
-		{
-			title: 'Singletrack',
-			role: 'Software Engineer Intern',
-			description: 'Ruby on Rails intern with expertise in developing REST API-integrated applications for Salesforce. Contributed to design, implementation, and maintenance of key features, ensuring robust performance. Collaborated with the team to meet project objectives. Experienced in full-stack development and troubleshooting.',
-			currentlyWorking: false,
-			skills: useMemo(() => [
+				<SiRubyonrails key="rubyOnRails" className="size-6" />,
 				<SiRuby key="ruby" className="size-6" />,
-				<SiRubyonrails key="rails" className="size-6" />,
-				<SiTypescript key="typescript" className="size-6" />,
-				<SiPostgresql key="postgresql" className="size-6" />
+				<SiPython key="python" className="size-6" />,
+				<SiPostgresql key="postgresql" className="size-6" />,
+				<FaAws key="aws" className="size-6" />
 			], []),
 			achievements: [
-				'Specialised in integrating REST APIs with Salesforce, enhancing the application\'s functionality and connectivity.',
-				'Ensured smooth data exchange between the Rails application and Salesforce, optimising overall system performance.',
-				'Worked collaboratively with a welcoming and friendly team to meet project objectives.',
-				'Applied engineering principles, including TDD, to contribute to the design and development of software solutions.',
+				"Working with Apex, JavaScript (LWC/Aura), Ruby, Python and TypeScript in a large Salesforce codebase, with production changes on AWS (Lambda, CDK).",
+				"Worked on major TinyMCE editor upgrade and a Visualforce → Lightning modernisation, then owned its client-facing maintenance thereafter.",
+				"Built REST API integrations between a Rails application and Salesforce, applying TDD work that began during my internship and carried into the full-time role.",
+				"Trusted with production hotfixes into released versions and front-line client support; now extending into AWS platform work while studying for AWS Solutions Architect."
 			],
-		},
+		}
 		// Add more work experiences here
 		// {
 		//   title: 'Company Name',

@@ -1,7 +1,7 @@
 import { serverEnv } from './env.mjs';
 import path from 'node:path';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { GetObjectCommand } from '@aws-sdk/client-s3';
+import { GetObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import { ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { r2 } from "./r2";
 
@@ -58,9 +58,10 @@ export async function getOptimizedImageUrls(basePath: string, userAgent?: string
 
             for (const variantKey of variants) {
                 try {
+                    await r2.send(new HeadObjectCommand({ Bucket: serverEnv.R2_BUCKET!, Key: variantKey }));
                     const variantUrl = await getSignedUrl(
-                        r2, 
-                        new GetObjectCommand({ Bucket: serverEnv.R2_BUCKET!, Key: variantKey }), 
+                        r2,
+                        new GetObjectCommand({ Bucket: serverEnv.R2_BUCKET!, Key: variantKey }),
                         { expiresIn: 3600 }
                     );
                     return { url: variantUrl, fallback: null };
