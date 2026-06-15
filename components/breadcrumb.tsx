@@ -1,7 +1,7 @@
 // create breadcrumb component
 "use client"
 import React from 'react';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
 
 export default function Breadcrumb() {

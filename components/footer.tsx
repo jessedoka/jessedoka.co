@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { SiGithub, SiGmail, SiInstagram } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 

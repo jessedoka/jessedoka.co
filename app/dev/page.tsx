@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { getBlogPosts } from '@/db/blog';
 import { formatShortDate } from '@/lib/utils';
 
