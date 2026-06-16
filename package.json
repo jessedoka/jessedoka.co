@@ -41,6 +41,10 @@
     "tailwindcss-animate": "^1.0.7",
     "zod": "^4.1.5"
   },
+  "optionalDependencies": {
+    "@img/sharp-libvips-linux-x64": "1.2.4",
+    "@img/sharp-linux-x64": "0.34.5"
+  },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.3",
