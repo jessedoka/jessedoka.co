@@ -23,6 +23,13 @@ vi.mock('next/image', () => ({
   default: (props: Record<string, unknown>) => <img {...props} alt={props.alt as string} />,
 }));
 
+vi.mock('mermaid', () => ({
+  default: {
+    initialize: vi.fn(),
+    render: vi.fn().mockResolvedValue({ svg: '<svg data-testid="mermaid-svg"></svg>' }),
+  },
+}));
+
 describe('slugify', () => {
   it('converts to kebab-case', () => {
     expect(slugify('What is a Merkle Tree?')).toBe('what-is-a-merkle-tree');
@@ -164,6 +171,16 @@ describe('Code', () => {
     );
     expect(container.querySelector('pre')).toBeInTheDocument();
     expect(container.querySelector('code')).toHaveAttribute('class', 'language-python');
+  });
+
+  it('renders a mermaid block as a diagram container, not highlighted code', async () => {
+    const { container, findByTestId } = render(
+      <Code className="language-mermaid">{'graph TD; A-->B;'}</Code>
+    );
+    // No Prism-highlighted <code> for mermaid blocks
+    expect(container.querySelector('code')).not.toBeInTheDocument();
+    // Diagram svg is rendered asynchronously via the mocked mermaid module
+    expect(await findByTestId('mermaid-svg')).toBeInTheDocument();
   });
 });
 

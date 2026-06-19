@@ -103,7 +103,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
 					/>
 				</div>
 			)}
-			<article className="prose prose-quoteless prose-neutral dark:prose-invert">
+			<article className="prose prose-quoteless prose-neutral dark:prose-invert mb-8">
 				<CustomMDX source={content} />
 			</article>
 		</section>

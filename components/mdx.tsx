@@ -5,6 +5,8 @@ import React from 'react';
 import type { ReactNode } from 'react';
 import Prism from "prismjs";
 import "prism-themes/themes/prism-one-dark.css";
+import remarkGfm from "remark-gfm";
+import { Mermaid } from "./mermaid";
 
 // import all languages
 import "prismjs/components/prism-jsx";
@@ -137,6 +139,11 @@ export function ConsCard({ title, cons }: {
 export function Code({ ...props }) {
   let code = props.children.trim();
 
+  // Render mermaid diagrams instead of highlighting the source
+  if (props.className === "language-mermaid") {
+    return <Mermaid chart={code} />;
+  }
+
   // If no language is specified, return the code block without highlighting
   if (!props.className || !Prism.languages[props.className.replace("language-", "")]) {
     return (
@@ -158,6 +165,16 @@ export function Code({ ...props }) {
       />
     </pre>
   );
+}
+
+export function Pre(props: any) {
+  // Mermaid renders a block-level diagram, so skip the <pre> wrapper to keep
+  // valid HTML (no <div> nested inside <pre>).
+  let child = props.children;
+  if (child?.props?.className === "language-mermaid") {
+    return child;
+  }
+  return <pre {...props} />;
 }
 
 export function slugify(str: string) {
@@ -200,12 +217,20 @@ let components = {
   h4: createHeading(4),
   h5: createHeading(5),
   h6: createHeading(6),
+  table: (props: any) => (
+    <div className="overflow-x-auto my-6 flex justify-center">
+      <table className="text-sm border-collapse" {...props} />
+    </div>
+  ),
+  th: (props: any) => <th className="px-6 py-4 font-medium whitespace-nowrap text-left border-b" {...props} />,
+  td: (props: any) => <td className="px-6 py-4 border-b" {...props} />,
   Image: RoundedImage,
   a: CustomLink,
   Callout,
   ProsCard,
   ConsCard,
   code: Code,
+  pre: Pre,
   Table,
 };
 
@@ -215,8 +240,7 @@ export function CustomMDX(props: any) {
       {...props}
       options={{
         ...props.options,
-        // With next-mdx-remote/rsc, options are forwarded to the internal serialize() call
-        // (see compileMDX in the library), so blockJS is applied at compile time, not render time.
+        mdxOptions: { remarkPlugins: [remarkGfm] },
         blockJS: false,
       }}
       components={{ ...components, ...(props.components || {}) }}
