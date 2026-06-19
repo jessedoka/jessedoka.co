@@ -16,12 +16,10 @@ export default async function Page() {
 		<main className="antialiased max-w-4xl md:flex-row mx-4 lg:mx-auto flex-column min-vh-100 mb-auto mt-8">
 			<div className="flex-auto min-w-0 flex flex-col px-2 md:px-0 mb-auto">
 				<section>
-					<div className="relative w-full h-full">
-						<div className="absolute inset-0">
-							<Background width={800} height={600} />
-						</div>
+					<div className="relative w-full overflow-hidden">
+						<Background width={800} height={600} />
 					</div>
-					<div className="flex flex-col space-y-4 mt-[15rem]">
+					<div className="flex flex-col space-y-4 mt-12">
 						<div className="space-y-2 mb-4 text-center">
 							<div>
 								<h1 className="text-2xl text-neutral-800 dark:text-neutral-400 font-medium">

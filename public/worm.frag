@@ -60,7 +60,7 @@ void main() {
     O.rgb *= flicker;
     float vig = 1.0 - dot(ndc * 0.72, ndc * 0.72);
     O.rgb *= clamp(vig, 0.0, 1.0);
-    O.rgb *= screenMask;
+    O *= screenMask;
 
     gl_FragColor = O * 2.5;
 }
