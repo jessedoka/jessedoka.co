@@ -11,6 +11,7 @@ precision mediump float;
 
 uniform vec2 u_resolution;
 uniform float u_time;
+uniform float u_zoom;
 
 void main() {
     vec2 r = u_resolution;
@@ -27,7 +28,7 @@ void main() {
     float m = u_time * 2.;
 
     for (float i = 0.; i < 1e2; i++) {
-        vec3 p = t * normalize(vec3(abs(u/r.y),1.));
+        vec3 p = t * normalize(vec3(abs(u/r.y), u_zoom > 0.0 ? u_zoom : 1.0));
 
         d = length(p - vec3(0, 0, 15)) - 1.0;
         O += 0.2 * vec4(1., .6, .2, .0) / (1. + d /.1);
@@ -45,5 +46,5 @@ void main() {
     float yNorm = gl_FragCoord.y / r.y;
     O *= (1.0 - smoothstep(0.6, 1.0, yNorm) * 0.88);
 
-    gl_FragColor = O;
+    gl_FragColor = O * 2.5;
 }
