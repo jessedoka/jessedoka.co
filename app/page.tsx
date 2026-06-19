@@ -25,9 +25,9 @@ export default async function Page() {
 						<div className="space-y-2 mb-4 text-center">
 							<div>
 								<h1 className="text-2xl text-neutral-800 dark:text-neutral-400 font-medium">
-									Hey there, I&apos;m <span className="text-neutral-800 dark:text-neutral-200 ">Jesse</span> Welcome to my digital home
+									<span className="text-neutral-800 dark:text-neutral-200 ">Jesse Doka</span>
 								</h1>
-								<h1 className="text-2xl text-neutral-800 dark:text-neutral-400 font-medium">I love to build things and share my experiences.</h1>
+								<h1 className="text-2xl text-neutral-800 dark:text-neutral-400 font-medium">Two spaces, one obsession: making things that <span className='italic'>last</span>.</h1>
 							</div>
 						</div>
 
