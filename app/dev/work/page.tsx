@@ -76,7 +76,7 @@ export default function WorkPage() {
 						<h2 className="font-medium text-xl mb-1 tracking-tighter">{experience.title}</h2>
 						<p className="text-neutral-600 dark:text-neutral-400 text-sm">{experience.role}</p>
 						<p>{experience.description}</p>
-						<div className='w-full flex flex-wrap flex-row justify-center p-4 border border-neutral-800 rounded-md bg-white/10 dark:bg-black/10 mb-12 space-x-6'>
+						<div className='w-full flex flex-wrap flex-row justify-center p-4 border border-neutral-800 rounded-md bg-white/10 dark:bg-black/10 mb-12 gap-6'>
 							{experience.skills.map((skill, sIndex) => (
 								<div key={sIndex}>{skill}</div>
 							))}

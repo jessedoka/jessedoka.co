@@ -80,10 +80,10 @@ export default async function Page() {
 							>
 								<div className="w-full flex flex-col">
 									<div className='flex flex-row space-x-2 justify-between'>
-										<p className="text-neutral-800 dark:text-neutral-300 tracking-tight underline decoration-neutral-400 hover:decoration-neutral-500 hover:">
+										<p className="min-w-0 text-neutral-800 dark:text-neutral-300 tracking-tight underline decoration-neutral-400 hover:decoration-neutral-500 hover:">
 											{post.metadata.title}
 										</p>
-										<p className='text-neutral-700 dark:text-neutral-300 text-sm'>
+										<p className='flex-shrink-0 text-neutral-700 dark:text-neutral-300 text-sm'>
 											{formatShortDate(post.metadata.publishedAt)}
 										</p>
 									</div>
