@@ -4,9 +4,12 @@ publishedAt: 2024-08-12
 summary: "Now that we have the board created, let's continue with the game logic."
 ---
 
-The goal of sudoku is to fill each row, column and sub-grid with exactly one number from 1 - 9. A conflict arises if you repeat any number in the same row, column or sub-grid. In order for us to generate a valid sudoku board we need to run a function that is able to verify every row and column ensuring each number appears once. 
 
-In order to make this more interesting to the user as well, the numbers must also be shuffled, which makes sure that we are not playing the same game each time. That also means that is would be possible to play (**6,670,903,752,021,072,936,960**) [possible games](https://en.wikipedia.org/wiki/Mathematics_of_Sudoku) of Sudoku! 
+[Last post](./building-interactive-sudoku-game-part-i) I set up the types. Now the board needs an actual puzzle on it, as confusing as it sounded to me at the time **generating a Sudoku is the same problem as solving one.** Fill an empty grid with a valid, complete solution, then take numbers away. The solver does the hard part; "making a puzzle" is just deletion.
+
+## Filling the grid
+
+To fill the board I use backtracking. Walk the grid cell by cell; at each empty cell, try the numbers 1 to 9; if a number is legal there, place it and move on; if you later get stuck, rewind and try the next one. Standard stuff, with one twist that matters.
 
 ```typescript
 function solveSudoku(board: Board, row = 0, col = 0): boolean {
@@ -39,15 +42,24 @@ function solveSudoku(board: Board, row = 0, col = 0): boolean {
 }
 ```
 
-This function, `solveSudoku`, uses a backtracking algorithm to fill in the Sudoku board taking in  a  `board` parameter, which represents the Sudoku grid, and optional `row` and `col` parameters that default to 0. 
+The twist is `shuffle`. A plain solver tries 1, 2, 3... in order and produces the *same* completed grid every time. Shuffling the candidates at each cell means every run fills the board differently, so you don't play the same game twice. And there's a lot of room to be different: there are [6,670,903,752,021,072,936,960 possible Sudoku grids](https://en.wikipedia.org/wiki/Mathematics_of_Sudoku).
 
-The `solveSudoku`function starts by checking if the current row index is 9, which means the end of the board has been reached and the Sudoku is solved. If the column index is 9, it moves to the next row and resets the column index to 0. If the current cell already has a value, it recursively calls itself to move to the next cell.
+```mermaid
+flowchart TD
+    A["at a cell"] --> B["already filled?"]
+    B -->|yes| C["move to next cell"]
+    B -->|no| D["try next shuffled number"]
+    D --> E["legal here?"]
+    E -->|no| D
+    E -->|yes| F["place it, recurse forward"]
+    F -->|solved| G["done"]
+    F -->|dead end| H["undo, try next number"]
+    H --> D
+```
 
-If the current cell is empty, the function generates a shuffled array of numbers from 1 to 9 using the `shuffle` function. It then iterates over these numbers, checking if placing each number in the current cell is valid using the `isValid` function. If a number is valid, it assigns the number to the cell, marks it as non-editable, and recursively attempts to solve the rest of the board. If the recursive call returns true, the board is solved. If not, it resets the cell to null and marks it as editable again, continuing with the next number.
+## The one rule, in one function
 
-### Verifying Cells
-
-The `isValid` function checks if a given number can be placed in a specific cell without violating Sudoku rules. It ensures the number is not already present in the same row, column, or 3x3 sub-grid. The function iterates through the row and column to check for duplicates and calculates the starting indices of the 3x3 sub-grid to check for duplicates within that sub-grid.
+Every constraint in Sudoku reduces to the same question: can this number go here? `isValid` answers it, and the whole project leans on this one function, generation, and later the win check, all go through it.
 
 ```typescript
 function isValid(board: Board, row: number, col: number, num: number): boolean {
@@ -80,15 +92,9 @@ function isValid(board: Board, row: number, col: number, num: number): boolean {
 }
 ```
 
-First, the function checks if the number already exists in the specified row. It iterates through all columns in the given row (`row`) and returns `false` if it finds the number (`num`) in any cell. This ensures that the number does not repeat in the row.
+Row, column, box. The only mildly clever line is finding the top-left corner of a cell's 3x3 box with `row - (row % 3)`, which snaps any index back to 0, 3, or 6.
 
-Next, the function checks if the number is already present in the specified column. It iterates through all rows in the given column (`col`) and returns `false` if it finds the number in any cell. This ensures that the number does not repeat in the column.
-
-Finally, the function checks if the number is already present in the 3x3 sub-grid that contains the specified cell. It calculates the starting row (`startRow`) and column (`startCol`) of the 3x3 sub-grid by using the modulo operation. It then iterates through all cells in this 3x3 sub-grid and returns `false` if it finds the number in any cell. This ensures that the number does not repeat in the sub-grid.
-
-If the number is not found in the specified row, column, or 3x3 sub-grid, the function returns `true` indicating that placing the number in the specified cell is valid.
-
-The `shuffle` function is a utility that randomises the order of elements in an array using the [Fisher-Yates algorithm](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle). This helps in generating different Sudoku solutions by trying numbers in a random order.
+The shuffle itself is a Fisher-Yates, the correct way to randomise an array without bias:
 
 ```typescript
 const shuffle = (array: number[]) => {
@@ -100,9 +106,9 @@ const shuffle = (array: number[]) => {
 }
 ```
 
-### Making the Sudoku Board 
+## Punching holes
 
-This is now the part that actually generates the Sudoku puzzles `generateSudokuBoard`. where it creates a Sudoku board based on a specified difficulty level whichnis basically the percentage of removed cells generated from `solveSudoku`. This function first calls `createBoard` to initialise a new board and then uses `solveSudoku`to fill the board with a valid Sudoku solution.
+Now the actual puzzle. Start from a full, valid grid and remove cells. Difficulty is just the fraction of cells you clear, and a cleared cell becomes editable again so the player can fill it.
 
 ```typescript
 const generateSudokuBoard = (difficulty: number): Board => {
@@ -128,6 +134,6 @@ const generateSudokuBoard = (difficulty: number): Board => {
 }
 ```
 
-The `generateSudokuBoard` function calculates the number of cells to remove based on the difficulty level, which is a fraction of the total 81 cells in a Sudoku board. It then enters a loop where it randomly selects cells to clear (set to `null`, marking them as editable until the desired number of cells have been removed. This process ensures that the board has a mix of filled and empty cells, creating a playable Sudoku puzzle.
+On the live site I ship this at `difficulty = 0.65`, which clears about 53 of the 81 cells. That's a hard-looking board, and, as it turns out, a slightly dishonest one.
 
-Overall, these functions work together to generate a Sudoku puzzle with a valid solution and a specified difficulty level, providing a playable and solvable game for users.
+Next post: wiring all of this into a board you can actually click.

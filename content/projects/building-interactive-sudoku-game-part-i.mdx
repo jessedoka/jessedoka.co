@@ -4,17 +4,13 @@ publishedAt: 2024-08-08
 summary: "Learn how to build an interactive Sudoku game using Typescript and React."
 ---
 
-During the past few weeks I have been looking at flexing my typescript muscles by creating a lite sudoku site. In this article, I will showcase what I have made and exactly how each part of the code works, what are my future plans and improvements that can be made. 
+I spent a few weeks wanting to flex my TypeScript, so I built a small Sudoku site. I called it [Sudoka](https://sudoka.vercel.app), Good and Honest Sudoku. This is the first of three posts pulling it apart: the data model here, the puzzle generation next, and the interactive board last.
 
-Sudoku is a classic puzzle game that challenges players to fill a 9x9 grid with numbers so that each column, row, and 3x3 subgrid contains all the digits from 1 to 9. In this blog post, we'll walk through how to build an interactive Sudoku game using React and TypeScript. We'll start by defining the essential data structures using TypeScript types, which will form the foundation of our game.
+I started with the types, which is backwards from how I usually build. Normally I'd get something on screen first and tidy up later. But with learning stricter Typescript I wanted better typing, fill a 9x9 grid so every row, column, and 3x3 box holds each digit 1 to 9 exactly once, and when the whole thing is rules, getting the data model right first means a lot of bugs simply can't happen.
 
-### Setting Up the Board Structure with TypeScript Types
+## The cell
 
-Before diving into the React components and game logic, it's crucial to establish a clear structure for our Sudoku game. Types will help us define the structure of a Sudoku board and its individual cells, ensuring that our code is type-safe and easier to maintain.
-
-#### Defining the Cell Type
-
-In a Sudoku game, each cell in the 9x9 grid can hold a number from 1 to 9 or be empty (null). Additionally, some cells are editable by the user, while others are fixed as part of the puzzle. To represent this, we'll define a `Cell` type in TypeScript:
+Everything starts with one cell. It needs to know where it is, what it holds, and one thing that turns out to matter more than it looks:
 
 ```typescript
 type Cell = {
@@ -25,23 +21,21 @@ type Cell = {
 };
 ```
 
-- **`row` and `col`**: These properties indicate the position of the cell in the grid.
-- **`value`**: This can be a number from 1 to 9, or `null` if the cell is empty (this will come in handy later when we want to edit the value)
-- **`editable`**: A boolean flag indicating whether the cell's value can be changed by the player. By default, this is set to `true`, but for cells that are part of the puzzle (pre-filled), this would be `false`.
+`value` is a number 1 to 9, or `null` when the cell is empty. The most important field is `editable`. A Sudoku has two kinds of cell: the clues you're given and can't touch, and the ones you fill in. That single boolean is the whole distinction, and it ends up driving almost everything later, which cells accept input, which get styled differently, which the win-check should care about. One flag, a lot of downstream weight.
 
-#### Defining the Board Type
+## The board
 
-A Sudoku board consists of 81 cells arranged in a 9x9 grid. To represent the entire board, we'll define a `Board` type, which is essentially a two-dimensional array of `Cell` objects:
+The board is just a grid of cells, so the type is honest about that:
 
 ```typescript
 type Board = Cell[][];
 ```
 
-This type definition allows us to work with the entire Sudoku board as a grid of cells, making it easier to manage the game state and implement various functionalities, such as checking for valid moves or rendering the board.
+A two-dimensional array of `Cell`. Nothing clever, but now anything that touches the board, validation, rendering, generation, speaks the same language.
 
-#### **Creating an Empty Board**
+## An empty board
 
-With the `Cell` and `Board` types defined, we can now create a function to generate an empty Sudoku board. This function will initialise a 9x9 grid where each cell is empty (`value: null`) and editable:
+With the types in place, building an empty board is a one-liner of intent: a 9x9 grid where every cell knows its position, holds nothing, and is editable.
 
 ```typescript
 const createBoard = (): Board => {
@@ -56,6 +50,6 @@ const createBoard = (): Board => {
 };
 ```
 
-- For each cell, we set the `row` and `col` properties based on its position, initialise `value` to `null`, and mark it as `editable`. This function serves as the starting point for our game board, which we can later populate with numbers to create Sudoku puzzles.
+That's the foundation. It looks like almost nothing, which is the point, the types did the thinking up front so this is just filling in the shape.
 
-By setting up these TypeScript types, we've laid a strong foundation for our Sudoku game. These types ensure that the data structure is well-defined and consistent throughout the application. In the next section, we'll explore how to implement the game logic, including validating moves and generating Sudoku puzzles, before moving on to the React components that will bring our game to life.
+Next post: the part that fills this empty grid with an actual puzzle, which turns out to be the same problem as solving one.

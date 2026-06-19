@@ -1,10 +1,10 @@
 ---
 title: Beginner's Guide to Algorithms and Data Structures
 publishedAt: 2024-11-19
-summary: Dive into the world of algorithms with a beginner-friendly guide to key concepts and techniques
+summary: Quick notes from working through the basics of algorithms, the bits that finally made them click.
 ---
 
-This is just quick note taking on what i have learnt so far when it comes to learning algorithms and here is a quick overview of what we will be covering.
+These are my notes from working through the basics of algorithms, written quickly so they'd actually stick. Nothing here is novel, it's just the handful of ideas that, once they clicked, made the rest easier. Here's what's covered.
 
 - [Binary Search](#binary-search)
 - [Simple Sorting](#sorting)
@@ -15,8 +15,8 @@ This is just quick note taking on what i have learnt so far when it comes to lea
 
 ### Binary Search
 
-Binary search is the process of searching for an element in a sorted array. 
-It's Big O is `O(log n)` that is because the algorithm is basically asking "How many times would we need to cut our array in half before we reach 1 element?"
+Binary search finds an element in a *sorted* array. Its Big O is `O(log n)`, and the intuition is a question: how many times can you cut the array in half before you're down to one element? That number is `log n`, and that's how many guesses you ever need.
+
 #### Implementation
 
 ```python
@@ -33,133 +33,119 @@ def binary_search(arr, target):
 			return True
 	return False
 ```
+
+Each comparison throws away half of what's left. That's the whole reason a phone book of a billion names only takes about 30 guesses.
+
 ## Sorting
 
-When it comes to sorting an algorithm the best way to do it is using Quicksort but lets start with selection sort just to ease our way into understanding how sorting works.
+The fast everyday sort is Quicksort, but selection sort is the gentler place to start, so let's begin there.
+
 ### Selection Sort 
 
-With selection sort, the way it works is be selecting the largest element and popping it out of the array this would then modify the old array and produce a new largest element (the second largest) and so on. And as a result would then have a sorted array. 
+Selection sort works by scanning the array for the largest element, pulling it out, then scanning the rest for the next largest, and so on, until what's left is sorted.
 
-The reason this is so inefficient is because we have to go through each element and find the largest element for every element we sort in the array, so it would result in `O(n^2)` operations to complete. 
+It's slow because of that repeated scanning. You walk the whole array to find each element you place, so for `n` elements you do roughly `n` passes of `n` work, which is `O(n^2)`.
 
-Task: Try to implement that yourself. 
+Task: try implementing it yourself before reading on, it's a good way to feel why the nested scan hurts.
+
 ## Quick Data Structures
 
-Before we look at a much faster way to sort let's look at both linked lists and arrays and when we should use them.
+Before the faster sort, a quick detour into arrays and linked lists, and when to reach for each.
 
-**Arrays** are a collection of elements think of it as a list of elements. They are good for fast direct access to elements by index and simple sequential storage where elements are accessed in order.
+**Arrays** are a contiguous block of elements. They're good for fast direct access by index and simple sequential storage where you read elements in order.
 
-Use arrays when you need:
+Use an array when you need:
+
 - Fast direct access to elements by index
-- Simple **sequential** storage where elements are accessed in order.
-- Fixed-size collections where size is known upfront. 
+- Simple **sequential** storage where elements are read in order
+- A fixed-size collection whose size you know upfront
 
-***Note:*** Arrays are not good for frequent insertions/deletions in the middle of the list as it would take `O(n)` time to shift elements.
+***Note:*** arrays are bad for frequent insertions and deletions in the middle, because shifting everything along is `O(n)`.
 
-**Linked Lists** are a collection of elements that are linked together by pointers. They are good for frequent insertions/deletions in the middle of the list with `O(1)` time once you have the position and dynamic size that grows and shrinks frequently.
+**Linked lists** are elements joined by pointers. They're good for frequent insertions and deletions (`O(1)` once you're at the position) and for sizes that grow and shrink a lot.
 
-Use linked lists when you need:
-- Frequent insertions/deletions in the middle of the list `O(1)` once you have the position)
-- Dynamic size that grows and shrinks frequently
-- No wasted memory for empty spots
-- Implementation of other data structures such as stacks or queues
+Use a linked list when you need:
+
+- Frequent insertions or deletions in the middle (`O(1)` once you have the position)
+- A size that grows and shrinks often
+- No wasted memory for empty slots
+- A base for other structures like stacks or queues
 
 ```python
-# Array - Good for fixed collection with direct indexing
+# Array - good for a fixed collection with direct indexing
 scores = [85, 92, 78, 90, 88]
-third_score = scores[2]  # Fast direct access
+third_score = scores[2]  # fast direct access
 
-# Linked List - Good for frequent insertions/deletions
+# Linked List - good for frequent insertions/deletions
 class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
 ```
 
-
 ## Recursion
 
-OK, one more thing before we go back to it. Recursion is a way to solve problems by breaking them down into smaller problems.
-
-The way it works is by having a base case and a recursive case. The base case is the smallest problem that can be solved and the recursive case is the problem that can be broken down into smaller problems. 
+One more idea before the fast sort, because the fast sort leans on it. Recursion solves a problem by breaking it into smaller versions of itself. It needs two things: a **base case**, the smallest version you can answer outright, and a **recursive case**, which shrinks the problem and calls itself again.
 
 ```python
 def countdown(i):
 	print(i)
-	if i <= 0:  # Base case
+	if i <= 0:  # base case
 		return
-	else:  # Recursive case
+	else:  # recursive case
 		countdown(i - 1)
 ```
 
-> For example, the above code would print out the numbers from `i` to `0` and then stop.
+> This prints from `i` down to `0`, then stops. The base case is the thing that stops it from going forever.
 
 ## Using what we learnt in Quick Sort
 
-This is a fast algorithm and has quite a trick to it, this also using recursion. 
+Quicksort is fast, recursive, and has a neat trick to it.
 
-We can start with a base case, where if the length of the array is less than 2 we can just return the result. 
+The base case is an array of length 0 or 1, which is already sorted, so you just return it. (This is the bit that's easy to get backwards. The base case is `len(arr) < 2`, not greater. I flipped it the first time and spent a while confused.)
 
-Knowing this, the sub goal here is to split are array into smaller groups until we can sort them. So we take a pivot which should be in the middle. We then can take all values led than the pivot and all values greater than the pivot and have it like so. 
+Past the base case, you pick a **pivot**, the simplest choice being the first element. Then you split the rest into everything less than the pivot and everything greater:
 
-```math
-[less than] + pivot + [greater  than]
+```text
+[less than] + pivot + [greater than]
 ```
 
-This partially sorted array is not enough as both `less than` and `greater than` are not sorted but are sorted around the pivot, so the next step is to sort them to. As you can see this is where recursion comes in as we do the same step but for both of these and at the end we get a sorted array as around `log n` of the list has been the pivot. 
+That's sorted *around* the pivot, but the two halves aren't sorted yet. So you do the same thing to each half, and this is where recursion earns its place. Because each split roughly halves the work and you do `n` work at each level, the average cost is `O(n log n)`.
 
 ```python
 def quicksort(arr):
-	if len(arr) > 2: 
+	if len(arr) < 2:  # base case: already sorted
 		return arr
-	else: 
-		mid = len(arr) // 2 
-		pivot = arr[mid]
-		less = [i for i in arr[1:] if i <= pivot]
-		greater = [i for i in arr[1:] if i > pivot]
-		return quicksort(less) + [pivot] + quicksort([greater])
+	pivot = arr[0]
+	less = [i for i in arr[1:] if i <= pivot]
+	greater = [i for i in arr[1:] if i > pivot]
+	return quicksort(less) + [pivot] + quicksort(greater)
 ```
 
-## Hash Tables. 
+## Hash Tables
 
-Hash tables are a way to store key-value pairs. They are like arrays, but the keys are not ordered.
+Hash tables store key-value pairs. They're like arrays, except the keys aren't ordered, they're hashed to a location.
 
-Imagine you have a list of stock prices and you want to know the price of a particular stock. 
-You could go through the list one by one, but that would take `O(n)` time. Instead, you could use a hash table. A hash table lets you store a key-value pair. 
-You could store the stock symbol as the key and the price as the value.
-
-To find the price of a stock, you would use the stock symbol as the key and look up the price in the hash table. This would take `O(1)` time.
+Say you have a list of stock prices and want one particular stock. Walking the list one by one is `O(n)`. A hash table lets you store the symbol as the key and the price as the value, and look it up directly in `O(1)`.
 
 ```python
-# Hash Table - Good for fast lookups
+# Hash Table - good for fast lookups
 stocks = {}
 stocks['AAPL'] = 187.31
 stocks['GOOGL'] = 1196.51
 stocks['MSFT'] = 123.35
 
-price = stocks['AAPL']  # Fast lookup
+price = stocks['AAPL']  # fast lookup
 ```
 
-> Hash tables are great for fast lookups, but they are not ordered. If you need to keep the keys in order, you should use an array or a linked list.
+> Hash tables are great for fast lookups but they don't keep order. If you need the keys ordered, reach for an array or a linked list.
 
-<Table
-  data={{
-    headers: ['Data Structure', 'Search', 'Insert', 'Delete'],
-    rows: [
-	  ['Array', 'O(n)', 'O(n)', 'O(n)'],
-	  ['Linked List', 'O(n)', 'O(1)', 'O(1)'],
-	  ['Hash Table', 'O(1)', 'O(1)', 'O(1)'],										
-    ],
-  }}
-/>
+A rough cheat sheet for the structures here, average case:
 
+| Data Structure | Search | Insert | Delete |
+|---|---|---|---|
+| Array | O(n) | O(n) | O(n) |
+| Linked List | O(n) | O(1) | O(1) |
+| Hash Table | O(1) | O(1) | O(1) |
 
-
-
-
-
-
-
-
-
-
+That's the set I keep coming back to. None of it is complicated once the intuition lands, and writing it down like this is mostly how I made the intuition land.

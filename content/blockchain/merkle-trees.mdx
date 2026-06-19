@@ -4,35 +4,37 @@ publishedAt: 2022-12-25
 summary: "Building a Merkle Tree from scratch in python"
 ---
 
-Following the article "Learning Blockchains by Building One," this page will demonstrate how to construct a Merkle Tree from scratch.
+I was building a toy blockchain by following [Learning Blockchains by Building One](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46), and I hit the part where a block has to prove its transactions haven't been quietly edited. The standard answer is a Merkle tree. So I built one from scratch in Python, proud of this because the concept appears simple once you understand it. 
 
-Merkle trees are data structures used to verify the integrity of large data sets. They find application in various domains, including blockchains, file systems, and distributed storage systems.
+## What a Merkle tree actually is
 
-## What is a Merkle Tree?
+It's a binary tree built entirely out of hashes. Hash each piece of data into a leaf, hash each pair of leaves into a parent, hash pairs of parents, and keep climbing until one hash is left at the top: the **Merkle root**.
 
-A Merkle tree is a binary tree where every leaf node is hashed along with its adjacent leaf to produce a parent node. This process repeats until it culminates in a single root node, which represents the hash of all the leaf nodes in the tree.
+```mermaid
+flowchart BT
+    L1["h(Alice)"] --> P1["h(L1 + L2)"]
+    L2["h(Bob)"] --> P1
+    L3["h(Charlie)"] --> P2["h(L3 + L4)"]
+    L4["h(Dave)"] --> P2
+    P1 --> R["Merkle root"]
+    P2 --> R
+```
 
-For instance, in the context of a blockchain, a Merkle tree might store the hash of a series of transactions, replacing a detailed record like this:
+That single root is a fingerprint of everything beneath it. Change one character in one leaf and the root changes completely. That's the entire point: a block can carry one 64-character root in its header instead of every transaction, and anyone can still check a transaction against it.
+
+So instead of a block hauling around this:
 
 ```json
 {
   "transactions": [
-    {
-      "sender": "Alice",
-      "recipient": "Bob",
-      "amount": 50
-    },
-    {
-      "sender": "Bob",
-      "recipient": "Alice",
-      "amount": 25
-    }
+    { "sender": "Alice", "recipient": "Bob", "amount": 50 },
+    { "sender": "Bob", "recipient": "Alice", "amount": 25 }
     ...
   ]
 }
 ```
 
-with a single transaction hash:
+it carries this:
 
 ```json
 {
@@ -40,9 +42,11 @@ with a single transaction hash:
 }
 ```
 
-## Building the Merkle Tree
+and the tree is what lets you prove any single transaction belongs to that hash.
 
-We will be implementing this in Python. First, we need to create a class which utilises both `hashlib` and `json` libraries. These will be used to hash the data and convert it to JSON format.
+## Building it
+
+Python, with `hashlib` for SHA-256 and `json` to serialise the data before hashing.
 
 ```python
 import hashlib
@@ -52,11 +56,9 @@ class MerkleTree:
     def __init__(self, data):
         self.leaves = data
         self.root = None
-``` 
+```
 
-### Building the Tree
-
-Initially, we handle cases where the number of leaves is uneven. If the number of leaves is odd, we duplicate the last leaf node to balance the tree.
+The first wrinkle is that trees want even numbers. If a level has an odd number of nodes, I duplicate the last one so it has something to pair with.
 
 ```python
 def build(self):
@@ -68,9 +70,7 @@ def build(self):
         self.leaves.append(self.leaves[-1])
 ```
 
-### Hashing the Data
-
-We hash the data using the SHA-256 algorithm, converting it to JSON before hashing since the data is a list of strings.
+Then hash every leaf. I serialise with `sort_keys=True` so the same data always hashes to the same value without that, dictionary ordering could quietly change the root.
 
 ```python
 def build(self):
@@ -87,14 +87,11 @@ def build(self):
     ]
 ```
 
-### Creating Parent Nodes
-
-We create parent nodes by combining two adjacent nodes into one and repeating this until a single root node is formed.
+Then the recursive part: pair adjacent hashes, concatenate and hash each pair, and call `build` again on the shorter list. Each call halves the number of nodes until one is left. This loop is uglier than it needs to be but it works, and it taught me the structure better than a tidy version would have.
 
 ```python
 def build(self):
     ...
-    # Pair the leaves and hash them
     self.leaves = [
         self.leaves[i:i + 2] for i in range(0, len(self.leaves), 2)
     ]
@@ -108,9 +105,7 @@ def build(self):
     self.build()
 ```
 
-### Getting the Root Node
-
-This function returns the root node after building the tree, if not already available.
+Getting the root just builds the tree first if it hasn't been built yet:
 
 ```python
 def get_root(self):
@@ -119,18 +114,19 @@ def get_root(self):
     return self.root
 ```
 
-### Testing the Code
+And a quick test with five names note the odd count, which is exactly the duplicate-the-last case from above:
+
 ```python
 data = ['Alice', 'Bob', 'Charlie', 'Dave', 'Eve']
 tree = MerkleTree(data)
 print(tree.get_root())
 ```
 
-## Conclusion
+## Why the shape matters
 
-This tutorial demonstrates how to create and retrieve the root node of a Merkle tree, which is the first step in generating a Merkle proof. In the next article, we will focus on creating a Merkle proof.
+One root hash now stands in for the whole set. Tamper with any leaf and the root won't match that's what makes a block tamper-evident. And because the tree keeps the intermediate hashes around, you can prove a single item belongs to the set without handing someone the entire thing. That proof is the next piece, and it's where Merkle trees stop being a neat data structure and start being genuinely useful.
 
 ## Resources
 
-- [Merkle Tree Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)
+- [Merkle Tree (Wikipedia)](https://en.wikipedia.org/wiki/Merkle_tree)
 - [Learning Blockchains by Building One](https://hackernoon.com/learn-blockchains-by-building-one-117428612f46)

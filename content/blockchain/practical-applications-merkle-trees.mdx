@@ -4,57 +4,43 @@ publishedAt: 2023-01-25
 summary: "Explore how Merkle proofs are utilised in blockchain technology to ensure data integrity and enhance security."
 ---
 
-In the previous articles, we learned how to build a Merkle tree and generate Merkle proofs. This article will delve into the practical applications of Merkle proofs in blockchain technology, highlighting their role in ensuring data integrity and enhancing security.
 
-## Introduction to Blockchain and Merkle Trees
+I [built a Merkle tree](./merkle-trees) and [generated proofs](./generating-merkle-proofs) from scratch, which is satisfying but a bit abstract. The reason any of it matters is that the same trick (verify one item against a single root hash, using a number of hashes that grows with the *height* of the tree, not its size) is doing real work underneath systems you use. Here's where, and why it's the right tool each time.
 
-A blockchain is a distributed ledger that records transactions across a network of computers. Each block in a blockchain contains a list of transactions, a timestamp, and a reference to the previous block. This chain of blocks forms an immutable record of transactions.
+## Bitcoin: verifying a payment without the whole chain
 
-Merkle trees play a crucial role in blockchains by providing a compact and efficient way to verify the integrity of transactions within a block. The root hash of a Merkle tree, called the Merkle root, is included in the block header. This allows anyone with the Merkle proof to verify the inclusion of a transaction without needing to download the entire block.
+Every Bitcoin block builds a Merkle tree from its transactions and puts only the root in the block header. That one design choice is what makes **SPV**  Simplified Payment Verification possible.
 
-## Merkle Proofs in Bitcoin
+A full node stores the entire chain, which is hundreds of gigabytes. Your phone wallet can't and shouldn't. So instead it keeps only the small block headers, and when it needs to confirm a payment landed, it asks a full node for a Merkle proof: the handful of sibling hashes linking that transaction to a root it already trusts.
 
-In Bitcoin, Merkle proofs are used to verify the inclusion of transactions in a block. Each Bitcoin block contains a Merkle root, which represents the root hash of a Merkle tree constructed from the transactions in that block.
+```mermaid
+flowchart LR
+    A["Light client, block headers only"] -->|"is tx X in this block?"| B["Full node, the whole chain"]
+    B -->|"Merkle proof: a few hashes"| A
+    A --> C["Recompute root, compare to header"]
+```
 
-### Verifying Transactions
+The wallet recomputes the root from the proof and checks it against the header it's holding. A few hashes instead of 500 gigabytes. The phone never has to trust the full node's *answer* it verifies the maths itself.
 
-When a Bitcoin node receives a transaction, it can verify its inclusion in a block by checking the Merkle proof. This process involves:
+## Ethereum: proving state, not just transactions
 
-1. **Obtaining the Merkle proof**: The node obtains the list of hashes required to verify the transaction.
-2. **Recomputing the hashes**: Starting from the transaction hash, the node recomputes the hashes up the tree using the Merkle proof.
-3. **Comparing with the Merkle root**: The node compares the recomputed root hash with the Merkle root in the block header.
+Ethereum needs more than "was this transaction included." It needs to prove things about the current *state* of the world an account's balance, a contract's stored data. So it uses a beefier cousin of the Merkle tree, the **Merkle Patricia Trie**, and every block commits to a state root the same way Bitcoin commits to a transaction root.
 
-If the hashes match, the transaction is verified.
+The payoff is the same shape: a light client can ask "what's the balance of this account?" and get back a proof it can verify against the state root, without replaying the entire chain. Same idea, richer structure.
 
-### SPV (Simplified Payment Verification)
+## Distributed storage: verifying a file in pieces
 
-Bitcoin's SPV mode allows lightweight clients to verify transactions without downloading the entire blockchain. SPV clients request Merkle proofs from full nodes, enabling them to verify transactions efficiently.
+The pattern isn't blockchain-specific. Systems like [IPFS](https://ipfs.io/) split a file into chunks, hash each chunk, and build a Merkle tree over them. The root identifies the whole file; the tree lets you verify each chunk as it arrives.
 
-## Merkle Proofs in Ethereum
+That means you can download a large file from many untrusted peers at once and check every piece against the root as it lands, so no waiting until the end to find out one peer sent you garbage and content addressing and integrity checking fall out of the same structure for free.
 
-Ethereum, like Bitcoin, uses Merkle trees to ensure data integrity, but it employs a more complex structure called the Merkle Patricia Trie (MPT). MPTs are used to store the state of the Ethereum network, including account balances, smart contract code, and storage.
+## The thread
 
-### Verifying State
-
-In Ethereum, each block contains a state root, which is the root hash of the MPT representing the global state. Merkle proofs are used to verify the state of an account or the result of a smart contract execution without needing the entire state tree.
-
-Ethereum light clients use Merkle proofs to verify transactions and state changes. They request proofs from full nodes and recompute the hashes to ensure the data's integrity.
-
-## Merkle Proofs in Distributed Storage Systems
-
-Merkle proofs are also used in distributed storage systems, such as IPFS (InterPlanetary File System) and other decentralised storage networks, to ensure data integrity and efficient retrieval.
-
-### Verifying Data Chunks
-
-In distributed storage, files are split into chunks, each with its own hash. A Merkle tree is built from these chunks, and the root hash is used to verify the integrity of the entire file. When retrieving a file, a client can use Merkle proofs to verify each chunk's integrity without downloading the entire file.
-
-## Conclusion
-
-Merkle proofs are fundamental to the security and efficiency of blockchain technology and distributed storage systems. By enabling the verification of data integrity with minimal overhead, they enhance the scalability and robustness of these systems.
+Once you've built one, you start seeing the shape everywhere: any time something needs to prove a small fact about a large dataset to a party that can't hold all of it, a Merkle tree is probably the answer. That's why building the toy version was worth it not for the toy, but for recognising the pattern in the wild.
 
 ## Resources
 
-- [Merkle Tree Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)
-- [Bitcoin Whitepaper](https://www.ussc.gov/sites/default/files/pdf/training/annual-national-training-seminar/2018/Emerging_Tech_Bitcoin_Crypto.pdf)
+- [Merkle Tree (Wikipedia)](https://en.wikipedia.org/wiki/Merkle_tree)
+- [Bitcoin Whitepaper](https://bitcoin.org/bitcoin.pdf)
 - [Ethereum Whitepaper](https://ethereum.org/en/whitepaper/)
-- [InterPlanetary File System (IPFS)](https://ipfs.io/)
+- [IPFS](https://ipfs.io/)

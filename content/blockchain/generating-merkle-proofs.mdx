@@ -4,15 +4,25 @@ publishedAt: 2023-01-10
 summary: "Learn how to generate Merkle proofs to verify the inclusion of a specific data item in a Merkle tree."
 ---
 
-In the previous article ["Building a Merkle Tree"](./merkle-trees), we demonstrated how to construct a Merkle tree from scratch in Python. This article will focus on generating Merkle proofs, which are essential for verifying the inclusion of a specific data item in the tree.
+In the [last post](./merkle-trees) I built a Merkle tree and got its root a single hash standing in for a whole set of data. The root is a blunt instrument, though. It proves the set as a whole. The question you usually actually want answered is narrower: *is this one item in the tree?*  and ideally without me handing you the entire thing to check. That's what a **Merkle proof** is for.
 
-## What is a Merkle Proof?
+## What a proof actually is
 
-A Merkle proof provides evidence that a particular data item is included in the Merkle tree. It consists of a series of hashes that trace a path from the data item to the root of the tree. By recomputing the hashes along this path, one can verify the integrity and inclusion of the data item.
+A proof is the shortest set of hashes that lets you climb from one leaf back up to the root. At each level you don't need the whole row you only need the *sibling* of the node you're holding, because that's the one missing piece you'd combine with to compute the parent. Collect one sibling per level, and you can recompute the root yourself.
 
-## Building the Merkle Tree
+```mermaid
+flowchart BT
+    A["h(Alice) — the item"] --> P1["parent = h(A + B)"]
+    B["h(Bob) — sibling, given"] --> P1
+    P1 --> R["root — recompute and compare"]
+    U["uncle hash — given"] --> R
+```
 
-First, let's recall our `MerkleTree` class from the previous article, which includes the necessary methods to build the tree.
+The thing worth noticing in that diagram: to verify Alice, you're handed two hashes her sibling and the uncle — and you compute the rest. For a tree of a million leaves, a proof is about twenty hashes. That's the magic: verification cost grows with the *height* of the tree, not its size.
+
+## Building the tree, keeping the levels
+
+To generate proofs I need to remember the tree, not just the root so this version stores each level as it's built. I also pulled the hashing into a small lambda to stop repeating myself.
 
 ```python
 class MerkleTree:
@@ -59,10 +69,9 @@ class MerkleTree:
         return self.root
 ```
 
-## Generating a Merkle Proof
+## Generating the proof
 
-To generate a Merkle proof, we need to find the path from the target data item to the root of the tree, collecting the necessary hashes along the way. This would involve 
-collecting the sibling hashes at each level of the tree and also keeping track of whether the target is the left or right child of the parent node.
+Find the item on the bottom row, then walk up. At each level, grab the sibling and note which side it's on, left or right matters because hashing isn't commutative and `h(a + b)` is not `h(b + a)`. Dividing the index by two each step moves you to the parent.
 
 ```python
 class MerkleTree:
@@ -86,9 +95,9 @@ class MerkleTree:
         return proof
 ```
 
-## Verifying a Merkle Proof
+## Verifying it
 
-To verify the Merkle proof, we need to recompute the hashes from the data item to the root using the provided proof. This is done by building the hash path from the target to the root based on the proof provided and comparing the final hash with the root hash.
+Verification is the proof in reverse: start from the item's hash, and at each step combine it with the proof hash *on the correct side*, until you've rebuilt a root. If it matches the root you were given, the item is genuinely in the tree.
 
 ```python
 def verify_proof(self, proof, target, root):
@@ -100,10 +109,7 @@ def verify_proof(self, proof, target, root):
             computed_hash = self.hash_function(computed_hash + proof_hash)
     return computed_hash == root
 ```
-
-## Testing the Code
-
-Let's test our implementation with a sample data set.
+### Example: 
 
 ```python
 data = ['Alice', 'Bob', 'Charlie', 'Dave', 'Eve']
@@ -113,20 +119,14 @@ print("Merkle Root:", root)
 
 target = 'Alice'
 proof = tree.generate_proof(target)
-print("Merkle Proof for Bob:", proof)
+print("Proof for Alice:", proof)
 
 is_valid = tree.verify_proof(proof, target, root)
-print("Is the proof valid?", is_valid)
-
-# Output: True
+print("Is the proof valid?", is_valid)  # True
 ```
-
-## Conclusion
-
-In this article, we demonstrated how to generate and verify Merkle proofs, which are crucial for ensuring data integrity in a Merkle tree. In the next article, we will explore practical applications of Merkle proofs in blockchain technology and distributed systems.
 
 ## Resources
 
-- [Merkle Tree Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)
-- [Merkle proofs Explained.](https://medium.com/crypto-0-nite/merkle-proofs-explained-6dd429623dc5)
+- [Merkle Tree (Wikipedia)](https://en.wikipedia.org/wiki/Merkle_tree)
+- [Merkle Proofs Explained](https://medium.com/crypto-0-nite/merkle-proofs-explained-6dd429623dc5)
 - [Verifiable Data Structures: Merkle Trees and Logs](https://transparency.dev/verifiable-data-structures/#verifiable-log)
