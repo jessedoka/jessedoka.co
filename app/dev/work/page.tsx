@@ -26,7 +26,7 @@ export default function WorkPage() {
 		{
 			title: 'Singletrack',
 			role: 'Software Engineer · previously Software Engineer Intern',
-			description: 'Returned as a full-time engineer after a Ruby on Rails \
+			description: 'Working as a full-time engineer after a Ruby on Rails \
 			internship integrating REST APIs with Salesforce. Now ship production \
 			code across a large Salesforce platform (Apex, LWC/Aura), Ruby services and Python on AWS alongside CI/CD, \
 			auth and security work. Trusted with production hotfixes and front-line \
@@ -45,7 +45,6 @@ export default function WorkPage() {
 				"Working with Apex, JavaScript (LWC/Aura), Ruby, Python and TypeScript in a large Salesforce codebase, with production changes on AWS (Lambda, CDK).",
 				"Worked on major TinyMCE editor upgrade and a Visualforce → Lightning modernisation, then owned its client-facing maintenance thereafter.",
 				"Built REST API integrations between a Rails application and Salesforce, applying TDD work that began during my internship and carried into the full-time role.",
-				"Trusted with production hotfixes into released versions and front-line client support; now extending into AWS platform work while studying for AWS Solutions Architect."
 			],
 		}
 		// Add more work experiences here

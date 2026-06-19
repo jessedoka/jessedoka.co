@@ -20,15 +20,12 @@ export default async function Page() {
 						<div className="absolute inset-0">
 							<Background width={800} height={600} />
 						</div>
-						<div className="absolute bottom-[-14rem] left-4 z-10 ">
-							<Image src="/icon.svg" alt="icon" width={120} height={120} />
-						</div>
 					</div>
 					<div className="flex flex-col space-y-4 mt-[15rem]">
 						<div className="space-y-2 mb-4 text-center">
 							<div>
 								<h1 className="text-2xl text-neutral-800 dark:text-neutral-400 font-medium">
-									Hey there, I&apos;m <span className="text-neutral-800 dark:text-neutral-200 ">Jesse</span> <span className="hover:animate-pulse">👋</span> Welcome to my digital home 🏡
+									Hey there, I&apos;m <span className="text-neutral-800 dark:text-neutral-200 ">Jesse</span> Welcome to my digital home
 								</h1>
 								<h1 className="text-2xl text-neutral-800 dark:text-neutral-400 font-medium">I love to build things and share my experiences.</h1>
 							</div>
