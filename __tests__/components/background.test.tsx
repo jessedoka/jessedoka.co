@@ -4,8 +4,10 @@ import React from 'react';
 import Background from '@/components/background';
 
 const mockDestroy = vi.fn();
-const MockGlslCanvas = vi.fn(function (this: { destroy: () => void }) {
+const mockSetUniform = vi.fn();
+const MockGlslCanvas = vi.fn(function (this: { destroy: () => void; setUniform: () => void }) {
   this.destroy = mockDestroy;
+  this.setUniform = mockSetUniform;
 });
 
 vi.mock('glslCanvas', () => ({
@@ -15,6 +17,7 @@ vi.mock('glslCanvas', () => ({
 describe('Background', () => {
   beforeEach(() => {
     mockDestroy.mockClear();
+    mockSetUniform.mockClear();
     MockGlslCanvas.mockClear();
   });
 
@@ -32,7 +35,7 @@ describe('Background', () => {
     const { container } = render(<Background width={100} height={100} />);
     const wrapper = container.querySelector('div.overflow-hidden');
     expect(wrapper).toBeInTheDocument();
-    expect(wrapper).toHaveClass('max-h-[10rem]');
+    expect(wrapper).toHaveClass('max-h-[12rem]');
   });
 
   it('calls GlslCanvas with canvas element on mount', async () => {
