@@ -43,7 +43,6 @@ export default function WorkPage() {
 			], []),
 			achievements: [
 				"Working with Apex, JavaScript (LWC/Aura), Ruby, Python and TypeScript in a large Salesforce codebase, with production changes on AWS (Lambda, CDK).",
-				"Worked on major TinyMCE editor upgrade and a Visualforce → Lightning modernisation, then owned its client-facing maintenance thereafter.",
 				"Built REST API integrations between a Rails application and Salesforce, applying TDD work that began during my internship and carried into the full-time role.",
 			],
 		}
